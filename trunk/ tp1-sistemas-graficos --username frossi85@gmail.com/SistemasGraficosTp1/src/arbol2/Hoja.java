@@ -15,15 +15,15 @@ public class Hoja {
 	public void dibujar(GL2 gl)
 	{
 		GLU glu = new GLU();
-		//glu.gluSphere(glu.gluNewQuadric() , 0.1f, 10, 10);
-//		float tamanio = 0.5f;
-//		
-//		gl.glBegin(GL2.GL_TRIANGLE_STRIP);
-//			gl.glVertex3f(0, -tamanio, 0);
-//	  		gl.glVertex3f(0, 0, tamanio/2);
-//	  		gl.glVertex3f(0, tamanio, 0);
-//	  		gl.glVertex3f(0, 0, -tamanio/2);
-//			gl.glVertex3f(0, -tamanio, 0);
-//		gl.glEnd();
+		float tamanio = 0.2f;	
+
+		gl.glBegin(GL2.GL_TRIANGLE_STRIP);
+			gl.glColor3f(0.4f,0.7f,0.3f);		
+			gl.glVertex3f(0, -tamanio/2, tamanio);
+	  		gl.glVertex3f(0, 0, 2*tamanio);
+	  		gl.glVertex3f(0, tamanio/2, tamanio);
+	  		gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, -tamanio/2, tamanio);
+		gl.glEnd();
 	}
 }
