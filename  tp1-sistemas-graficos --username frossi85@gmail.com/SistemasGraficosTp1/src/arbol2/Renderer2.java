@@ -30,7 +30,6 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	
 	private float rotacionCamara = 0;
 	
-	private Arbol arbol = new Arbol(15);
     
  // Variables que controlan la ubicación de la cámara en la Escena 3D
     //float eye[] =  {15.0f, 15.0f, 5.0f};
@@ -72,9 +71,36 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
   float positionx[] = new float[10];
   
   public GLCanvas canvas;
- 
+  
+  //ATRIBUTOS DE LA ANIMACION
+  private float velocidadCrecimiento = 1; 
+  private int cantReinicioLoop = 0;
+  private boolean pause = false;
+  private float edadMaxima=12;
+  private float edadActual = 1;
+	private Arbol arbol = new Arbol(edadActual);
+  
+  private void update()
+  {
+	  if(cantReinicioLoop > 100)
+	  {
+		  cantReinicioLoop = 0;
+		  if(!pause)
+		  {
+			  if(edadActual<edadMaxima)
+			  {
+				  System.out.println("UPDATED");
+				  edadActual += velocidadCrecimiento;
+				  arbol.crecer(velocidadCrecimiento);
+			  }
+		  }
+	  }
+	  else
+		  cantReinicioLoop++;
+  }
     public void display(GLAutoDrawable gLDrawable) 
-    {       
+    {    
+    	
     	System.out.println("display called");
     	final GL2 gl = gLDrawable.getGL().getGL2();
 		
@@ -108,8 +134,10 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	  	gl.glRotatef(rotacionCamara,0f,0f,1f);
 	  	
   	
-	  	
-	  	//El ALGORITMO ESTA BIEN< AHORA FALTA ESCALAR, GRADOS ALEATORIOS y POSICION ALEATORIA EN LA RAMA PRINCIPAL
+    	//UPDATE del modelo
+    	this.update();
+    	
+	  	//El ALGORITMO ESTA BIEN< AHORA FALTA ESCALAR y POSICION ALEATORIA EN LA RAMA PRINCIPAL
 	  	
 
 	  		arbol.dibujar(gl);
@@ -126,19 +154,6 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	    Hoja hoja = new Hoja();
 	    
 	    //hoja.dibujar(gl);
-	  	
-	 
-	  	
-//	  	gl.glBegin(GL2.GL_TRIANGLE_STRIP);
-//	  		gl.glTexCoord3f(0, 0, 1); 
-//  			gl.glVertex3f(0, 0, 1); //vertex 1
-//  			gl.glTexCoord3f(1, 0, 0); 
-//	  		gl.glVertex3f(1, 0, 0); //vertex 1
-//	  		gl.glTexCoord3f(0, 1, 0); 
-//	  		gl.glVertex3f(0, 1, 0);
-//
-//
-//	  	gl.glEnd();
 		
 	  	///////////////////////////////////////////////////
 	
@@ -324,7 +339,8 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();
 		
 		posicionAnteriorMouse.setLocation(e.getX(), e.getY());
-		canvas.display();
+		
+		//canvas.display();
 	}
 
 	@Override
@@ -347,6 +363,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	@Override
 	public void keyPressed(KeyEvent key) {	
 		//convertir todas las letras a mayusculas o minusculas
+		
 		switch (key.getKeyChar()) {
 	    	case KeyEvent.VK_ESCAPE:
 	    		System.exit(0);
@@ -362,7 +379,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 			    //camera.look(10);
 	    		
 	    		//rotacionCamara += 10;
-	    		canvas.display();
+	    		//canvas.display();
 			    //   }
 	    		break; 
     		
@@ -373,6 +390,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 //	    		P Pausar/reanudar animación
 	    		break;
 	    	case 'q':
+
 //	    		Q incrementar velocidad de crecimiento
 	    		break;
 	    	case 'a':

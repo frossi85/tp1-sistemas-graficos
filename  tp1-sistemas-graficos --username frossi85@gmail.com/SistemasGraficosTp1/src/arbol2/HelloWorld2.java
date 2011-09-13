@@ -9,6 +9,7 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 
 import com.jogamp.newt.event.KeyListener;
+import com.jogamp.opengl.util.*;
  
 public class HelloWorld2 
 {
@@ -47,5 +48,9 @@ public class HelloWorld2
  
         frame.setSize( frame.getContentPane().getPreferredSize() );
         frame.setVisible( true );
+        
+        FPSAnimator animator = new FPSAnimator(glcanvas, 60);
+        animator.add(glcanvas);
+        animator.start();
     }
 }

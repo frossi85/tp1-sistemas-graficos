@@ -38,13 +38,15 @@ public class Arbol {
 	
 	public void crecer(float pasoDeTiempo)
 	{
-		this.niveles = (int) pasoDeTiempo;
+		this.niveles += (int) pasoDeTiempo;
 		this.edad += pasoDeTiempo;
-		this.escala = this.edad - this.niveles; //Ver como la uso por q si multiplico se achica y puede quedar cero
 		
-		int cantidadNivelesNuevos = niveles - angulosFiPorNivel.size();
-	    
-		int cantParametrosACalcular = (int) (Math.pow(2, cantidadNivelesNuevos) - 1);
+		//escala bien como calculo po r q si pasoDeTiempo 1 entonces la escala queda en uno y no deberia escalarse ya q crece un nivel
+		this.escala = this.edad - this.niveles; //Ver como la uso por q si multiplico se achica y puede quedar cero
+		  
+		//Ver como optmizar el calculo para no calcular potencias tan grandes
+		int cantParametrosACalcular = (int) (Math.pow(2, (int) this.niveles)) - angulosFiPorNivel.size() + 1;
+		
 		float signo = -1;
 		
 	 	for(int i = 0; i< cantParametrosACalcular; i++)
@@ -64,6 +66,8 @@ public class Arbol {
 	   	iteradorAngulosTheta = angulosThetaPorNivel.iterator();
 	   	
 	   	//El atributo escala solo se usa por primera vbez para pasar el tamaño del tronco principal
+	   	
+	   	//PARA EL ESCALADO DEL CRECIMIENTO APLICAR aca un escalado de OPEN GL de todo el arbol
 	   	
 		dibujarRecursivo(gl, true, new Rama(3f, 0.25f, 20f), niveles);
 	}
@@ -103,8 +107,6 @@ public class Arbol {
 			{
 				gl.glPushMatrix();
 					gl.glTranslatef(0,0,r1.largo);
-				    gl.glRotatef(anguloFi,0.5f,1f,0.0f);
-				    gl.glRotatef(anguloTheta, 0f, 0f, 1f);
 					new Hoja().dibujar(gl); //aca no va seguro q va despues de la traslacion de la rama
 				gl.glPopMatrix();
 			}
