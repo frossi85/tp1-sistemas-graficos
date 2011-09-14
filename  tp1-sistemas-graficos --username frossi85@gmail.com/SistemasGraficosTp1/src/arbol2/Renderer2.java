@@ -78,7 +78,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
   private boolean pause = false;
   private float edadMaxima=12;
   private float edadActual = 1;
-	private Arbol arbol = new Arbol(edadActual);
+  private Arbol arbol = new Arbol(edadActual);
   
   private void update()
   {
@@ -385,9 +385,15 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
     		
 	    	case 'r':
 //	    		R Reiniciar la animación de crecimiento
+	    		System.out.println("Reiniciar animación");
+	    		this.edadActual = 1;
+	    		this.arbol = new Arbol(this.edadActual);
 	    		break;
 	    	case 'p':
 //	    		P Pausar/reanudar animación
+	    		String texto = (this.pause)? "Reanudar": "Pausar";
+	    		System.out.println(texto);
+	    		this.pause = !this.pause;
 	    		break;
 	    	case 'q':
 
