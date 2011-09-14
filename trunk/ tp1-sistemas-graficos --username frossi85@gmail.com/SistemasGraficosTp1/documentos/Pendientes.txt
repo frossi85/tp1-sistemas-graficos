@@ -1,0 +1,14 @@
+OBLIGATORIAS:
+- Hacer que las ramas de un tronco se ubiquen a una distancia aleatoria
+- Hacer que se varie la velocidad de crecimiento con la teclas q pide el tp
+- Ponerle color al tronco y hoja
+- Usar el factor de escalado para escalar el arbol entre numeros no enteros de crecimiento
+- Escribir mas sobre la implementacion y desiciones en el informe
+
+RECOMENDADAS:
+- Usar display list para guardar rama y hoja, con la rama q esta en la display list construir las demas escalando con
+  la funcion de OpenGl
+
+OPCIONALES:
+- buscar el normalice para la luz o hallar normales a mano para q la luz se vea mejor en el arbol
+- ver como uso la clase camera y sino sacarla del proyecto

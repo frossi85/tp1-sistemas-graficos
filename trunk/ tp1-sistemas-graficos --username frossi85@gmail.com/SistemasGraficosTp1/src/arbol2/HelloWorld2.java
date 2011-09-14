@@ -8,7 +8,6 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 
-import com.jogamp.newt.event.KeyListener;
 import com.jogamp.opengl.util.*;
  
 public class HelloWorld2 
@@ -23,10 +22,8 @@ public class HelloWorld2
  
     	// The canvas is the widget that's drawn in the JFrame
     	glcanvas = new GLCanvas(capabilities);
-    	Renderer2 renderer = new Renderer2();
-    
     	
-    	renderer.canvas = glcanvas;
+    	Renderer2 renderer = new Renderer2(glcanvas); 	
     	
     	glcanvas.addGLEventListener(renderer);
     	glcanvas.addKeyListener(renderer);
@@ -36,7 +33,7 @@ public class HelloWorld2
     	
     	glcanvas.setSize( 300, 300 );
  
-        JFrame frame = new JFrame( "Hello World" );
+        JFrame frame = new JFrame( "TP1 Sistemas Graficos" );
         frame.getContentPane().add( glcanvas);
  
         // shutdown the program on windows close event
@@ -48,9 +45,5 @@ public class HelloWorld2
  
         frame.setSize( frame.getContentPane().getPreferredSize() );
         frame.setVisible( true );
-        
-        FPSAnimator animator = new FPSAnimator(glcanvas, 60);
-        animator.add(glcanvas);
-        animator.start();
     }
 }
