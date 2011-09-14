@@ -36,25 +36,28 @@ public class Arbol {
 	 	}
 	}
 	
-	public void crecer(float pasoDeTiempo)
+	public void crecer(float velocidadCrecimiento)
 	{
-		this.niveles += (int) pasoDeTiempo;
-		this.edad += pasoDeTiempo;
+		this.escala += velocidadCrecimiento;
 		
-		//escala bien como calculo po r q si pasoDeTiempo 1 entonces la escala queda en uno y no deberia escalarse ya q crece un nivel
-		this.escala = this.edad - this.niveles; //Ver como la uso por q si multiplico se achica y puede quedar cero
-		  
-		//Ver como optmizar el calculo para no calcular potencias tan grandes
-		int cantParametrosACalcular = (int) (Math.pow(2, (int) this.niveles)) - angulosFiPorNivel.size() + 1;
-		
-		float signo = -1;
-		
-	 	for(int i = 0; i< cantParametrosACalcular; i++)
-	 	{
-	 		signo *= -1;
-	 		angulosFiPorNivel.add(signo*getAleatorio(anguloFiMinimo, anguloFiMaximo));
-	 		angulosThetaPorNivel.add(getAleatorio(anguloThetaMinimo ,anguloThetaMaximo));
-	 	}
+		if(this.escala >= 1){
+			System.out.println("nuevo nivel : " + this.niveles);
+			this.niveles += (int) this.escala;
+			this.edad += (int) this.escala;
+			this.escala = this.escala - (int) this.escala;
+			  
+			//Ver como optmizar el calculo para no calcular potencias tan grandes
+			int cantParametrosACalcular = (int) (Math.pow(2, (int) this.niveles)) - angulosFiPorNivel.size() + 1;
+			
+			float signo = -1;
+			
+		 	for(int i = 0; i< cantParametrosACalcular; i++)
+		 	{
+		 		signo *= -1;
+		 		angulosFiPorNivel.add(signo*getAleatorio(anguloFiMinimo, anguloFiMaximo));
+		 		angulosThetaPorNivel.add(getAleatorio(anguloThetaMinimo ,anguloThetaMaximo));
+		 	}
+		}
 	}
 	
 	public void dibujar(GL2 gl)
@@ -68,8 +71,12 @@ public class Arbol {
 	   	//El atributo escala solo se usa por primera vbez para pasar el tamaño del tronco principal
 	   	
 	   	//PARA EL ESCALADO DEL CRECIMIENTO APLICAR aca un escalado de OPEN GL de todo el arbol
-	   	
-		dibujarRecursivo(gl, true, new Rama(3f, 0.25f, 20f), niveles);
+	   	if(this.niveles == 1){
+	   		dibujarRecursivo(gl, true, new Rama(this.escala*3f, this.escala*0.25f, 20f), this.niveles);
+	   	}
+	   	else{
+	   		dibujarRecursivo(gl, true, new Rama(3f, 0.25f, 20f), this.niveles);
+	   	}
 	}
 	
 	private void dibujarRecursivo(GL2 gl, boolean tronco, Rama ramaPrincipal,  int nivel)
@@ -93,9 +100,16 @@ public class Arbol {
 			}
 			else
 			{
-				r1= ramaPrincipal.getRamaEscalada(0.8f);
-				gl.glPushMatrix();
-			   	gl.glTranslatef(0,0,ramaPrincipal.largo / 1.5f);
+				if((nivel == 1)){
+					r1 = ramaPrincipal.getRamaEscalada(0.8f*this.escala);
+					gl.glPushMatrix();
+				   	gl.glTranslatef(0,0,ramaPrincipal.largo / 1.5f);
+				}
+				else {
+					r1 = ramaPrincipal.getRamaEscalada(0.8f);
+					gl.glPushMatrix();
+				   	gl.glTranslatef(0,0,ramaPrincipal.largo / 1.5f);
+				}
 			}
 		
 			r1.dibujar(gl, anguloFi, anguloTheta, ramaPrincipal.largo / 2);
@@ -106,8 +120,8 @@ public class Arbol {
 			if(nivel==1)
 			{
 				gl.glPushMatrix();
-					gl.glTranslatef(0,0,r1.largo);
-					new Hoja().dibujar(gl); //aca no va seguro q va despues de la traslacion de la rama
+				gl.glTranslatef(0,0,r1.largo);
+				new Hoja().dibujar(gl); //aca no va seguro q va despues de la traslacion de la rama
 				gl.glPopMatrix();
 			}
 				

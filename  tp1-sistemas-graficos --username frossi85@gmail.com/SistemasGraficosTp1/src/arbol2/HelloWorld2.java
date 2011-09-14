@@ -31,7 +31,7 @@ public class HelloWorld2
     	glcanvas.addMouseMotionListener(renderer);
     	glcanvas.addMouseWheelListener(renderer);
     	
-    	glcanvas.setSize( 300, 300 );
+    	glcanvas.setSize( 600, 600 );
  
         JFrame frame = new JFrame( "TP1 Sistemas Graficos" );
         frame.getContentPane().add( glcanvas);
