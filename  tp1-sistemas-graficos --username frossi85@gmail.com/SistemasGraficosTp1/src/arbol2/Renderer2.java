@@ -15,6 +15,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 
+import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.gl2.GLUT;
  
 
@@ -24,6 +25,8 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 {
     private GLU glu = new GLU();
 	public static GLUT glut = new GLUT();  
+	
+	
 	private Camera camera = new Camera(15.0, 15.0, 5.0, 0.0, 0.0, 0.0);
 	
 	private Point2D.Float posicionAnteriorMouse = new Point2D.Float(0,0); 
@@ -79,17 +82,26 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
   private float edadMaxima=12;
   private float edadActual = 1;
   private Arbol arbol = new Arbol(edadActual);
+  private FPSAnimator animator;
+  
+  public Renderer2(GLCanvas glCanvas)
+  {
+	  this.canvas = glCanvas;
+      animator = new FPSAnimator(canvas, 60);
+      animator.add(canvas);
+      animator.start();
+  }
   
   private void update()
   {
 	  if(cantReinicioLoop > 100)
 	  {
 		  cantReinicioLoop = 0;
-		  if(!pause)
+		  if(true)//!pause)
 		  {
 			  if(edadActual<edadMaxima)
 			  {
-				  System.out.println("UPDATED");
+				  //System.out.println("UPDATED");
 				  edadActual += velocidadCrecimiento;
 				  arbol.crecer(velocidadCrecimiento);
 			  }
@@ -101,7 +113,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
     public void display(GLAutoDrawable gLDrawable) 
     {    
     	
-    	System.out.println("display called");
+    	//System.out.println("display called");
     	final GL2 gl = gLDrawable.getGL().getGL2();
 		
 	  	gl.glClear (GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
@@ -184,7 +196,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
     }
  
     public void init(GLAutoDrawable gLDrawable) 
-    {
+    {   	
     	System.out.println("init() called");
 
     	GL2 gl = gLDrawable.getGL().getGL2();
@@ -339,7 +351,6 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();
 		
 		posicionAnteriorMouse.setLocation(e.getX(), e.getY());
-		
 		//canvas.display();
 	}
 
@@ -363,26 +374,12 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	@Override
 	public void keyPressed(KeyEvent key) {	
 		//convertir todas las letras a mayusculas o minusculas
-		
 		switch (key.getKeyChar()) {
 	    	case KeyEvent.VK_ESCAPE:
 	    		System.exit(0);
 	    		break;
 	    	case 'd':    
-	    		//if(keys['w'])                         // Move forwards
-			      // {
-	    		//cameraZPosition -= 0.1;
-			    //cameraLZPosition -= 0.1;
-			 
-			    //camera.moveForward(0.1);
-			    //pacman.moveForward(0.1);
-			    //camera.look(10);
-	    		
-	    		//rotacionCamara += 10;
-	    		//canvas.display();
-			    //   }
 	    		break; 
-    		
 	    	case 'r':
 //	    		R Reiniciar la animación de crecimiento
 	    		System.out.println("Reiniciar animación");
@@ -396,7 +393,6 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	    		this.pause = !this.pause;
 	    		break;
 	    	case 'q':
-
 //	    		Q incrementar velocidad de crecimiento
 	    		break;
 	    	case 'a':
