@@ -76,7 +76,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
   public GLCanvas canvas;
   
   //ATRIBUTOS DE LA ANIMACION
-  private float velocidadCrecimiento = 1; 
+  private float velocidadCrecimiento = 1f; 
   private int cantReinicioLoop = 0;
   private boolean pause = false;
   private float edadMaxima=12;
@@ -97,7 +97,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	  if(cantReinicioLoop > 100)
 	  {
 		  cantReinicioLoop = 0;
-		  if(true)//!pause)
+		  if(!pause)
 		  {
 			  if(edadActual<edadMaxima)
 			  {
@@ -152,7 +152,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	  	//El ALGORITMO ESTA BIEN< AHORA FALTA ESCALAR y POSICION ALEATORIA EN LA RAMA PRINCIPAL
 	  	
 
-	  		arbol.dibujar(gl);
+	  	arbol.dibujar(gl);
 	  	
 	  	
 	  	
@@ -394,9 +394,17 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	    		break;
 	    	case 'q':
 //	    		Q incrementar velocidad de crecimiento
+	    		if(this.velocidadCrecimiento < 6){
+	    			this.velocidadCrecimiento *= 2;
+	    			System.out.println("Nueva velocidad : " + this.velocidadCrecimiento);
+	    		}
 	    		break;
 	    	case 'a':
 //	    		A decrementar velocidad de crecimiento
+	    		if(this.velocidadCrecimiento > 0.1){
+	    			this.velocidadCrecimiento /= 2;
+	    			System.out.println("Nueva velocidad : " + this.velocidadCrecimiento);
+	    		}
 	    		break;
 
 	      default:
