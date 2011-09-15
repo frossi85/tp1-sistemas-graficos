@@ -5,6 +5,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.GLUquadric;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -76,10 +77,10 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
   public GLCanvas canvas;
   
   //ATRIBUTOS DE LA ANIMACION
-  private float velocidadCrecimiento = 1f; 
+  private float velocidadCrecimiento = 0.25f; 
   private int cantReinicioLoop = 0;
   private boolean pause = false;
-  private float edadMaxima=18;
+  private float edadMaxima=12;
   private float edadActual = 1;
   private Arbol arbol = new Arbol(edadActual);
   private FPSAnimator animator;
@@ -151,21 +152,10 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
     	
 	  	//El ALGORITMO ESTA BIEN< AHORA FALTA ESCALAR y POSICION ALEATORIA EN LA RAMA PRINCIPAL
 	  	
-
+    	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
+    	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
+    	
 	  	arbol.dibujar(gl);
-	  	
-	  	
-	  	
-//	  	Rama rama = new Rama(5, 8, 0);
-//	  	gl.glTranslatef(0,0,2);
-//	    gl.glRotatef(70,0f,1f,0f);
-//	  	rama.dibujar(gl, 0, 0, 0);
-	  	
-	  	//rama.dibujarCirculo(gl, 4.0, 0);
-	    
-	    Hoja hoja = new Hoja();
-	    
-	    //hoja.dibujar(gl);
 		
 	  	///////////////////////////////////////////////////
 	

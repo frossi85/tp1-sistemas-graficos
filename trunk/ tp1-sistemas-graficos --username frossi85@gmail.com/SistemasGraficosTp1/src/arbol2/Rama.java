@@ -27,7 +27,16 @@ public class Rama {
 	
 		    gl.glRotatef(anguloFi,0.5f,1f,0.0f);
 		    gl.glRotatef(anguloTheta, 0f, 0f, 1f);
+		    gl.glColor3f(0.6f,0.3f,0.1f);
 		    dibujarCilindro(gl, ancho, largo);
+	}
+	
+	public void dibujar(GL2 gl)
+	{
+		GLU glu = new GLU();
+	
+	    gl.glColor3f(0.6f,0.3f,0.1f);
+	    dibujarCilindro(gl, ancho, largo);
 	}
 	
 	public Rama getRamaEscalada(float escala)
