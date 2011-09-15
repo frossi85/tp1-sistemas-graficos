@@ -19,16 +19,11 @@ public class Hoja {
 
 		
 		gl.glColor3f(0.4f,0.7f,0.3f);
-		gl.glBegin(GL2.GL_TRIANGLE_STRIP);
-			gl.glColor3f(0.4f,0.7f,0.3f);		
+		gl.glBegin(GL2.GL_TRIANGLE_STRIP);	
 			gl.glVertex3f(0, -tamanio/2, tamanio);
-			gl.glColor3f(0.4f,0.7f,0.3f);
 	  		gl.glVertex3f(0, 0, 2*tamanio);
-	  		gl.glColor3f(0.4f,0.7f,0.3f);
 	  		gl.glVertex3f(0, tamanio/2, tamanio);
-	  		gl.glColor3f(0.4f,0.7f,0.3f);
 	  		gl.glVertex3f(0, 0, 0);
-	  		gl.glColor3f(0.4f,0.7f,0.3f);
 			gl.glVertex3f(0, -tamanio/2, tamanio);
 		gl.glEnd();
 	}
