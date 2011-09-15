@@ -23,8 +23,7 @@ public class Rama {
 	//El ALGORITMO ESTA BIEN< AHORA FALTA ESCALAR, GRADOS ALEATORIOS y POSICION ALEATORIA EN LA RAMA PRINCIPAL
 	public void dibujar(GL2 gl, float anguloFi, float anguloTheta,float translado)
 	{
-		GLU glu = new GLU();
-	
+			//gl.glColor4f(100,100,100,255);
 		    gl.glRotatef(anguloFi,0.5f,1f,0.0f);
 		    gl.glRotatef(anguloTheta, 0f, 0f, 1f);
 		    gl.glColor3f(0.6f,0.3f,0.1f);

@@ -106,6 +106,9 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 				  edadActual += velocidadCrecimiento;
 				  arbol.crecer(velocidadCrecimiento);
 			  }
+			  else {
+				  arbol.verHojas();
+			  }
 		  }
 	  }
 	  else
@@ -339,7 +342,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();
+		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();		
 		
 		posicionAnteriorMouse.setLocation(e.getX(), e.getY());
 		//canvas.display();
@@ -385,7 +388,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	    		break;
 	    	case 'q':
 //	    		Q incrementar velocidad de crecimiento
-	    		if(this.velocidadCrecimiento < 6){
+	    		if(this.velocidadCrecimiento < 2){
 	    			this.velocidadCrecimiento *= 2;
 	    			System.out.println("Nueva velocidad : " + this.velocidadCrecimiento);
 	    		}
