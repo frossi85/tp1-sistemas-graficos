@@ -79,7 +79,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
   private float velocidadCrecimiento = 1f; 
   private int cantReinicioLoop = 0;
   private boolean pause = false;
-  private float edadMaxima=12;
+  private float edadMaxima=18;
   private float edadActual = 1;
   private Arbol arbol = new Arbol(edadActual);
   private FPSAnimator animator;
