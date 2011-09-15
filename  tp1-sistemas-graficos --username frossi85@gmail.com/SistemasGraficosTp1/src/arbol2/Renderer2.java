@@ -125,17 +125,18 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	  	
 	  	gl.glMatrixMode(GL2.GL_MODELVIEW);
 	  	gl.glLoadIdentity(); 	
-	  	
-	  	glu.gluLookAt(camera.getXPos(), camera.getYPos() , camera.getZPos(), 
+	   	glu.gluLookAt(camera.getXPos(), camera.getYPos() , camera.getZPos(), 
                 camera.getXLPos(), camera.getYLPos(), camera.getZLPos(),
                 up[0], up[1], up[2]);
 
-	     
+	 	
+	   	gl.glRotatef(rotacionCamara,0f,0f,1f);
 	  	if (view_axis)
 	  		 gl.glCallList(DL_AXIS);
 	  	
 	  	if (view_grid)
 	  		 gl.glCallList(DL_GRID);
+	  	
 	  	//
 	  	///////////////////////////////////////////////////
 	
@@ -144,7 +145,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	  	// Draw here
 	  	//
 	  	
-	  	gl.glRotatef(rotacionCamara,0f,0f,1f);
+	  //	gl.glRotatef(rotacionCamara,0f,0f,1f);
 	  	
   	
     	//UPDATE del modelo
