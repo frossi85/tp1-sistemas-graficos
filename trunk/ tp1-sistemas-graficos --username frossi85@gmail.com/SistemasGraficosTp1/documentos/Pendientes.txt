@@ -1,10 +1,10 @@
 OBLIGATORIAS:
 - Escribir mas sobre la implementacion y desiciones en el informe
+- Pensar una funcion q escale las ramas a partir de la posicion en su rama padre, para q si queda en la punta q es mas fina sea mas chica
 
 RECOMENDADAS:
 - Usar display list para guardar rama y hoja, con la rama q esta en la display list construir las demas escalando con
   la funcion de OpenGl
-- Usar el factor de escalado para escalar el arbol entre numeros no enteros de crecimiento
 
 OPCIONALES:
 - buscar el normalice para la luz o hallar normales a mano para q la luz se vea mejor en el arbol
