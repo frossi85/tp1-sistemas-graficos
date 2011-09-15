@@ -10,6 +10,7 @@ import javax.media.opengl.GL2;
 public class Arbol {
 	private int niveles;
 	private float edad;
+	private boolean verHojas = false;
 	private float escala;
 	public float anguloFiMaximo = 35;//45;
 	public float anguloFiMinimo = 20;
@@ -122,7 +123,7 @@ public class Arbol {
 			gl.glPopMatrix();
 		}
 	
-	if(nivel==	0)
+	if(this.verHojas && nivel == 0)
 	{
 		gl.glPushMatrix();
 		//gl.glTranslatef(0,0,r1.largo);
@@ -136,6 +137,14 @@ public class Arbol {
 	{
 		//Se inicializa con System.currentTimeMillis()
 		return (new Random().nextFloat() * (max - min) ) + min;
+	}
+	
+	public void verHojas(){
+		this.verHojas = true;
+	}
+	
+	public void esconderHoja(){
+		this.verHojas = false;
 	}
 }
 
