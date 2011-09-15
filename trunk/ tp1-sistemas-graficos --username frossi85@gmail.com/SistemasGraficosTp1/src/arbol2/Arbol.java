@@ -72,7 +72,7 @@ public class Arbol {
 	
 	public void dibujar(GL2 gl)
 	{	
-	   	gl.glTranslatef(-1,1,-1);
+	   //	gl.glTranslatef(-1,1,-1);
 	   	
 	   	iteradorAngulosFi = angulosFiPorNivel.iterator();
 	   	iteradorAngulosTheta = angulosThetaPorNivel.listIterator();
