@@ -27,7 +27,6 @@ public class Rama {
 	
 		    gl.glRotatef(anguloFi,0.5f,1f,0.0f);
 		    gl.glRotatef(anguloTheta, 0f, 0f, 1f);
-		    //glu.gluCylinder(glu.gluNewQuadric(), ancho, ancho/2, largo, 8, 5); //Ver q son los ultimos parametros
 		    dibujarCilindro(gl, ancho, largo);
 	}
 	
