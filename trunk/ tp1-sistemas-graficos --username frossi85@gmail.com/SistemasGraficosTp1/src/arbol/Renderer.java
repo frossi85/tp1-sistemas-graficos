@@ -1,12 +1,10 @@
-package arbol2;
+package arbol;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -15,47 +13,39 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
-
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.gl2.GLUT;
  
 
 //Implementar el Renderer como Singleton
-//HAcer geters del canvas, gl y demmas cosas q necesite para hacer las actualizaciones de la camara
-class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener 
+class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener 
 {
     private GLU glu = new GLU();
 	public static GLUT glut = new GLUT();  
-	
-	
-	private Camera camera = new Camera(15.0, 15.0, 5.0, 0.0, 0.0, 0.0);
-	
 	private Point2D.Float posicionAnteriorMouse = new Point2D.Float(0,0); 
-	
 	private float rotacionCamara = 0;
-	
-    
- // Variables que controlan la ubicación de la cámara en la Escena 3D
-    //float eye[] =  {15.0f, 15.0f, 5.0f};
-    //float at[]  = { 0.0f,  0.0f, 0.0f};
-    float up[]  = { 0.0f,  0.0f, 1.0f};
+	 
+	// Variables que controlan la ubicación de la cámara en la Escena 3D
+    private float eye[] =  {15.0f, 15.0f, 5.0f};
+    private float at[]  = { 0.0f,  0.0f, 0.0f};
+    private float up[]  = { 0.0f,  0.0f, 1.0f};
 
     // Variables asociadas a única fuente de luz de la escena
-    float light_color[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    float light_position[] = {10.0f, 10.0f, 8.0f};
-    float light_ambient[] = {0.05f, 0.05f, 0.05f, 1.0f};
+    private float light_color[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    private float light_position[] = {10.0f, 10.0f, 8.0f};
+    private float light_ambient[] = {0.05f, 0.05f, 0.05f, 1.0f};
 
     // Variables de control
-    boolean view_grid = true;
-    boolean view_axis = true;
-    boolean edit_panel = false;
+    private boolean view_grid = true;
+    private boolean view_axis = true;
+    private boolean edit_panel = false;
    
 	private static int DL_AXIS;
     private static int DL_GRID;
     private static int DL_AXIS2D_TOP;
 
     // Tamaño de la ventana
-    static float window_size[] = new float[2];
+    private static float window_size[] = new float[2];
     private static float W_WIDTH = window_size[0];
     private static float W_HEIGHT = window_size[1];
 
@@ -64,63 +54,53 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
     private static final int TOP_VIEW_POSY = ((int)((float)W_HEIGHT*0.60f));
     private static final int TOP_VIEW_H = ((int)((float)W_HEIGHT*0.40f));
     
-    
-    ///////////////////CAMARA////////////////////////////
-  //angle of rotation
-    float xpos = 0, ypos = 0, zpos = 0, xrot = 0, yrot = 0, angle=0.0f;
-    float lastx, lasty;
 
-  //positions of the cubes
-  float positionz[] = new float[10];
-  float positionx[] = new float[10];
+    public GLCanvas canvas;
   
-  public GLCanvas canvas;
+    //ATRIBUTOS DE LA ANIMACION
+    private float velocidadCrecimiento = 0.25f; 
+    private int cantReinicioLoop = 0;
+    private boolean pause = false;
+    private float edadMaxima = 12;
+    private float edadActual = 1;
+    private Arbol arbol = new Arbol(edadActual);
+    private FPSAnimator animator;
   
-  //ATRIBUTOS DE LA ANIMACION
-  private float velocidadCrecimiento = 0.25f; 
-  private int cantReinicioLoop = 0;
-  private boolean pause = false;
-  private float edadMaxima=12;
-  private float edadActual = 1;
-  private Arbol arbol = new Arbol(edadActual);
-  private FPSAnimator animator;
+    public Renderer(GLCanvas glCanvas)
+    {
+    	this.canvas = glCanvas;
+    	animator = new FPSAnimator(canvas, 60);
+    	animator.add(canvas);
+    	animator.start();
+    }
   
-  public Renderer2(GLCanvas glCanvas)
-  {
-	  this.canvas = glCanvas;
-      animator = new FPSAnimator(canvas, 60);
-      animator.add(canvas);
-      animator.start();
-  }
-  
-  private void update()
-  {
-	  if(cantReinicioLoop > 100)
-	  {
-		  cantReinicioLoop = 0;
-		  if(!pause)
-		  {
-			  if(edadActual<edadMaxima)
-			  {
-				  //System.out.println("UPDATED");
-				  edadActual += velocidadCrecimiento;
-				  arbol.crecer(velocidadCrecimiento);
-			  }
-			  else {
-				  arbol.verHojas();
-			  }
-		  }
-	  }
-	  else
-		  cantReinicioLoop++;
-  }
+    private void update()
+    {
+    	if(cantReinicioLoop > 100)
+    	{
+    		cantReinicioLoop = 0;
+    		if(!pause)
+    		{
+    			if(edadActual<edadMaxima)
+    			{
+    				edadActual += velocidadCrecimiento;
+    				arbol.crecer(velocidadCrecimiento);
+    			}
+    			else {
+    				arbol.verHojas();
+    			}
+    		}
+    	}
+    	else
+    		cantReinicioLoop++;
+    }
+    
     public void display(GLAutoDrawable gLDrawable) 
     {    
-    	
-    	//System.out.println("display called");
     	final GL2 gl = gLDrawable.getGL().getGL2();
 		
 	  	gl.glClear (GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+	  	
 	  	///////////////////////////////////////////////////
 	  	// Escena 3D
 	  	
@@ -128,33 +108,26 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	  	
 	  	gl.glMatrixMode(GL2.GL_MODELVIEW);
 	  	gl.glLoadIdentity(); 	
-	   	glu.gluLookAt(camera.getXPos(), camera.getYPos() , camera.getZPos(), 
-                camera.getXLPos(), camera.getYLPos(), camera.getZLPos(),
-                up[0], up[1], up[2]);
+	   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
+	   				  at[0], at[1], at[2],
+	   				  up[0], up[1], up[2]);
 
 	 	
 	   	gl.glRotatef(rotacionCamara,0f,0f,1f);
-	  	if (view_axis)
+	  	
+	   	if (view_axis)
 	  		 gl.glCallList(DL_AXIS);
 	  	
 	  	if (view_grid)
 	  		 gl.glCallList(DL_GRID);
-	  	
-	  	//
-	  	///////////////////////////////////////////////////
 	
 	    ///////////////////////////////////////////////////
 	  	//
 	  	// Draw here
 	  	//
-	  	
-	  //	gl.glRotatef(rotacionCamara,0f,0f,1f);
-	  	
   	
     	//UPDATE del modelo
     	this.update();
-    	
-	  	//El ALGORITMO ESTA BIEN< AHORA FALTA ESCALAR y POSICION ALEATORIA EN LA RAMA PRINCIPAL
 	  	
     	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
     	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
@@ -176,11 +149,8 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	  	}
 	  	//
 	  	///////////////////////////////////////////////////
-	  	
-	
-	  	//glutSwapBuffers();
-	  	//Si lo de abajo no funciona borrar y hacer: Setting double buffered in the capabilities object is the only thing that needs to be done.
-	  	//Supuestamente en ves de glutSwap.. va gl.glFlush();
+	  
+	  	//En ves de glutSwapBuffers();.. va gl.glFlush();
 	  	gl.glFlush();
     }
  
@@ -226,9 +196,7 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
     public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) 
     {
     	System.out.println("reshape() called: x = "+x+", y = "+y+", width = "+width+", height = "+height);
-
-        
-        
+ 
         W_WIDTH  = (float)width;
     	W_HEIGHT = (float)height;
     }
@@ -237,7 +205,6 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	{
 		System.out.println("dispose() called");
 	}
-    
     
 	void Set3DEnv(GL2 gl)
 	{		
@@ -341,11 +308,8 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();		
-		
+		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();			
 		posicionAnteriorMouse.setLocation(e.getX(), e.getY());
-		//canvas.display();
 	}
 
 	@Override
@@ -356,13 +320,11 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -400,24 +362,19 @@ class Renderer2 implements GLEventListener, KeyListener, MouseListener, MouseMot
 	    			System.out.println("Nueva velocidad : " + this.velocidadCrecimiento);
 	    		}
 	    		break;
-
-	      default:
-	        break;
+	    	default:
+	    		break;
 	    }	
 	    
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
-
-
 }

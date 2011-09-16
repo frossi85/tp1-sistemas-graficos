@@ -1,4 +1,4 @@
-package arbol2;
+package pruebas.camara;
 
 public class Camera
 {

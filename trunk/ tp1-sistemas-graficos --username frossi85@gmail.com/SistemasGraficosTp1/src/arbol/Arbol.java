@@ -1,8 +1,7 @@
-package arbol2;
+package arbol;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Random;
 
 import javax.media.opengl.GL2;
@@ -12,19 +11,21 @@ public class Arbol {
 	private float edad;
 	private boolean verHojas = false;
 	private float escala;
-	public float anguloFiMaximo = 35;//45;
+	public float anguloFiMaximo = 35;
 	public float anguloFiMinimo = 20;
 	public float anguloThetaMaximo = 180;
 	public float anguloThetaMinimo = 50;
 	private ArrayList<Float> angulosFiPorNivel = new ArrayList<Float>();
 	private ArrayList<Float> angulosThetaPorNivel = new ArrayList<Float>();
-	private Iterator iteradorAngulosFi;
-	private Iterator iteradorAngulosTheta;
+	private Iterator<Float> iteradorAngulosFi;
+	private Iterator<Float> iteradorAngulosTheta;
 	
-	public float ditanciaEnRamaMinima = 0.4f;
+	public float ditanciaEnRamaMinima = 0.3f;
 	public float ditanciaEnRamaMaxima = 0.7f;
 	private ArrayList<Float> distanciasPorNivel = new ArrayList<Float>();
-	private Iterator iteradorDistancias;
+	private Iterator<Float> iteradorDistancias;
+	private Hoja hojaModelo;
+	private Rama ramaModelo;
 	
 	private float escalaPorEdad;
 	
@@ -51,13 +52,11 @@ public class Arbol {
 		this.escala += velocidadCrecimiento;
 		
 		if(this.escala >= 1){
-			//System.out.println("nuevo nivel : " + this.niveles);
 			this.niveles += (int) this.escala;
 			this.edad += (int) this.escala;
 			this.escala = this.escala - (int) this.escala;
-			  
-			//Ver como optmizar el calculo para no calcular potencias tan grandes
-			int cantParametrosACalcular = (int) (Math.pow(2, (int) this.niveles+1));// - angulosFiPorNivel.size() + 1;
+			
+			int cantParametrosACalcular = (int) (Math.pow(2, (int) this.niveles+1));
 			
 			float signo = -1;
 			
@@ -73,8 +72,6 @@ public class Arbol {
 	
 	public void dibujar(GL2 gl)
 	{	
-	   //	gl.glTranslatef(-1,1,-1);
-	   	
 	   	iteradorAngulosFi = angulosFiPorNivel.iterator();
 	   	iteradorAngulosTheta = angulosThetaPorNivel.listIterator();
 	   	iteradorDistancias = distanciasPorNivel.listIterator();
@@ -82,60 +79,52 @@ public class Arbol {
 	   	escalaPorEdad = (float) Math.log10(this.edad);
 	   	
 	   	gl.glScalef(escalaPorEdad,escalaPorEdad,escalaPorEdad);
-	   			
-	   	dibujarRecursivo(gl, true, new Rama(3f, 0.25f, 20f), this.niveles);	   		
+	   	
+	   	hojaModelo = new Hoja(gl);
+	   	ramaModelo = new Rama(gl, 3f, 0.25f);
+		
+	   	dibujarRecursivo(gl, true, ramaModelo, this.niveles, false);	   		
 	}
 	
-	private void dibujarRecursivo(GL2 gl, boolean tronco, Rama ramaPrincipal,  int nivel)
-	{
+	private void dibujarRecursivo(GL2 gl, boolean tronco, Rama ramaPrincipal,  int nivel, boolean esRamaIzquierda)
+	{	   
+	    float escala = 0.8f;
+	    
 		if(nivel > 0)
-		{
-			float anguloFi = 0;
-		    float anguloTheta = 0;
-		    float distancia1 = 0;
-		    float distancia2 = 0;
-		    float escala = 0.8f;
-		    
-		   
-		    	anguloFi = (Float) iteradorAngulosFi.next();
-		    	anguloTheta = (Float) iteradorAngulosTheta.next();
-		    	distancia1 = (Float) iteradorDistancias.next();
-				distancia2 = (Float) iteradorDistancias.next();
-		    
-		    Rama r1;
-			
-			r1 = ramaPrincipal.getRamaEscalada(0.8f);
-			r1.dibujar(gl);
+		{		    		   			
+			ramaPrincipal.dibujar();
 			
 			gl.glPushMatrix();
 				gl.glTranslatef(0,0, (Float) iteradorDistancias.next() * ramaPrincipal.largo);
 			    gl.glRotatef((Float) iteradorAngulosFi.next(),0.5f,1f,0.0f);
 			    gl.glRotatef((Float) iteradorAngulosTheta.next(), 0f, 0f, 1f);
-				//gl.glScalef(escala,escala,escala);			    
-				dibujarRecursivo(gl, false, r1, nivel - 1);
+			    gl.glScalef(escala,escala,escala);		
+				dibujarRecursivo(gl, false, ramaPrincipal, nivel - 1, false);
 			gl.glPopMatrix();
 			gl.glPushMatrix();
 				gl.glTranslatef(0,0, (Float) iteradorDistancias.next() * ramaPrincipal.largo);
-			    gl.glRotatef(-(Float) iteradorAngulosFi.next(),0.5f,1f,0.0f);
+			    gl.glRotatef((Float) iteradorAngulosFi.next(),0.5f,1f,0.0f);
 			    gl.glRotatef((Float) iteradorAngulosTheta.next(), 0f, 0f, 1f);
-			    //gl.glScalef(escala,escala,escala);
-				dibujarRecursivo(gl, false, r1, nivel - 1);				
+			    gl.glScalef(escala,escala,escala); 
+				dibujarRecursivo(gl, false, ramaPrincipal, nivel - 1, true);				
 			gl.glPopMatrix();
 		}
 	
-	if(this.verHojas && nivel == 0)
-	{
-		gl.glPushMatrix();
-		//gl.glTranslatef(0,0,r1.largo);
-		new Hoja().dibujar(gl); //aca no va seguro q va despues de la traslacion de la rama
-		gl.glPopMatrix();
-	}
-	
+		if(this.verHojas && nivel == 0)
+		{
+			float esc = (float) Math.pow(1/escala, this.niveles + 1);
+			float orientacionHoja = 45;
+
+			gl.glScalef(esc,esc,esc);
+			if(esRamaIzquierda)
+				orientacionHoja *= -1;
+			gl.glRotatef(orientacionHoja,0.5f,1f,0.0f);
+			hojaModelo.dibujar();
+		}
 	}
 	
 	private float getAleatorio(float min, float max)
 	{
-		//Se inicializa con System.currentTimeMillis()
 		return (new Random().nextFloat() * (max - min) ) + min;
 	}
 	
