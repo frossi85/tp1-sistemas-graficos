@@ -1,47 +1,33 @@
-package arbol2;
+package arbol;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
 
 public class Rama {
 	public float largo;
 	public float ancho;
-	public float angulo;
 	public float escala;
+	static public GL2 gl;
+	private int DL_RAMA;
 	
-	public Rama(float largo, float ancho, float angulo)
+	public Rama(GL2 gl, float largo, float ancho)
 	{
 		this.largo = largo;
 		this.ancho = ancho;
-		this.angulo = angulo;	
+		Rama.gl = gl;
+		
+		DL_RAMA = gl.glGenLists(1);
+
+		gl.glNewList(DL_RAMA, GL2.GL_COMPILE);
+			gl.glColor3f(0.6f,0.3f,0.1f);
+			dibujarCilindro(Rama.gl, this.ancho, this.largo);
+	  	gl.glEndList();
 	}
 	
-	//El ALGORITMO ESTA BIEN< AHORA FALTA ESCALAR, GRADOS ALEATORIOS y POSICION ALEATORIA EN LA RAMA PRINCIPAL
-	public void dibujar(GL2 gl, float anguloFi, float anguloTheta,float translado)
+	public void dibujar()
 	{
-			//gl.glColor4f(100,100,100,255);
-		    gl.glRotatef(anguloFi,0.5f,1f,0.0f);
-		    gl.glRotatef(anguloTheta, 0f, 0f, 1f);
-		    gl.glColor3f(0.6f,0.3f,0.1f);
-		    dibujarCilindro(gl, ancho, largo);
-	}
-	
-	public void dibujar(GL2 gl)
-	{
-		GLU glu = new GLU();
-	
-	    gl.glColor3f(0.6f,0.3f,0.1f);
-	    dibujarCilindro(gl, ancho, largo);
-	}
-	
-	public Rama getRamaEscalada(float escala)
-	{
-		this.escala = escala;
-		return new Rama(escala*this.largo, escala*this.ancho, this.angulo);	
+	    gl.glCallList(DL_RAMA);
 	}
 	
 	private void dibujarCilindro(GL2 gl, float radio, float largo)

@@ -1,4 +1,4 @@
-package arbol2;
+package pruebas.camara;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

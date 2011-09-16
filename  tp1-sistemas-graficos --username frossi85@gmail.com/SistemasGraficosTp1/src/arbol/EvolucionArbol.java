@@ -1,4 +1,4 @@
-package arbol2;
+package arbol;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -7,10 +7,8 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
-
-import com.jogamp.opengl.util.*;
  
-public class HelloWorld2 
+public class EvolucionArbol 
 {
 	private static GLCanvas glcanvas;
 	
@@ -23,7 +21,7 @@ public class HelloWorld2
     	// The canvas is the widget that's drawn in the JFrame
     	glcanvas = new GLCanvas(capabilities);
     	
-    	Renderer2 renderer = new Renderer2(glcanvas); 	
+    	Renderer renderer = new Renderer(glcanvas); 	
     	
     	glcanvas.addGLEventListener(renderer);
     	glcanvas.addKeyListener(renderer);
