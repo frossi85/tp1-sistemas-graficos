@@ -16,7 +16,8 @@ import javax.media.opengl.GLAutoDrawable;
 
 public class ManejoShaders {
 
-private String archivo;
+private String archivoVertex;
+private String archivoFragment;
 static int POSITION_BUFFER_SIZE = 9;
 private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
 private FloatBuffer colorData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
@@ -40,8 +41,9 @@ float colorDataOrig[] =
 
 int colorBufferHandle;
 
-public void ManejoShader(String nombreArchivo){
-	this.archivo = nombreArchivo;
+public  ManejoShaders(String archivoVertex, String archivoFragment){
+	this.archivoVertex = archivoVertex;
+	this.archivoFragment = archivoFragment;
 	
 }
 
@@ -84,11 +86,12 @@ public void bindBuffer(GLAutoDrawable gLDrawable){
 public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 	
 	GL4 gl_shader = gLDrawable.getGL().getGL4();
-	GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
+	//GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
     int creador = gl_shader.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
+    int f = gl_shader.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
     BufferedReader brv = null;
 	try {
-		brv = new BufferedReader(new FileReader(this.archivo));
+		brv = new BufferedReader(new FileReader(this.archivoVertex));
 	} catch (FileNotFoundException e) {
 		System.out.println("No se pudo abrir archivo de Shaders");
 		e.printStackTrace();
@@ -110,11 +113,44 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
     gl_shader.glCompileShader(creador);
     
-    /* 	INCOMPLETO  */
+    BufferedReader brf = null;
+	try {
+		brf = new BufferedReader(new FileReader(this.archivoFragment));
+	} catch (FileNotFoundException e1) {
+		System.out.println("No se pudo abrir archivo de Fragment");
+		e1.printStackTrace();
+	}
+    String fsrc = "";
+    line ="";
+    try {
+		while ((line=brf.readLine()) != null) {
+		  fsrc += line + "\n";
+		}
+	} catch (IOException e) {
+		System.out.println("Problemas al leer archivo de Fragment");
+		e.printStackTrace();
+	}
+    String [] vectorFsrc = new String [1];
+    vectorFsrc[0] = fsrc;
+    gl_shader.glShaderSource(f, 1, vectorFsrc, (int[])null,0);
+    gl_shader.glCompileShader(f);
+    
+    int shaderprogram = gl_shader.glCreateProgram();
+    gl_shader.glAttachShader(shaderprogram, creador);
+    gl_shader.glAttachShader(shaderprogram, f);
+    gl_shader.glLinkProgram(shaderprogram);
+    gl_shader.glValidateProgram(shaderprogram);
+
+    gl_shader.glUseProgram(shaderprogram);
+
 }
 
 public static void main(String[] args) {
-	// TODO Auto-generated method stub
+	ManejoShaders shader = new ManejoShaders("Vertex_Shader.txt","Fragment_Shader.txt");
+	GLAutoDrawable gLDrawable = null;
+	shader.bindBuffer(gLDrawable);
+	shader.compiladoLinkeado(gLDrawable);
+	
 	}
 
 }
