@@ -3,6 +3,7 @@ package arbol;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES2;
+import javax.media.opengl.GL3;
 import javax.media.opengl.GL4;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -201,84 +202,89 @@ float [] positionDataOrig =
  
     public void init(GLAutoDrawable gLDrawable) 
     {   	
-    	System.out.println("init() called");
+    	GL4 gl2 = (GL4)gLDrawable.getGL();
+    	
+    	System.out.println("GL_VERSION: "+ gLDrawable.getGL().getGL2().glGetString(GL3.GL_VERSION)); ; 
+    	System.out.println("GL_SHADING_LANGUAGE_VERSION: " + gl2.glGetString(GL4.GL_SHADING_LANGUAGE_VERSION)); 
+
     	   	
     	GL2 gl = gLDrawable.getGL().getGL2();
 	    
     	gl.glClearColor (0.02f, 0.02f, 0.04f, 0.0f);
 	  	gl.glShadeModel (GL2.GL_SMOOTH);
 	  	gl.glEnable(GL2.GL_DEPTH_TEST);
-	  	
-	  	GL4 gl_shader = gLDrawable.getGL().getGL4();
-	  	Buffer buff_aux = null;
-	  	int vboHandles[] = new int [2];
-	  	gl_shader.glGenBuffers(2, vboHandles,0);
-	  	positionBufferHandle = vboHandles[0];
-	  	colorBufferHandle = vboHandles[1];
-	  	long long_aux = 9*4;  // 9* sizeof(float)
-	  	positionData.put(positionDataOrig);
-	  	colorData.put(colorDataOrig);
-	  	gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, positionBufferHandle );
-	  	gl_shader.glBufferData( GL.GL_ARRAY_BUFFER, long_aux, positionData, GL.GL_STATIC_DRAW );
-	  	gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, colorBufferHandle );
-	    gl.glBufferData(GL.GL_ARRAY_BUFFER, long_aux, colorData, GL.GL_STATIC_DRAW );
-	    // Create and set-up the vertex array objet
-	    gl_shader.glGenVertexArrays( 1, vaoHandle );
-	    gl_shader.glBindVertexArray( vaoHandle.get(0) );
-	    // Enable the vertex attributes array
-	    gl_shader.glEnableVertexAttribArray(0);
-	    gl_shader.glEnableVertexAttribArray(1);
-	    // Map index 0 to the position buffer
-	    gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, positionBufferHandle);
-	    gl_shader.glVertexAttribPointer( 0, 3, GL.GL_FLOAT, false, 0,buff_aux);
-	    // Map index 1 to the color buffer
-	    gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, colorBufferHandle);
-	    gl_shader.glVertexAttribPointer( 1, 3, GL.GL_FLOAT, false, 0, buff_aux);
-	    
-	    
-	    /* ARRANCA COMPILACION */
-	    GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
-	    int creador = gl_shader.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-	    
-	    BufferedReader brv = null;
-		try {
-			brv = new BufferedReader(new FileReader("Vertex_Shader.txt"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    String vsrc = "";
-	    String line;
-	    try {
-			while ((line=brv.readLine()) != null) {
-			  vsrc += line + "\n";
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	    //Agregado facundo
-	    String [] vectorVsrc = new String [1];
-	    vectorVsrc[0] = vsrc;
-	    
-	    //No existe mas en esta version el metodo q tiene 4 argumentos, solo el q toma 5
-	    //el ultimo es un offset dentro del int[]
-	    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
-	    
-	    
-	    //Faltan hacer verificaciones en la compilacion y linkeo
-	    //Tambien falto la parte de fragmentshader
-	    gl.glCompileShader(creador);
-	   
-	    
-	    int shaderprogram = gl.glCreateProgram();
-	    gl.glAttachShader(shaderprogram, creador);
-	    gl.glLinkProgram(shaderprogram);
-	    gl.glValidateProgram(shaderprogram);
 
-	    gl.glUseProgram(shaderprogram); 
-	    
+	  	
+//	  	GL4 gl_shader = gLDrawable.getGL().getGL4();
+//	  	Buffer buff_aux = null;
+//	  	int vboHandles[] = new int [2];
+//	  	gl_shader.glGenBuffers(2, vboHandles,0);
+//	  	positionBufferHandle = vboHandles[0];
+//	  	colorBufferHandle = vboHandles[1];
+//	  	long long_aux = 9*4;  // 9* sizeof(float)
+//	  	positionData.put(positionDataOrig);
+//	  	colorData.put(colorDataOrig);
+//	  	gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, positionBufferHandle );
+//	  	gl_shader.glBufferData( GL.GL_ARRAY_BUFFER, long_aux, positionData, GL.GL_STATIC_DRAW );
+//	  	gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, colorBufferHandle );
+//	    gl.glBufferData(GL.GL_ARRAY_BUFFER, long_aux, colorData, GL.GL_STATIC_DRAW );
+//	    // Create and set-up the vertex array objet
+//	    gl_shader.glGenVertexArrays( 1, vaoHandle );
+//	    gl_shader.glBindVertexArray( vaoHandle.get(0) );
+//	    // Enable the vertex attributes array
+//	    gl_shader.glEnableVertexAttribArray(0);
+//	    gl_shader.glEnableVertexAttribArray(1);
+//	    // Map index 0 to the position buffer
+//	    gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, positionBufferHandle);
+//	    gl_shader.glVertexAttribPointer( 0, 3, GL.GL_FLOAT, false, 0,buff_aux);
+//	    // Map index 1 to the color buffer
+//	    gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, colorBufferHandle);
+//	    gl_shader.glVertexAttribPointer( 1, 3, GL.GL_FLOAT, false, 0, buff_aux);
+//	    
+//	    
+//	    /* ARRANCA COMPILACION */
+//	    GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
+//	    int creador = gl_shader.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
+//	    
+//	    BufferedReader brv = null;
+//		try {
+//			brv = new BufferedReader(new FileReader("Vertex_Shader.txt"));
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	    String vsrc = "";
+//	    String line;
+//	    try {
+//			while ((line=brv.readLine()) != null) {
+//			  vsrc += line + "\n";
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	    
+//	    //Agregado facundo
+//	    String [] vectorVsrc = new String [1];
+//	    vectorVsrc[0] = vsrc;
+//	    
+//	    //No existe mas en esta version el metodo q tiene 4 argumentos, solo el q toma 5
+//	    //el ultimo es un offset dentro del int[]
+//	    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
+//	    
+//	    
+//	    //Faltan hacer verificaciones en la compilacion y linkeo
+//	    //Tambien falto la parte de fragmentshader
+//	    gl.glCompileShader(creador);
+//	   
+//	    
+//	    int shaderprogram = gl.glCreateProgram();
+//	    gl.glAttachShader(shaderprogram, creador);
+//	    gl.glLinkProgram(shaderprogram);
+//	    gl.glValidateProgram(shaderprogram);
+//
+//	    gl.glUseProgram(shaderprogram); 
+//	    
 	    
 	    //////////////////////////////////////
 	    
