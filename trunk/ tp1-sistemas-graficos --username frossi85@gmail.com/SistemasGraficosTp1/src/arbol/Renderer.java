@@ -204,7 +204,7 @@ float [] positionDataOrig =
     {   	
     	GL4 gl2 = (GL4)gLDrawable.getGL();
     	
-    	System.out.println("GL_VERSION: "+ gLDrawable.getGL().getGL2().glGetString(GL3.GL_VERSION)); ; 
+    	System.out.println("GL_VERSION: "+ gl2.glGetString(GL3.GL_VERSION)); ; 
     	System.out.println("GL_SHADING_LANGUAGE_VERSION: " + gl2.glGetString(GL4.GL_SHADING_LANGUAGE_VERSION)); 
 
     	   	
