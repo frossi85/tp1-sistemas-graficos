@@ -3,6 +3,7 @@ package arbol;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
  
+import javax.media.opengl.GL3;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
@@ -15,7 +16,7 @@ public class EvolucionArbol
     public static void main(String[] args) 
     {
     	// setup OpenGL Version 2
-    	GLProfile profile = GLProfile.get(GLProfile.GL2);
+    	GLProfile profile = GLProfile.get(GLProfile.GL3);
     	GLCapabilities capabilities = new GLCapabilities(profile);
  
     	// The canvas is the widget that's drawn in the JFrame
