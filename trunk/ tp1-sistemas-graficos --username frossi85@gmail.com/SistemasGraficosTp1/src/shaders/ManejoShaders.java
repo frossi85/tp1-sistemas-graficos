@@ -103,8 +103,12 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 		System.out.println("Problemas al leer archivo de Shaders");
 		e.printStackTrace();
 	}
-    gl_shader.glShaderSource(creador, 1, vsrc, (int[])null);	
-    gl.glCompileShader(creador);
+    //Agregado facundo
+    String [] vectorVsrc = new String [1];
+    vectorVsrc[0] = vsrc;
+    
+    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
+    gl_shader.glCompileShader(creador);
     
     /* 	INCOMPLETO  */
 }
