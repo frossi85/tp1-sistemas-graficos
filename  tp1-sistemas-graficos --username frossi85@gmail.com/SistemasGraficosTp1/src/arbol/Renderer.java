@@ -172,7 +172,7 @@ float [] positionDataOrig =
     	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
     	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
     	
-	  	arbol.dibujar(gl);
+	  	//arbol.dibujar(gl);
 		
 	  	///////////////////////////////////////////////////
 	
@@ -221,7 +221,7 @@ float [] positionDataOrig =
 	  	gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, positionBufferHandle );
 	  	gl_shader.glBufferData( GL.GL_ARRAY_BUFFER, long_aux, positionData, GL.GL_STATIC_DRAW );
 	  	gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, colorBufferHandle );
-	    gl.glBufferData(GL. GL_ARRAY_BUFFER, long_aux, colorData, GL.GL_STATIC_DRAW );
+	    gl.glBufferData(GL.GL_ARRAY_BUFFER, long_aux, colorData, GL.GL_STATIC_DRAW );
 	    // Create and set-up the vertex array objet
 	    gl_shader.glGenVertexArrays( 1, vaoHandle );
 	    gl_shader.glBindVertexArray( vaoHandle.get(0) );
@@ -239,6 +239,7 @@ float [] positionDataOrig =
 	    /* ARRANCA COMPILACION */
 	    GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
 	    int creador = gl_shader.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
+	    
 	    BufferedReader brv = null;
 		try {
 			brv = new BufferedReader(new FileReader("Vertex_Shader.txt"));
@@ -256,9 +257,30 @@ float [] positionDataOrig =
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    gl_shader.glShaderSource(creador, 1, vsrc, (int[])null);	
+	    
+	    //Agregado facundo
+	    String [] vectorVsrc = new String [1];
+	    vectorVsrc[0] = vsrc;
+	    
+	    //No existe mas en esta version el metodo q tiene 4 argumentos, solo el q toma 5
+	    //el ultimo es un offset dentro del int[]
+	    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
+	    
+	    
+	    //Faltan hacer verificaciones en la compilacion y linkeo
+	    //Tambien falto la parte de fragmentshader
 	    gl.glCompileShader(creador);
 	   
+	    
+	    int shaderprogram = gl.glCreateProgram();
+	    gl.glAttachShader(shaderprogram, creador);
+	    gl.glLinkProgram(shaderprogram);
+	    gl.glValidateProgram(shaderprogram);
+
+	    gl.glUseProgram(shaderprogram); 
+	    
+	    
+	    //////////////////////////////////////
 	    
 	    DL_AXIS = gl.glGenLists(3);
 	  	DL_GRID = DL_AXIS+1;
