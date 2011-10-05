@@ -32,16 +32,16 @@ import java.nio.IntBuffer;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.gl2.GLUT;
-
+ 
 
 //Implementar el Renderer como Singleton
-class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener
+class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener 
 {
     private GLU glu = new GLU();
-    public static GLUT glut = new GLUT();
-	private Point2D.Float posicionAnteriorMouse = new Point2D.Float(0,0);
+    public static GLUT glut = new GLUT();  
+	private Point2D.Float posicionAnteriorMouse = new Point2D.Float(0,0); 
 	private float rotacionCamara = 0;
-
+	 
 	private ManejoShaders shader;
 	// Variables que controlan la ubicación de la cámara en la Escena 3D
     private float eye[] =  {15.0f, 15.0f, 5.0f};
@@ -57,7 +57,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private boolean view_grid = true;
     private boolean view_axis = true;
     private boolean edit_panel = false;
-
+   
 	private static int DL_AXIS;
     private static int DL_GRID;
     private static int DL_AXIS2D_TOP;
@@ -71,28 +71,28 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private static final int TOP_VIEW_W = ((int)((float)W_WIDTH*0.40f));
     private static final int TOP_VIEW_POSY = ((int)((float)W_HEIGHT*0.60f));
     private static final int TOP_VIEW_H = ((int)((float)W_HEIGHT*0.40f));
-
+    
     //Valores del buffer de color y posicion
-
+   
     static int POSITION_BUFFER_SIZE = 9;
     private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
     private FloatBuffer colorData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
     private IntBuffer vaoHandle = IntBuffer.allocate(1);
-   // float positionData[] =
+   // float positionData[] = 
+   	
 
-
-float [] positionDataOrig =
+float [] positionDataOrig = 
 {
     -0.8f, -0.8f, 0.0f,
      0.8f, -0.8f, 0.0f,
      0.0f,  0.8f, 0.0f
 };
-
-
+   	
+	
 
    int positionBufferHandle;
-
-   float colorDataOrig[] =
+    
+   float colorDataOrig[] = 
     {
          1.0f,  0.0f, 0.0f,
          0.0f,  1.0f, 0.0f,
@@ -101,16 +101,16 @@ float [] positionDataOrig =
    int colorBufferHandle;
 
    public GLCanvas canvas;
-
+  
     //ATRIBUTOS DE LA ANIMACION
-    private float velocidadCrecimiento = 0.25f;
+    private float velocidadCrecimiento = 0.25f; 
     private int cantReinicioLoop = 0;
     private boolean pause = false;
     private float edadMaxima = 12;
     private float edadActual = 1;
     private Arbol arbol = new Arbol(edadActual);
     private FPSAnimator animator;
-
+  
     public Renderer(GLCanvas glCanvas)
     {
     	this.canvas = glCanvas;
@@ -118,7 +118,7 @@ float [] positionDataOrig =
     	animator.add(canvas);
     	animator.start();
     }
-
+  
     private void update()
     {
     	if(cantReinicioLoop > 100)
@@ -139,55 +139,55 @@ float [] positionDataOrig =
     	else
     		cantReinicioLoop++;
     }
-
-    public void display(GLAutoDrawable gLDrawable)
-    {
-    	final GL2 gl = (GL2)gLDrawable.getGL().getGL3();
-
+    
+    public void display(GLAutoDrawable gLDrawable) 
+    {    
+    	final GL2 gl = gLDrawable.getGL().getGL2();
+		
 	  	gl.glClear (GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-
+	  	
 	  	///////////////////////////////////////////////////
 	  	// Escena 3D
-
+	  	
 	  	Set3DEnv(gl); //funcion de los profes
-
+	  	
 	  	gl.glMatrixMode(GL2.GL_MODELVIEW);
-	  	gl.glLoadIdentity();
+	  	gl.glLoadIdentity(); 	
 	  	gl.glBindVertexArray( vaoHandle.get(0) );	// No se si va
-	   	glu.gluLookAt(eye[0], eye[1] , eye[2],
+	   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
 	   				  at[0], at[1], at[2],
 	   				  up[0], up[1], up[2]);
 
-
+	 	
 	   	gl.glRotatef(rotacionCamara,0f,0f,1f);
-
+	  	
 	   	if (view_axis)
 	  		 gl.glCallList(DL_AXIS);
-
+	  	
 	  	if (view_grid)
 	  		 gl.glCallList(DL_GRID);
-
+	
 	    ///////////////////////////////////////////////////
 	  	//
 	  	// Draw here
 	  	//
-
+  	
     	//UPDATE del modelo
     	this.update();
-
+	  	
     	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
-    	gl.glEnable(GL2.GL_COLOR_MATERIAL);
-
+    	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
+    	
 	  	//arbol.dibujar(gl);
-
+		
 	  	///////////////////////////////////////////////////
-
+	
 	  	///////////////////////////////////////////////////
 	  	// Panel 2D para la vista superior
 	  	if (edit_panel)
 	  	{
 	  		SetPanelTopEnv(gl);
-
+	  		
 	  		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	  		gl.glLoadIdentity();
 	  		glu.gluLookAt (0, 0, 0.5, 0, 0, 0, 0, 1, 0);
@@ -195,33 +195,33 @@ float [] positionDataOrig =
 	  	}
 	  	//
 	  	///////////////////////////////////////////////////
-
+	  
 	  	//En ves de glutSwapBuffers();.. va gl.glFlush();
 	  	gl.glFlush();
     }
-
-    public void displayChanged(GLAutoDrawable gLDrawable, boolean modeChanged, boolean deviceChanged)
+ 
+    public void displayChanged(GLAutoDrawable gLDrawable, boolean modeChanged, boolean deviceChanged) 
     {
     	System.out.println("displayChanged called");
     }
-
-    public void init(GLAutoDrawable gLDrawable)
-    {
+ 
+    public void init(GLAutoDrawable gLDrawable) 
+    {   	
     	//GL4 gl2 = gLDrawable.getGL().getGL4();
+    	
+    	//System.out.println("GL_VERSION: "+ gl2.glGetString(GL3.GL_VERSION)); ; 
+    	//System.out.println("GL_SHADING_LANGUAGE_VERSION: " + gl2.glGetString(GL4.GL_SHADING_LANGUAGE_VERSION)); 
 
-    	//System.out.println("GL_VERSION: "+ gl2.glGetString(GL3.GL_VERSION)); ;
-    	//System.out.println("GL_SHADING_LANGUAGE_VERSION: " + gl2.glGetString(GL4.GL_SHADING_LANGUAGE_VERSION));
-
-
-    	GL2 gl = (GL2)gLDrawable.getGL().getGL3();
-
+    	   	
+    	GL2 gl = gLDrawable.getGL().getGL2();
+	    
     	//gl2.glClearColor (0.02f, 0.02f, 0.04f, 0.0f);
 	  	//gl.glShadeModel (GL2.GL_SMOOTH);
 	  	//gl2.glEnable(GL2.GL_DEPTH_TEST);
 	  	this.shader = new ManejoShaders("Vertex_Shader.txt","Fragment_Shader.txt");
 	  	this.shader.bindBuffer(gLDrawable);
 	  	this.shader.compiladoLinkeado(gLDrawable);
-
+	  	
 //	  	GL4 gl_shader = gLDrawable.getGL().getGL4();
 //	  	Buffer buff_aux = null;
 //	  	int vboHandles[] = new int [2];
@@ -247,12 +247,12 @@ float [] positionDataOrig =
 //	    // Map index 1 to the color buffer
 //	    gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, colorBufferHandle);
 //	    gl_shader.glVertexAttribPointer( 1, 3, GL.GL_FLOAT, false, 0, buff_aux);
-//
-//
+//	    
+//	    
 //	    /* ARRANCA COMPILACION */
 //	    GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
 //	    int creador = gl_shader.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-//
+//	    
 //	    BufferedReader brv = null;
 //		try {
 //			brv = new BufferedReader(new FileReader("Vertex_Shader.txt"));
@@ -270,45 +270,45 @@ float [] positionDataOrig =
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//
+//	    
 //	    //Agregado facundo
 //	    String [] vectorVsrc = new String [1];
 //	    vectorVsrc[0] = vsrc;
-//
+//	    
 //	    //No existe mas en esta version el metodo q tiene 4 argumentos, solo el q toma 5
 //	    //el ultimo es un offset dentro del int[]
-//	    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);
-//
-//
+//	    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
+//	    
+//	    
 //	    //Faltan hacer verificaciones en la compilacion y linkeo
 //	    //Tambien falto la parte de fragmentshader
 //	    gl.glCompileShader(creador);
-//
-//
+//	   
+//	    
 //	    int shaderprogram = gl.glCreateProgram();
 //	    gl.glAttachShader(shaderprogram, creador);
 //	    gl.glLinkProgram(shaderprogram);
 //	    gl.glValidateProgram(shaderprogram);
 //
-//	    gl.glUseProgram(shaderprogram);
-//
-
+//	    gl.glUseProgram(shaderprogram); 
+//	    
+	    
 	    //////////////////////////////////////
-
-
-
+	    
+	 
+	  	
 	  	DL_AXIS = gl.glGenLists(3);
 	  	DL_GRID = DL_AXIS+1;
 	  	DL_AXIS2D_TOP = DL_AXIS+2;
-
-
+    	
+	  
 	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
 	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
 	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
-
+	  
 	  	gl.glEnable(GL2.GL_LIGHT0);
 	  	gl.glEnable(GL2.GL_LIGHTING);
-
+	
 	  	// Generación de las Display Lists
 	  	gl.glNewList(DL_AXIS, GL2.GL_COMPILE);
 	  	this.DrawAxis(gl);
@@ -319,39 +319,39 @@ float [] positionDataOrig =
 	  	gl.glNewList(DL_AXIS2D_TOP, GL2.GL_COMPILE);
 	  	this.DrawAxis2DTopView(gl);
 	  	gl.glEndList();
-
+    
     }
-
-
-    public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height)
+    
+ 
+    public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) 
     {
     	System.out.println("reshape() called: x = "+x+", y = "+y+", width = "+width+", height = "+height);
-
+ 
         W_WIDTH  = (float)width;
     	W_HEIGHT = (float)height;
     }
-
-	public void dispose(GLAutoDrawable arg0)
+ 
+	public void dispose(GLAutoDrawable arg0) 
 	{
 		System.out.println("dispose() called");
 	}
-
+    
 	void Set3DEnv(GL2 gl)
-	{
-	  	gl.glViewport (0, 0, (int) W_WIDTH, (int) W_HEIGHT);
+	{		
+	  	gl.glViewport (0, 0, (int) W_WIDTH, (int) W_HEIGHT); 
 	    gl.glMatrixMode (GL2.GL_PROJECTION);
 	    gl.glLoadIdentity ();
 	    glu.gluPerspective(60.0, W_WIDTH/W_HEIGHT, 0.10, 100.0);
 	}
-
+	  
 	void SetPanelTopEnv(GL2 gl)
 	{
-		gl.glViewport (TOP_VIEW_POSX, TOP_VIEW_POSY, TOP_VIEW_W, TOP_VIEW_H);
+		gl.glViewport (TOP_VIEW_POSX, TOP_VIEW_POSY, TOP_VIEW_W, TOP_VIEW_H); 
 		gl.glMatrixMode (GL2.GL_PROJECTION);
 		gl.glLoadIdentity ();
 		glu.gluOrtho2D(-0.10, 1.05, -0.10, 1.05);
 	}
-
+	  
 	void DrawAxis(GL2 gl)
 	{
 		gl.glDisable(GL2.GL_LIGHTING);
@@ -374,7 +374,7 @@ float [] positionDataOrig =
 		gl.glEnd();
 		gl.glEnable(GL2.GL_LIGHTING);
 	}
-
+	
 	void DrawAxis2DTopView(GL2 gl)
 	{
 		gl.glDisable(GL2.GL_LIGHTING);
@@ -393,10 +393,10 @@ float [] positionDataOrig =
 		gl.glVertex3f(1.0f, 1.0f, 0.0f);
 		gl.glVertex3f(0.0f, 1.0f, 0.0f);
 		gl.glEnd();
-
+	
 		gl.glEnable(GL2.GL_LIGHTING);
 	}
-
+	
 	void DrawXYGrid(GL2 gl)
 	{
 		int i;
@@ -417,28 +417,28 @@ float [] positionDataOrig =
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();
+		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();			
 		posicionAnteriorMouse.setLocation(e.getX(), e.getY());
 	}
 
@@ -451,21 +451,21 @@ float [] positionDataOrig =
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 	}
-
+	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void keyPressed(KeyEvent key) {
+	public void keyPressed(KeyEvent key) {	
 		//convertir todas las letras a mayusculas o minusculas
 		switch (key.getKeyChar()) {
 	    	case KeyEvent.VK_ESCAPE:
 	    		System.exit(0);
 	    		break;
-	    	case 'd':
-	    		break;
+	    	case 'd':    
+	    		break; 
 	    	case 'r':
 //	    		R Reiniciar la animación de crecimiento
 	    		System.out.println("Reiniciar animación");
@@ -494,17 +494,17 @@ float [] positionDataOrig =
 	    		break;
 	    	default:
 	    		break;
-	    }
-
+	    }	
+	    
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub	
 	}
 }

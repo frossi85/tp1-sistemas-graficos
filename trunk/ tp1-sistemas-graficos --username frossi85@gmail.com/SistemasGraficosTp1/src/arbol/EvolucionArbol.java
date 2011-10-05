@@ -16,7 +16,7 @@ public class EvolucionArbol
     public static void main(String[] args) 
     {
     	// setup OpenGL Version 2
-    	GLProfile profile = GLProfile.get(GLProfile.GL3);
+    	GLProfile profile = GLProfile.get(GLProfile.GL2);
     	GLCapabilities capabilities = new GLCapabilities(profile);
  
     	// The canvas is the widget that's drawn in the JFrame
