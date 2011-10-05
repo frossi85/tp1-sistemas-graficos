@@ -24,7 +24,7 @@ private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
 private FloatBuffer colorData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
 private IntBuffer vaoHandle = IntBuffer.allocate(1);
 
-float [] positionDataOrig =
+float [] positionDataOrig = 
 {
     -0.8f, -0.8f, 0.0f,
      0.8f, -0.8f, 0.0f,
@@ -32,8 +32,8 @@ float [] positionDataOrig =
 };
 
 int positionBufferHandle;
-
-float colorDataOrig[] =
+    
+float colorDataOrig[] = 
   {
      1.0f,  0.0f, 0.0f,
      0.0f,  1.0f, 0.0f,
@@ -45,18 +45,18 @@ int colorBufferHandle;
 public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.archivoVertex = archivoVertex;
 	this.archivoFragment = archivoFragment;
-
+	
 }
 
 public void bindBuffer(GLAutoDrawable gLDrawable){
-
+	
 	GL2 gl_aux = (GL2)gLDrawable.getGL().getGL();	// para usar glShadeModel
 	GL4 gl_shader = (GL4)gLDrawable.getGL().getGL();
 	gl_shader.glClearColor (0.02f, 0.02f, 0.04f, 0.0f);
   	gl_aux.glShadeModel (GL2.GL_SMOOTH);
   	gl_shader.glEnable(GL2.GL_DEPTH_TEST);
-
-
+  	
+  	
   	Buffer buff_aux = null;
   	int vboHandles[] = new int [2];
   //	gl_shader.glGenBuffers(2, vboHandles,0);
@@ -81,12 +81,12 @@ public void bindBuffer(GLAutoDrawable gLDrawable){
     // Map index 1 to the color buffer
     gl_shader.glBindBuffer( GL.GL_ARRAY_BUFFER, colorBufferHandle);
     gl_shader.glVertexAttribPointer( 1, 3, GL.GL_FLOAT, false, 0, buff_aux);
-
+    
 }
 
 public void compiladoLinkeado(GLAutoDrawable gLDrawable){
-
-
+	
+	
 	GL4 gl_shader = (GL4)gLDrawable.getGL().getGL();
 	//GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
     int creador = gl_shader.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
@@ -113,10 +113,10 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     //Agregado facundo
     String [] vectorVsrc = new String [1];
     vectorVsrc[0] = vsrc;
-
-    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);
+    
+    gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
     gl_shader.glCompileShader(creador);
-
+    
     BufferedReader brf = null;
 	try {
 		brf = new BufferedReader(new FileReader(this.archivoFragment));
@@ -138,7 +138,7 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     vectorFsrc[0] = fsrc;
     gl_shader.glShaderSource(f, 1, vectorFsrc, (int[])null,0);
     gl_shader.glCompileShader(f);
-
+    
     int shaderprogram = gl_shader.glCreateProgram();
     gl_shader.glAttachShader(shaderprogram, creador);
     gl_shader.glAttachShader(shaderprogram, f);
