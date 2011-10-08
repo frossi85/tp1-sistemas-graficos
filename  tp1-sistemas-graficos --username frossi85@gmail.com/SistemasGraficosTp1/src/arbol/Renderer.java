@@ -172,11 +172,46 @@ float [] positionDataOrig =
 	  	// Draw here
 	  	//
 	  	
-	  	gl.glBegin(GL.GL_TRIANGLES);
-	  	shader.setPosVertex(gLDrawable, 1, 1, 1);
-	  	shader.setPosVertex(gLDrawable, 1, 0, 1);
-	  	shader.setPosVertex(gLDrawable, 1, 0, 0);
-	  	gl.glEnd();
+	  	gl.glBegin(GL.GL_LINE_STRIP);
+	  	//gl.glVertex3f(0, 0, 1);
+	  	//gl.glVertex3f(1, 0, 1);
+	  	//gl.glVertex3f(1, 0, 0);
+	  	//shader.setPosVertex(gLDrawable, 1, 0, 1);
+	  	gl.glVertex3f(-3,0,3);
+	  	gl.glVertex3f(-2,0,3);
+	  	gl.glVertex3f(-1,0,3);
+	  	gl.glVertex3f(0,0,3);
+	  	gl.glVertex3f(1,0,3);
+	  	gl.glVertex3f(2,0,3);
+	  	gl.glVertex3f(3,0,3);
+	  	
+	  	gl.glVertex3f(3,1,3);
+	  	gl.glVertex3f(3,2,3);
+	  	gl.glVertex3f(3,3,3);
+	  	
+	  	gl.glVertex3f(2,3,3);
+	  	gl.glVertex3f(1,3,3);
+	  	gl.glVertex3f(0,3,3);
+	  	gl.glVertex3f(-1,3,3);
+	  	gl.glVertex3f(-2,3,3);
+	  	gl.glVertex3f(-3,3,3);
+	  	
+	  	gl.glVertex3f(-3,2,3);
+	  	gl.glVertex3f(-3,1,3);
+	  	gl.glVertex3f(-3,0,3);
+	  	
+	  	gl.glVertex3f(-3,0,3);
+	  	gl.glVertex3f(-2,0,3);
+	  	gl.glVertex3f(-1,0,3);
+	  	gl.glVertex3f(0,0,3);
+	  	gl.glVertex3f(1,0,3);
+	  	gl.glVertex3f(2,0,3);
+	  	gl.glVertex3f(3,0,3);
+	  	//shader.setPosVertex(gLDrawable, 1, 0, 1);
+	  
+	  	//shader.setPosVertex(gLDrawable, 1, 0, 0);
+	  	
+	   	gl.glEnd();
     	//UPDATE del modelo
     	this.update();
 	  	
@@ -223,7 +258,7 @@ float [] positionDataOrig =
     	//gl2.glClearColor (0.02f, 0.02f, 0.04f, 0.0f);
 	  	//gl.glShadeModel (GL2.GL_SMOOTH);
 	  	//gl2.glEnable(GL2.GL_DEPTH_TEST);
-	  	this.shader = new ManejoShaders("Vertex_Shader.txt","Fragment_Shader.txt");
+	  	this.shader = new ManejoShaders("Vertex_Shader.vert","Fragment_Shader.frag");
 	  	this.shader.bindBuffer(gLDrawable);
 	  	this.shader.compiladoLinkeado(gLDrawable);
 	 
