@@ -6,8 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.Buffer;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.charset.Charset;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -28,7 +30,7 @@ private int memoriaModelView;
 private int memoriaProyeccion;
 
 private static int 	CAPACIDAD_ATRIBUTOS = 4;
-private static String NOMBRE_ATRIBUTO = "gl_Vertex";
+private static String NOMBRE_ATRIBUTO = "glVertex";
 private FloatBuffer atribBuffer = FloatBuffer.allocate (CAPACIDAD_ATRIBUTOS);
 private int memoriaAtributo;
 
@@ -72,7 +74,8 @@ public int getProgramHandler(){
 public void bindBuffer(GLAutoDrawable gLDrawable){
 	
 	GL2 gl_aux = (GL2)gLDrawable.getGL().getGL();	// para usar glShadeModel
-	GL4 gl_shader = (GL4)gLDrawable.getGL().getGL();
+	//GL4 gl_shader = (GL4)gLDrawable.getGL().getGL();
+	GL2 gl_shader = gLDrawable.getGL().getGL2();
 	gl_shader.glClearColor (0.02f, 0.02f, 0.04f, 0.0f);
   	gl_aux.glShadeModel (GL2.GL_SMOOTH);
   	gl_shader.glEnable(GL2.GL_DEPTH_TEST);
@@ -109,10 +112,11 @@ public void bindBuffer(GLAutoDrawable gLDrawable){
 
 public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 		
-	GL4 gl_shader = (GL4)gLDrawable.getGL().getGL();
+	GL2 gl_shader = gLDrawable.getGL().getGL2();
 	//GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
-    int creador = gl_shader.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-    int f = gl_shader.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
+    int creador = gl_shader.glCreateShader(GL2.GL_VERTEX_SHADER);
+    int f = gl_shader.glCreateShader(GL2.GL_FRAGMENT_SHADER);
+    int shaderprogram = gl_shader.glCreateProgram();
     BufferedReader brv = null;
 	try {
 		File archivo = new File (this.archivoVertex);
@@ -138,6 +142,28 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     
     gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
     gl_shader.glCompileShader(creador);
+    IntBuffer compiladoErrorVert = IntBuffer.allocate(1);
+    gl_shader.glGetShaderiv(creador, GL2.GL_COMPILE_STATUS,compiladoErrorVert);
+    if(compiladoErrorVert.get(0) == GL.GL_FALSE) {
+		gl_shader.glGetProgramiv(creador, GL2.GL_INFO_LOG_LENGTH, compiladoErrorVert);
+		int size = compiladoErrorVert.get(0);
+		System.err.println("Program comp error: ");
+		if (size > 0)
+		{
+			ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+			gl_shader.glGetProgramInfoLog(creador, size, compiladoErrorVert, byteBuffer);
+			 String infoLogString =
+		                Charset.forName("US-ASCII").decode(byteBuffer).toString();
+			 System.out.println("Vertex compile error\n" + infoLogString);	
+		}
+		else
+		{
+			System.out.println("Unknown");
+		}
+		System.exit(1);
+	}
+    
+   
     
     BufferedReader brf = null;
 	try {
@@ -158,20 +184,78 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 	}
     String [] vectorFsrc = new String [1];
     vectorFsrc[0] = fsrc;
+   
+    
     gl_shader.glShaderSource(f, 1, vectorFsrc, (int[])null,0);
     gl_shader.glCompileShader(f);
+    IntBuffer compiladoErrorFrag = IntBuffer.allocate(1);
+    gl_shader.glGetShaderiv(f, GL2.GL_COMPILE_STATUS,compiladoErrorFrag);
+    if(compiladoErrorFrag.get(0) == GL.GL_FALSE) {
+		gl_shader.glGetProgramiv(f, GL2.GL_INFO_LOG_LENGTH, compiladoErrorFrag);
+		int size = compiladoErrorFrag.get(0);
+		System.err.println("Program comp error: ");
+		if (size > 0)
+		{
+			ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+			gl_shader.glGetProgramInfoLog(f, size, compiladoErrorFrag, byteBuffer);
+			 String infoLogString =
+		                Charset.forName("US-ASCII").decode(byteBuffer).toString();
+			 System.out.println("Fragment compile error\n" + infoLogString);	
+		}
+		else
+		{
+			System.out.println("Unknown");
+		}
+		System.exit(1);
+	}
     
-    int shaderprogram = gl_shader.glCreateProgram();
+    
     gl_shader.glAttachShader(shaderprogram, creador);
+    int codError = gl_shader.glGetError();
+    if( GL.GL_NO_ERROR != codError )System.out.println("Error al crear programa objeto");
     gl_shader.glAttachShader(shaderprogram, f);
+    codError = gl_shader.glGetError();
+    if( GL.GL_NO_ERROR != codError )System.out.println("Error al crear programa objeto");
+    gl_shader.glBindAttribLocation(shaderprogram,1,NOMBRE_ATRIBUTO);
+    int loc = gl_shader.glGetAttribLocation(shaderprogram, NOMBRE_ATRIBUTO);
+    
+    
+    
+    
+  //  gl_shader.glBindAttribLocation(shaderprogram,0,NOMBRE_ATRIBUTO);
     gl_shader.glLinkProgram(shaderprogram);
+  
+    IntBuffer intBuffer = IntBuffer.allocate(1);
+	gl_shader.glGetProgramiv(shaderprogram, GL2.GL_LINK_STATUS, intBuffer);
+	if (intBuffer.get(0) != 1)
+	{
+		gl_shader.glGetProgramiv(shaderprogram, GL2.GL_INFO_LOG_LENGTH, intBuffer);
+		int size = intBuffer.get(0);
+		System.err.println("Program link error: ");
+		if (size > 0)
+		{
+			ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+			gl_shader.glGetProgramInfoLog(shaderprogram, size, intBuffer, byteBuffer);
+			for (byte b : byteBuffer.array())
+			{
+				System.err.print((char) b);
+			}
+		}
+		else
+		{
+			System.out.println("Unknown");
+		}
+		System.exit(1);
+	}
+  
+   
+    
     gl_shader.glValidateProgram(shaderprogram);
 
     gl_shader.glUseProgram(shaderprogram);
     this.programHandler = shaderprogram;  
-    this.iniciarMatrices(gLDrawable);
-    this.iniciarAtributos(gLDrawable);
-        
+    //this.iniciarMatrices(gLDrawable);
+    this.iniciarAtributos(gLDrawable);        
 }
 
 public void setModelViewMatrix(GLAutoDrawable gLDrawable, float arreglo[]){
@@ -217,7 +301,7 @@ private void iniciarAtributos(GLAutoDrawable gLDrawable){
 	GL2 gl = gLDrawable.getGL().getGL2();
 	this.atribBuffer.clear();
 	this.atribBuffer.put(1);this.atribBuffer.put(1);this.atribBuffer.put(1);this.atribBuffer.put(1);
-	int location = gl.glGetAttribLocation(this.programHandler,this.NOMBRE_ATRIBUTO);
+	int location = gl.glGetAttribLocation(this.programHandler,NOMBRE_ATRIBUTO);
 	this.memoriaAtributo = location;
 	gl.glVertexAttrib1fv(location, this.atribBuffer);
 		
