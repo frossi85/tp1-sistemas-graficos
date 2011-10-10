@@ -18,10 +18,9 @@ public class cubo {
 	};
 	
 	public cubo(float medioAncho, int interVertice){
-		if(interVertice <= 0){
-			throw new IllegalArgumentException();
-		}
-		this._interVertice = interVertice;
+		if(interVertice <= 0)
+			this._interVertice = 1;
+		else this._interVertice = interVertice;
 		this._medioAncho = medioAncho;
 	}
 	
