@@ -7,6 +7,15 @@ public class cubo {
 	private int _interVertice;
 	private float _medioAncho;
 	private boolean _showColors = false;
+	private float _noColor[] = {1.0f, 1.0f, 1.0f};
+	private float _colors[][] = {
+			{1.0f, 0.0f, 0.0f},
+			{0.0f, 1.0f, 0.0f},
+			{0.0f, 0.0f, 1.0f},
+			{0.5f, 0.5f, 0.0f},
+			{0.5f, 0.0f, 0.5f},
+			{0.0f, 0.5f, 0.5f},
+	};
 	
 	public cubo(float medioAncho, int interVertice){
 		if(interVertice <= 0){
@@ -20,16 +29,6 @@ public class cubo {
 		float iM, jM;
 		float paso = 1 / (float)this._interVertice;
 	
-		float noColor[] = {1.0f, 1.0f, 1.0f};
-		float colors[][] = {
-				{1.0f, 0.0f, 0.0f},
-				{0.0f, 1.0f, 0.0f},
-				{0.0f, 0.0f, 1.0f},
-				{0.5f, 0.5f, 0.0f},
-				{0.5f, 0.0f, 0.5f},
-				{0.0f, 0.5f, 0.5f},
-		};
-		
 		float p;
 		for(int f = 0; f < 2; f++){
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
@@ -37,8 +36,8 @@ public class cubo {
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
 					gl.glBegin(GL2.GL_POLYGON);
 						if(this._showColors)
-							gl.glColor3fv(colors[f],0);
-						else gl.glColor3fv(noColor,0);
+							gl.glColor3fv(this._colors[f],0);
+						else gl.glColor3fv(this._noColor,0);
 						
 						jM = (j+paso > this._medioAncho)? this._medioAncho : j+paso;
 						iM = (i+paso > this._medioAncho)? this._medioAncho : i+paso;
@@ -58,8 +57,8 @@ public class cubo {
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
 					gl.glBegin(GL2.GL_POLYGON);
 						if(this._showColors)
-							gl.glColor3fv(colors[f+2],0);
-						else gl.glColor3fv(noColor,0);
+							gl.glColor3fv(this._colors[f+2],0);
+						else gl.glColor3fv(this._noColor,0);
 						
 						jM = (j+paso > this._medioAncho)? this._medioAncho : j+paso;
 						iM = (i+paso > this._medioAncho)? this._medioAncho : i+paso;
@@ -79,8 +78,8 @@ public class cubo {
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
 					gl.glBegin(GL2.GL_POLYGON);
 						if(this._showColors)
-							gl.glColor3fv(colors[f+4],0);
-						else gl.glColor3fv(noColor,0);
+							gl.glColor3fv(this._colors[f+4],0);
+						else gl.glColor3fv(this._noColor,0);
 						
 						jM = (j+paso > this._medioAncho)? this._medioAncho : j+paso;
 						iM = (i+paso > this._medioAncho)? this._medioAncho : i+paso;
