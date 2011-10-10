@@ -23,9 +23,16 @@ public class cilindro {
 	public cilindro(float mediaAltura, float radio, int caras, int anillos){
 		this._mediaAltura = mediaAltura;
 		this._radio = radio;
-		this._caras = caras;
-		this._anillos = anillos;
-		this._puntos = this.getVerticesCirculo(caras, radio);
+		
+		if(caras > 2)
+			this._caras = caras;
+		else this._caras = 2;
+		
+		if(anillos > 0)
+			this._anillos = anillos;
+		else this._anillos = 1;
+		
+		this._puntos = this.getVerticesCirculo(this._caras, this._radio);
 	}
 	
 	public void dibujar(GL2 gl){
