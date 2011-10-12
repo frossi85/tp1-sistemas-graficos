@@ -1,5 +1,6 @@
 package arbol;
 
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES2;
@@ -10,6 +11,8 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
+import primitivas.*;
 
 import shaders.ManejoShaders;
 
@@ -172,7 +175,7 @@ float [] positionDataOrig =
 	  	// Draw here
 	  	//
 	  	
-	  	gl.glBegin(GL.GL_LINE_STRIP);
+	/*  	gl.glBegin(GL.GL_LINE_STRIP);
 	  	//gl.glVertex3f(0, 0, 1);
 	  	//gl.glVertex3f(1, 0, 1);
 	  	//gl.glVertex3f(1, 0, 0);
@@ -211,13 +214,17 @@ float [] positionDataOrig =
 	  
 	  	//shader.setPosVertex(gLDrawable, 1, 0, 0);
 	  	
-	   	gl.glEnd();
+	   	gl.glEnd();*/
     	//UPDATE del modelo
-    	this.update();
+    	//this.update();
 	  	
     	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
     	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
     	
+    	/*cilindro c = new cilindro(0.5f, 0.5f, 30, 30);
+    	c.showColors();*/
+    	anillo c = new anillo(1, 0.25f, 30, 30);
+    	c.dibujar(gl);
 	  	//arbol.dibujar(gl);
 		
 	  	///////////////////////////////////////////////////
