@@ -1,6 +1,5 @@
 package arbol;
 
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES2;
@@ -12,7 +11,8 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
-import primitivas.*;
+import primitivas.cilindro;
+import primitivas.cubo;
 
 import shaders.ManejoShaders;
 
@@ -52,9 +52,10 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private float up[]  = { 0.0f,  0.0f, 1.0f};
 
     // Variables asociadas a única fuente de luz de la escena
-    private float light_color[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    private float light_color[] = {0.5f, 0.3f, 0.7f, 1.0f};
     private float light_position[] = {10.0f, 10.0f, 8.0f};
     private float light_ambient[] = {0.05f, 0.05f, 0.05f, 1.0f};
+    private float light_specular[] = {1f,1f,1f,1.0f};
 
     // Variables de control
     private boolean view_grid = true;
@@ -174,13 +175,37 @@ float [] positionDataOrig =
 	  	//
 	  	// Draw here
 	  	//
+	  	gl.glColor3f(1, 0, 1);
 	  	
-	/*  	gl.glBegin(GL.GL_LINE_STRIP);
+	  
+	  	gl.glTranslatef(0, 0, 3);
+	  	shader.setColor(gLDrawable, 0, 0, 1);
+	  	
+		cilindro cil = new cilindro(5,1,4,10);
+		//gl.glTranslatef(0, 0, 2);
+		gl.glColor3f(0.3f,0.2f,0.3f);
+		
+		
+
+	  	gl.glBegin(GL.GL_TRIANGLES);
+	  	//shader.setPosVertex(gLDrawable, 1, 0, 100);
+	  	
+	  	//shader.setPosVertex(gLDrawable, 1, 1, 0);
+	  	//gl.glVertexAttrib1f(locAux, shader.aux);
+	  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
+	  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
+	  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
+	  	cil.dibujar(gl);
+	  	//gl.glVertex3f(0, 1, 1);
+	  	//shader.setPosVertex(gLDrawable, 0, 0, 0);
+	  	//gl.glVertex3f(0, 0, 1);
+	  	//shader.setPosVertex(gLDrawable, 1, 0, 0);
+	  	//gl.glVertex3f(1, 1, 0);
 	  	//gl.glVertex3f(0, 0, 1);
 	  	//gl.glVertex3f(1, 0, 1);
 	  	//gl.glVertex3f(1, 0, 0);
 	  	//shader.setPosVertex(gLDrawable, 1, 0, 1);
-	  	gl.glVertex3f(-3,0,3);
+	  /*	gl.glVertex3f(-3,0,3);
 	  	gl.glVertex3f(-2,0,3);
 	  	gl.glVertex3f(-1,0,3);
 	  	gl.glVertex3f(0,0,3);
@@ -209,22 +234,18 @@ float [] positionDataOrig =
 	  	gl.glVertex3f(0,0,3);
 	  	gl.glVertex3f(1,0,3);
 	  	gl.glVertex3f(2,0,3);
-	  	gl.glVertex3f(3,0,3);
+	  	gl.glVertex3f(3,0,3);*/
 	  	//shader.setPosVertex(gLDrawable, 1, 0, 1);
 	  
 	  	//shader.setPosVertex(gLDrawable, 1, 0, 0);
 	  	
-	   	gl.glEnd();*/
+	   	gl.glEnd();
     	//UPDATE del modelo
-    	//this.update();
+    	this.update();
 	  	
     	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
     	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
     	
-    	/*cilindro c = new cilindro(0.5f, 0.5f, 30, 30);
-    	c.showColors();*/
-    	anillo c = new anillo(1, 0.25f, 30, 30);
-    	c.dibujar(gl);
 	  	//arbol.dibujar(gl);
 		
 	  	///////////////////////////////////////////////////
@@ -265,7 +286,7 @@ float [] positionDataOrig =
     	//gl2.glClearColor (0.02f, 0.02f, 0.04f, 0.0f);
 	  	//gl.glShadeModel (GL2.GL_SMOOTH);
 	  	//gl2.glEnable(GL2.GL_DEPTH_TEST);
-	  	this.shader = new ManejoShaders("Vertex_Shader.vert","Fragment_Shader.frag");
+	  	this.shader = new ManejoShaders("Ruido.vert","Ruido.frag");
 	  	this.shader.bindBuffer(gLDrawable);
 	  	this.shader.compiladoLinkeado(gLDrawable);
 	 
@@ -278,6 +299,9 @@ float [] positionDataOrig =
 	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
 	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
 	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
+		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
+		float colorBlue[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+		gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, colorBlue,0);
 	  
 	  	gl.glEnable(GL2.GL_LIGHT0);
 	  	gl.glEnable(GL2.GL_LIGHTING);
