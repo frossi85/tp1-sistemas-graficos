@@ -440,8 +440,8 @@ float [] positionDataOrig =
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mousePressed(MouseEvent m) {
+		clickAction(m.getX(), m.getY());
 	}
 
 	@Override
@@ -503,5 +503,23 @@ float [] positionDataOrig =
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub	
+	}
+	
+	public void clickAction(int x, int y){
+		double xR, yR;
+		xR = x / W_WIDTH;
+		yR = y / W_HEIGHT;
+		
+		if(xR> 0.1 && xR < 0.25 && yR > 0.1 && yR < 0.9){
+			System.out.println("izquierda");
+		}
+		
+		else if(xR> 0.75 && xR < 0.9 && yR > 0.1 && yR < 0.9){
+			System.out.println("derecha");
+		}
+		else if(xR> 0.3 && xR < 0.7 && yR > 0.05 && yR < 0.25){
+			System.out.println("arriba");
+		}
+		
 	}
 }
