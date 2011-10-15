@@ -29,14 +29,21 @@ private float gl_ProjectionMatrix[]= {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
 private int memoriaModelView;
 private int memoriaProyeccion;
 
-private static int 	CAPACIDAD_ATRIBUTOS = 4;
-private static String NOMBRE_ATRIBUTO = "glVertex";
-private FloatBuffer atribBuffer = FloatBuffer.allocate (CAPACIDAD_ATRIBUTOS);
-private int memoriaAtributo;
+private static int 	CAPACIDAD_GLVERTEX = 4;
+private static String NOMBRE_GLVERTEX = "glVertex";
+private FloatBuffer atribBuffer = FloatBuffer.allocate (CAPACIDAD_GLVERTEX);
+private int memoriaGlVertex;
+
+private static int 	CAPACIDAD_COLOR = 4;
+private static String NOMBRE_COLOR = "glColorA";
+private FloatBuffer colorBuffer = FloatBuffer.allocate (CAPACIDAD_COLOR);
+private int memoriaColor;
 
 private String archivoVertex;
 private String archivoFragment;
 private int programHandler;
+
+private Ruido ruido;
 
 private static int POSITION_BUFFER_SIZE = 9;
 private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
@@ -64,6 +71,7 @@ int colorBufferHandle;
 public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.archivoVertex = archivoVertex;
 	this.archivoFragment = archivoFragment;
+	this.ruido = new Ruido(1f,0.25f,0.001f);
 	
 }
 
@@ -113,8 +121,7 @@ public void bindBuffer(GLAutoDrawable gLDrawable){
 public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 		
 	GL2 gl_shader = gLDrawable.getGL().getGL2();
-	//GL2ES2 gles = gLDrawable.getGL().getGL2ES2();
-    int creador = gl_shader.glCreateShader(GL2.GL_VERTEX_SHADER);
+	int creador = gl_shader.glCreateShader(GL2.GL_VERTEX_SHADER);
     int f = gl_shader.glCreateShader(GL2.GL_FRAGMENT_SHADER);
     int shaderprogram = gl_shader.glCreateProgram();
     BufferedReader brv = null;
@@ -140,6 +147,7 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     String [] vectorVsrc = new String [1];
     vectorVsrc[0] = vsrc;
     
+    //COMPILADO VERTEX SHADER
     gl_shader.glShaderSource(creador, 1, vectorVsrc, (int[])null, 0);	
     gl_shader.glCompileShader(creador);
     IntBuffer compiladoErrorVert = IntBuffer.allocate(1);
@@ -162,9 +170,7 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 		}
 		System.exit(1);
 	}
-    
-   
-    
+           
     BufferedReader brf = null;
 	try {
 		brf = new BufferedReader(new FileReader(this.archivoFragment));
@@ -185,7 +191,7 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     String [] vectorFsrc = new String [1];
     vectorFsrc[0] = fsrc;
    
-    
+    //COMPILADO FRAGMENT SHADER	
     gl_shader.glShaderSource(f, 1, vectorFsrc, (int[])null,0);
     gl_shader.glCompileShader(f);
     IntBuffer compiladoErrorFrag = IntBuffer.allocate(1);
@@ -209,22 +215,19 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 		System.exit(1);
 	}
     
-    
+    //ATTACHEO OBJETOS A PROGRAMA
     gl_shader.glAttachShader(shaderprogram, creador);
     int codError = gl_shader.glGetError();
     if( GL.GL_NO_ERROR != codError )System.out.println("Error al crear programa objeto");
     gl_shader.glAttachShader(shaderprogram, f);
     codError = gl_shader.glGetError();
     if( GL.GL_NO_ERROR != codError )System.out.println("Error al crear programa objeto");
-    gl_shader.glBindAttribLocation(shaderprogram,1,NOMBRE_ATRIBUTO);
-    int loc = gl_shader.glGetAttribLocation(shaderprogram, NOMBRE_ATRIBUTO);
     
-    
-    
-    
-  //  gl_shader.glBindAttribLocation(shaderprogram,0,NOMBRE_ATRIBUTO);
+    //BIND DE ATRIBUTOS
+    //gl_shader.glBindAttribLocation(shaderprogram,1,NOMBRE_GLVERTEX);
+    //gl_shader.glBindAttribLocation(shaderprogram,2,NOMBRE_COLOR);
+    this.ruido.bind(gLDrawable,shaderprogram);
     gl_shader.glLinkProgram(shaderprogram);
-  
     IntBuffer intBuffer = IntBuffer.allocate(1);
 	gl_shader.glGetProgramiv(shaderprogram, GL2.GL_LINK_STATUS, intBuffer);
 	if (intBuffer.get(0) != 1)
@@ -247,15 +250,13 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 		}
 		System.exit(1);
 	}
-  
    
-    
     gl_shader.glValidateProgram(shaderprogram);
-
     gl_shader.glUseProgram(shaderprogram);
     this.programHandler = shaderprogram;  
-    //this.iniciarMatrices(gLDrawable);
-    this.iniciarAtributos(gLDrawable);        
+    this.iniciarAtributos(gLDrawable);  
+    this.setColor(gLDrawable, 1, 1, 1);
+    
 }
 
 public void setModelViewMatrix(GLAutoDrawable gLDrawable, float arreglo[]){
@@ -301,20 +302,28 @@ private void iniciarAtributos(GLAutoDrawable gLDrawable){
 	GL2 gl = gLDrawable.getGL().getGL2();
 	this.atribBuffer.clear();
 	this.atribBuffer.put(1);this.atribBuffer.put(1);this.atribBuffer.put(1);this.atribBuffer.put(1);
-	int location = gl.glGetAttribLocation(this.programHandler,NOMBRE_ATRIBUTO);
-	this.memoriaAtributo = location;
-	gl.glVertexAttrib1fv(location, this.atribBuffer);
+	int location = gl.glGetAttribLocation(this.programHandler,NOMBRE_GLVERTEX);
+	this.memoriaGlVertex = location;
+	gl.glVertexAttrib4f(location, this.atribBuffer.get(0),this.atribBuffer.get(1),this.atribBuffer.get(2),this.atribBuffer.get(3));
+		
+}
+
+public void setColor(GLAutoDrawable gLDrawable,float r, float g, float b){
+	GL2 gl = gLDrawable.getGL().getGL2();
+	int location = gl.glGetAttribLocation(this.programHandler,NOMBRE_COLOR);
+	this.memoriaColor = location;
+	gl.glVertexAttrib4f(location, r,g,b,1);
 		
 }
 
 public void setPosVertex(GLAutoDrawable gLDrawable, float x,float y,float z){
 	GL2 gl = gLDrawable.getGL().getGL2();
-	this.atribBuffer.clear();
-	this.atribBuffer.put(x);this.atribBuffer.put(y);this.atribBuffer.put(z);this.atribBuffer.put(1);
-	gl.glVertexAttrib1fv(this.memoriaAtributo, this.atribBuffer);
+	gl.glVertexAttrib4f(this.memoriaGlVertex, x,y,z,1);
 }
 
-
+public Ruido getRuido(){
+	return this.ruido;
+}
 
 public static void main(String[] args) {
 
