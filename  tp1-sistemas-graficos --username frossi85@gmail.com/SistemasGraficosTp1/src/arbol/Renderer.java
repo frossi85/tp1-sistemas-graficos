@@ -14,6 +14,8 @@ import javax.media.opengl.glu.GLU;
 import primitivas.cilindro;
 import primitivas.cubo;
 
+import actionSquare.*;
+
 import shaders.ManejoShaders;
 
 import java.awt.event.KeyEvent;
@@ -44,6 +46,8 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     public static GLUT glut = new GLUT();  
 	private Point2D.Float posicionAnteriorMouse = new Point2D.Float(0,0); 
 	private float rotacionCamara = 0;
+	
+	private actionSquareManager actionSquareManager = new actionSquareManager();
 	 
 	private ManejoShaders shader;
 	// Variables que controlan la ubicación de la cámara en la Escena 3D
@@ -317,6 +321,24 @@ float [] positionDataOrig =
 	  	this.DrawAxis2DTopView(gl);
 	  	gl.glEndList();
     
+	  	
+	  	actionSquareManager.add(new actionSquare(0.1f, 0.1f, 0.25f, 0.9f){
+	  		public void actuar(){
+	  			System.out.println("izquierda");
+	  		}
+	  	});
+	  	
+	  	actionSquareManager.add(new actionSquare(0.3f, 0.05f, 0.7f, 0.25f){
+	  		public void actuar(){
+	  			System.out.println("arriba");
+	  		}
+	  	});
+	  	
+	  	actionSquareManager.add(new actionSquare(0.75f, 0.1f, 0.9f, 0.9f){
+	  		public void actuar(){
+	  			System.out.println("derecha");
+	  		}
+	  	});
     }
     
  
@@ -441,7 +463,7 @@ float [] positionDataOrig =
 
 	@Override
 	public void mousePressed(MouseEvent m) {
-		clickAction(m.getX(), m.getY());
+		this.actionSquareManager.trata(m.getX()/W_WIDTH, m.getY()/W_HEIGHT);
 	}
 
 	@Override
@@ -505,21 +527,4 @@ float [] positionDataOrig =
 		// TODO Auto-generated method stub	
 	}
 	
-	public void clickAction(int x, int y){
-		double xR, yR;
-		xR = x / W_WIDTH;
-		yR = y / W_HEIGHT;
-		
-		if(xR> 0.1 && xR < 0.25 && yR > 0.1 && yR < 0.9){
-			System.out.println("izquierda");
-		}
-		
-		else if(xR> 0.75 && xR < 0.9 && yR > 0.1 && yR < 0.9){
-			System.out.println("derecha");
-		}
-		else if(xR> 0.3 && xR < 0.7 && yR > 0.05 && yR < 0.25){
-			System.out.println("arriba");
-		}
-		
-	}
 }
