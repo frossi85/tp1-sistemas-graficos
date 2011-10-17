@@ -44,6 +44,7 @@ private String archivoFragment;
 private int programHandler;
 
 private Ruido ruido;
+private Esferizacion esferizacion;
 
 private static int POSITION_BUFFER_SIZE = 9;
 private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
@@ -72,6 +73,7 @@ public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.archivoVertex = archivoVertex;
 	this.archivoFragment = archivoFragment;
 	this.ruido = new Ruido(1f,0.25f,0.001f);
+	this.esferizacion = new Esferizacion(2,0.0f,0.0f,0.0f,0.1f);
 	
 }
 
@@ -226,7 +228,7 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     //BIND DE ATRIBUTOS
     //gl_shader.glBindAttribLocation(shaderprogram,1,NOMBRE_GLVERTEX);
     //gl_shader.glBindAttribLocation(shaderprogram,2,NOMBRE_COLOR);
-    this.ruido.bind(gLDrawable,shaderprogram);
+    this.esferizacion.bind(gLDrawable,shaderprogram);
     gl_shader.glLinkProgram(shaderprogram);
     IntBuffer intBuffer = IntBuffer.allocate(1);
 	gl_shader.glGetProgramiv(shaderprogram, GL2.GL_LINK_STATUS, intBuffer);
@@ -323,6 +325,10 @@ public void setPosVertex(GLAutoDrawable gLDrawable, float x,float y,float z){
 
 public Ruido getRuido(){
 	return this.ruido;
+}
+
+public Esferizacion getEsferizacion(){
+	return this.esferizacion;
 }
 
 public static void main(String[] args) {
