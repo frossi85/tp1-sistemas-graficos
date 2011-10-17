@@ -19,6 +19,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 public class ManejoShaders {
 
+public static float PI = 3.14159265f;	
 private static int 	CAPACIDAD_MATRICES = 16;
 private FloatBuffer modelViewBuffer = FloatBuffer.allocate (CAPACIDAD_MATRICES);
 private FloatBuffer projectionBuffer = FloatBuffer.allocate (CAPACIDAD_MATRICES);
@@ -45,6 +46,7 @@ private int programHandler;
 
 private Ruido ruido;
 private Esferizacion esferizacion;
+private Retorcer retorcer;
 
 private static int POSITION_BUFFER_SIZE = 9;
 private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
@@ -74,6 +76,7 @@ public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.archivoFragment = archivoFragment;
 	this.ruido = new Ruido(1f,0.25f,0.001f);
 	this.esferizacion = new Esferizacion(2,0.0f,0.0f,0.0f,0.1f);
+	this.retorcer = new Retorcer(PI/2f);
 	
 }
 
@@ -329,6 +332,10 @@ public Ruido getRuido(){
 
 public Esferizacion getEsferizacion(){
 	return this.esferizacion;
+}
+
+public Retorcer getRetorcer(){
+	return this.retorcer;
 }
 
 public static void main(String[] args) {
