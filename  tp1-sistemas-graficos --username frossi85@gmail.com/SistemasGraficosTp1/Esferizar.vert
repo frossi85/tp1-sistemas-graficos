@@ -6,6 +6,7 @@ attribute float radio;
 attribute float factor;
 attribute vec3 centro;
 
+varying vec3 normal, lightDir, eyeVec;
 
 float getTetha( float x,  float y, float z){
 	
@@ -69,44 +70,52 @@ float getZ(float radio,float tetha){
 
 
 void main(void)
-	{
-		vec4 resultado = vec4(gl_Vertex);
-		if(factor == 2.0) gl_Position = gl_Vertex;
-		else{
-		float radioFigura = getRadio(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
-		float tethaFigura = getTetha(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
-		float fiFigura = getFi(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
+{
+	vec4 resultado = vec4(gl_Vertex);
+	if(factor == 2.0) gl_Position = gl_Vertex;
+	else{
+	float radioFigura = getRadio(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
+	float tethaFigura = getTetha(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
+	float fiFigura = getFi(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
 
-		float radioEsfera = radio;
-		float tethaEsfera = tethaFigura;
-		float fiEsfera = fiFigura;	
-		float distancia;	
-		//if(radioEsfera > radioFigura){		
-		//	 distancia = mod(radioEsfera,radioFigura);
-		//}
-		//else 
-			 distancia = mod(radioFigura,radioEsfera);
-		
-		float nuevoRadio;
-		if(factor == 0.0)
-			resultado = vec4(gl_Vertex);
-		 else{
-			nuevoRadio = radioEsfera + distancia*(1.0 -factor);
-			//float nuevoRadio = radioEsfera - distancia*factor;				
-		
-			resultado.y = getY(nuevoRadio,tethaFigura,fiEsfera);
-
-			if(gl_Vertex.x <= 0.0)
-				resultado.x = -getX(nuevoRadio,tethaFigura,fiEsfera);
-			else
-				resultado.x = getX(nuevoRadio,tethaFigura,fiEsfera);
-		
-			if(gl_Vertex.z <= 0.0)
-				resultado.z = -getZ(nuevoRadio,tethaFigura);
-			else 
-				resultado.z = getZ(nuevoRadio,tethaFigura);				
-		}	
-		gl_Position = gl_ModelViewProjectionMatrix * resultado;
+	float radioEsfera = radio;
+	float tethaEsfera = tethaFigura;
+	float fiEsfera = fiFigura;	
+	float distancia;	
+	//if(radioEsfera > radioFigura){		
+	//	 distancia = mod(radioEsfera,radioFigura);
+	//}
+	//else 
+		 distancia = mod(radioFigura,radioEsfera);
 	
-		}
-	} 
+	float nuevoRadio;
+	if(factor == 0.0)
+		resultado = vec4(gl_Vertex);
+	 else{
+		nuevoRadio = radioEsfera + distancia*(1.0 -factor);
+		//float nuevoRadio = radioEsfera - distancia*factor;				
+	
+		resultado.y = getY(nuevoRadio,tethaFigura,fiEsfera);
+
+		if(gl_Vertex.x <= 0.0)
+			resultado.x = -getX(nuevoRadio,tethaFigura,fiEsfera);
+		else
+			resultado.x = getX(nuevoRadio,tethaFigura,fiEsfera);
+	
+		if(gl_Vertex.z <= 0.0)
+			resultado.z = -getZ(nuevoRadio,tethaFigura);
+		else 
+			resultado.z = getZ(nuevoRadio,tethaFigura);				
+	}	
+	gl_Position = gl_ModelViewProjectionMatrix * resultado;
+
+	}
+	
+	//Cosas para el fragment shader
+	normal = gl_NormalMatrix * gl_Normal;
+	
+	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
+	
+	lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
+	eyeVec = -vVertex;
+} 
