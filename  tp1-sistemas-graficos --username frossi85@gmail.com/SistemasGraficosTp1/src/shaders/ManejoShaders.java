@@ -53,6 +53,8 @@ private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
 private FloatBuffer colorData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
 private IntBuffer vaoHandle = IntBuffer.allocate(1);
 
+private GL2 gl_shader;
+
 float [] positionDataOrig = 
 {
     -0.8f, -0.8f, 0.0f,
@@ -257,11 +259,18 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 	}
    
     gl_shader.glValidateProgram(shaderprogram);
-    gl_shader.glUseProgram(shaderprogram);
+    //gl_shader.glUseProgram(shaderprogram);
     this.programHandler = shaderprogram;  
     this.iniciarAtributos(gLDrawable);  
     this.setColor(gLDrawable, 1, 1, 1);
     
+    this.gl_shader = gl_shader;
+    
+}
+
+public void usarPrograma()
+{
+	 gl_shader.glUseProgram(this.programHandler);  
 }
 
 public void setModelViewMatrix(GLAutoDrawable gLDrawable, float arreglo[]){

@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 
 import primitivas.cilindro;
 import primitivas.cubo;
+import primitivas.esfera;
 
 import actionSquare.*;
 
@@ -50,16 +51,23 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
 	private actionSquareManager actionSquareManager = new actionSquareManager();
 	 
 	private ManejoShaders shader;
-	// Variables que controlan la ubicación de la cámara en la Escena 3D
+	// Variables que controlan la ubicaciï¿½n de la cï¿½mara en la Escena 3D
     private float eye[] =  {15.0f, 15.0f, 5.0f};
     private float at[]  = { 0.0f,  0.0f, 0.0f};
     private float up[]  = { 0.0f,  0.0f, 1.0f};
 
-    // Variables asociadas a única fuente de luz de la escena
-    private float light_color[] = {0.5f, 0.3f, 0.7f, 1.0f};
+    // Variables asociadas a ï¿½nica fuente de luz de la escena
+    //private float light_color[] = {0.5f, 0.3f, 0.7f, 1.0f};
+    private float light_color[] = {0.5f, 0.5f, 0.5f, 1.0f};
+    
     private float light_position[] = {10.0f, 10.0f, 8.0f};
-    private float light_ambient[] = {0.05f, 0.05f, 0.05f, 1.0f};
-    private float light_specular[] = {1f,1f,1f,1.0f};
+    //private float light_position[] = {-1f,1f,1f,0f};
+    
+	//private float light_ambient[] = {0.05f, 0.05f, 0.05f, 1.0f};
+    private float light_ambient[] = {0.5f, 0.5f, 0.5f, 0.2f};
+    
+    //private float light_specular[] = {1f,1f,1f,1.0f};
+	private float light_specular[] = {0.3f,0.3f,0.3f,1.0f};
 
     // Variables de control
     private boolean view_grid = true;
@@ -70,7 +78,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private static int DL_GRID;
     private static int DL_AXIS2D_TOP;
 
-    // Tamaño de la ventana
+    // Tamaï¿½o de la ventana
     private static float window_size[] = new float[2];
     private static float W_WIDTH = window_size[0];
     private static float W_HEIGHT = window_size[1];
@@ -129,30 +137,47 @@ float [] positionDataOrig =
   
     private void update()
     {
-    	if(cantReinicioLoop > 100)
-    	{
-    		cantReinicioLoop = 0;
-    		if(!pause)
-    		{
-    			if(edadActual<edadMaxima)
-    			{
-    				edadActual += velocidadCrecimiento;
-    				arbol.crecer(velocidadCrecimiento);
-    			}
-    			else {
-    				arbol.verHojas();
-    			}
-    		}
-    	}
-    	else
-    		cantReinicioLoop++;
+//    	if(cantReinicioLoop > 100)
+//    	{
+//    		cantReinicioLoop = 0;
+//    		if(!pause)
+//    		{
+//    			if(edadActual<edadMaxima)
+//    			{
+//    				edadActual += velocidadCrecimiento;
+//    				arbol.crecer(velocidadCrecimiento);
+//    			}
+//    			else {
+//    				arbol.verHojas();
+//    			}
+//    		}
+//    	}
+//    	else
+//    		cantReinicioLoop++;
     }
     
     public void display(GLAutoDrawable gLDrawable) 
     {    
-    	final GL2 gl = gLDrawable.getGL().getGL2();
+    	final GL2 gl = gLDrawable.getGL().getGL2();  	
 		
 	  	gl.glClear (GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+	  	
+	  	
+	  	///FACUNDO PARA FRAGMENT SHADER///
+	  	gl.glDisable(GL2.GL_LIGHT0);
+	  	gl.glDisable(GL2.GL_LIGHTING);
+	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
+	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
+	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
+		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
+		float color[] = { 6.0f, 0.0f, 0.0f, 0.3f };
+		
+		gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, color,0);
+	  
+	  	gl.glEnable(GL2.GL_LIGHT0);
+	  	gl.glEnable(GL2.GL_LIGHTING);
+	  	///////FIN PARA FRAGMENT SHADER////////////////
+	  	
 	  	
 	  	///////////////////////////////////////////////////
 	  	// Escena 3D
@@ -179,15 +204,16 @@ float [] positionDataOrig =
 	  	//
 	  	// Draw here
 	  	//
-	  	gl.glColor3f(1, 0, 1);
+	  	//gl.glColor3f(1, 0, 1);
 	  	
 	  
 	  	gl.glTranslatef(0, 0, 3);
-	  	shader.setColor(gLDrawable, 0, 0, 1);
+	  	shader.setColor(gLDrawable, 1, 0, 0);
 	  	
-		cilindro cil = new cilindro(5,1,4,10);
+		//cilindro cil = new cilindro(5,1,4,10);
+	  	esfera cil = new esfera(4,50, 50);
 		//gl.glTranslatef(0, 0, 2);
-		gl.glColor3f(0.3f,0.2f,0.3f);
+		gl.glColor3f(1f,0.2f,0.3f);
 		
 		
 
@@ -244,6 +270,9 @@ float [] positionDataOrig =
 	  	//shader.setPosVertex(gLDrawable, 1, 0, 0);
 	  	
 	   	gl.glEnd();
+	 
+	   	this.shader.usarPrograma();
+	   	
     	//UPDATE del modelo
     	this.update();
 	  	
@@ -305,12 +334,12 @@ float [] positionDataOrig =
 	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
 		float colorBlue[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-		gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, colorBlue,0);
+		//gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, colorBlue,0);
 	  
 	  	gl.glEnable(GL2.GL_LIGHT0);
 	  	gl.glEnable(GL2.GL_LIGHTING);
 	
-	  	// Generación de las Display Lists
+	  	// Generaciï¿½n de las Display Lists
 	  	gl.glNewList(DL_AXIS, GL2.GL_COMPILE);
 	  	this.DrawAxis(gl);
 	  	gl.glEndList();
@@ -486,13 +515,13 @@ float [] positionDataOrig =
 	    	case 'd':    
 	    		break; 
 	    	case 'r':
-//	    		R Reiniciar la animación de crecimiento
-	    		System.out.println("Reiniciar animación");
+//	    		R Reiniciar la animaciï¿½n de crecimiento
+	    		System.out.println("Reiniciar animaciï¿½n");
 	    		this.edadActual = 1;
 	    		this.arbol = new Arbol(this.edadActual);
 	    		break;
 	    	case 'p':
-//	    		P Pausar/reanudar animación
+//	    		P Pausar/reanudar animaciï¿½n
 	    		String texto = (this.pause)? "Reanudar": "Pausar";
 	    		System.out.println(texto);
 	    		this.pause = !this.pause;
@@ -510,6 +539,12 @@ float [] positionDataOrig =
 	    			this.velocidadCrecimiento /= 2;
 	    			System.out.println("Nueva velocidad : " + this.velocidadCrecimiento);
 	    		}
+	    		break;	
+	    	case 'x':
+	    	    light_specular[0] += 0.25f;
+	    		break;
+	    	case 'z':
+	    	    light_specular[0] -= 0.25f;
 	    		break;
 	    	default:
 	    		break;
