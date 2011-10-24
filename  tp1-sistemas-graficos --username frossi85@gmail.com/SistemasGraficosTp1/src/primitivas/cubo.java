@@ -29,11 +29,13 @@ public class cubo {
 		float paso = 1 / (float)this._interVertice;
 	
 		float p;
+		
+	
 		for(int f = 0; f < 2; f++){
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
-					gl.glBegin(GL2.GL_POLYGON);
+					gl.glBegin(GL2.GL_QUADS);
 						if(this._showColors)
 							gl.glColor3fv(this._colors[f],0);
 						else gl.glColor3fv(this._noColor,0);
@@ -56,7 +58,7 @@ public class cubo {
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
-					gl.glBegin(GL2.GL_POLYGON);
+					gl.glBegin(GL2.GL_QUADS);
 						if(this._showColors)
 							gl.glColor3fv(this._colors[f+2],0);
 						else gl.glColor3fv(this._noColor,0);
@@ -80,7 +82,7 @@ public class cubo {
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;			
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
-					gl.glBegin(GL2.GL_POLYGON);
+					gl.glBegin(GL2.GL_QUADS);
 						if(this._showColors)
 							gl.glColor3fv(this._colors[f+4],0);
 						else gl.glColor3fv(this._noColor,0);
