@@ -33,12 +33,16 @@ public class anillo {
 		
 		float x, y, x2, y2;
 		float[] no;
+		float texX, texY;
+		float texXPaso = 1 / this._lateralVertice;
+		float texYPaso = 1 / this._radialVertice;
+		texX = 0;
 		for(int i = 0; i < this._lateralVertice; i++){
 			x = this._radio*(float)Math.cos(angulo);
 			y = this._radio*(float)Math.sin(angulo);
 			x2 = this._radio*(float)Math.cos(angulo+pasoAngular);
 			y2 = this._radio*(float)Math.sin(angulo+pasoAngular);
-			
+			texY = 0;
 			for(int j = 0; j < cantidadDeOffset; j++){
 				gl.glBegin(GL2.GL_POLYGON);
 				
@@ -55,21 +59,26 @@ public class anillo {
 				
 				gl.glNormal3f(no[0], no[1], no[2]);
 				
+				gl.glTexCoord2f(texX, texY + texYPaso);
 				gl.glVertex3f(x + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo),
 							y + offset.get((j+1)%cantidadDeOffset).x * (float)Math.sin(angulo),
 							offset.get((j+1)%cantidadDeOffset).y);
+				gl.glTexCoord2f(texX + texXPaso, texY + texYPaso);
 				gl.glVertex3f(x2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo+pasoAngular),
 							y2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.sin(angulo+pasoAngular),
 							offset.get((j+1)%cantidadDeOffset).y);
+				gl.glTexCoord2f(texX + texXPaso, texY);
 				gl.glVertex3f(x2 + offset.get(j).x * (float)Math.cos(angulo+pasoAngular),
 							y2 + offset.get(j).x * (float)Math.sin(angulo+pasoAngular),
 							offset.get(j).y);
+				gl.glTexCoord2f(texX, texY);
 				gl.glVertex3f(x + offset.get(j).x * (float)Math.cos(angulo),
 							y + offset.get(j).x * (float)Math.sin(angulo),
 							offset.get(j).y);
 				gl.glEnd();	
+				texY += texYPaso;
 			}
-			
+			texX += texXPaso;
 			angulo += pasoAngular;
 		}
 		gl.glEnd();
