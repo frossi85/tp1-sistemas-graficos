@@ -32,6 +32,7 @@ public class anillo {
 		int cantidadDeOffset = offset.size();
 		
 		float x, y, x2, y2;
+		float[] no;
 		for(int i = 0; i < this._lateralVertice; i++){
 			x = this._radio*(float)Math.cos(angulo);
 			y = this._radio*(float)Math.sin(angulo);
@@ -40,6 +41,20 @@ public class anillo {
 			
 			for(int j = 0; j < cantidadDeOffset; j++){
 				gl.glBegin(GL2.GL_POLYGON);
+				
+				no = getNormal(
+						x + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo),
+						y + offset.get((j+1)%cantidadDeOffset).x * (float)Math.sin(angulo),
+						offset.get((j+1)%cantidadDeOffset).y,
+						x2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo+pasoAngular),
+						y2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.sin(angulo+pasoAngular),
+						offset.get((j+1)%cantidadDeOffset).y,
+						x2 + offset.get(j).x * (float)Math.cos(angulo+pasoAngular),
+						y2 + offset.get(j).x * (float)Math.sin(angulo+pasoAngular),
+						offset.get(j).y);
+				
+				gl.glNormal3f(no[0], no[1], no[2]);
+				
 				gl.glVertex3f(x + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo),
 							y + offset.get((j+1)%cantidadDeOffset).x * (float)Math.sin(angulo),
 							offset.get((j+1)%cantidadDeOffset).y);
@@ -74,6 +89,36 @@ public class anillo {
 		}
 		
 		return res;
+	}
+	
+	private float[] getNormal(float x, float y, float z, float x2, float y2, float z2, float x3, float y3, float z3){
+		float Qx, Qy, Qz, Px, Py, Pz, Nx, Ny, Nz;
+		/* Qx = fVert2[0]-fVert1[0];
+		   Qy = fVert2[1]-fVert1[1];
+		   Qz = fVert2[2]-fVert1[2];
+		   Px = fVert3[0]-fVert1[0];
+		   Py = fVert3[1]-fVert1[1];
+		   Pz = fVert3[2]-fVert1[2];*/
+		Qx = x2 - x;
+		Qy = y2 - y;
+		Qz = z2 - z;
+		
+		Px = x3 - x;
+		Py = y3 - y;
+		Pz = z3 - z;
+		
+		/*
+		   *fNormalX = Py*Qz - Pz*Qy;
+		   *fNormalY = Pz*Qx - Px*Qz;
+		   *fNormalZ = Px*Qy - Py*Qx;*/
+		
+		Nx = Py*Qz - Pz*Qy;
+		Ny = Pz*Qx - Px*Qz;
+		Nz = Px*Qy - Py*Qx;
+		
+		float[] res = {Nx, Ny, Nz};
+		return res;
+		
 	}
 	
 
