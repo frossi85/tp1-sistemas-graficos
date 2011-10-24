@@ -42,6 +42,7 @@ public class cilindro {
 			else gl.glColor3fv(this._noColor,0);
 			
 			gl.glTranslatef(0.0f, 0.0f,this._mediaAltura);
+			gl.glNormal3f(0.0f,0.0f,1);
 			this.dibujarCirculo(gl);
 		gl.glPopMatrix();
 		
@@ -50,12 +51,14 @@ public class cilindro {
 				gl.glColor3fv(this._colors[1],0);
 			else gl.glColor3fv(this._noColor,0);
 			
-			gl.glTranslatef(0.0f, 0.0f,-this._mediaAltura);			
+			gl.glTranslatef(0.0f, 0.0f,-this._mediaAltura);	
+			gl.glNormal3f(0.0f,0.0f,-1);
 			this.dibujarCirculo(gl);
 		gl.glPopMatrix();
 		
 		float alturaAnillo = this._mediaAltura * 2 / this._anillos;
 		float zM;
+		float[] no;
 		int cantidadDePuntos = this._puntos.size();
 		
 		if(this._showColors)
@@ -67,6 +70,11 @@ public class cilindro {
 			
 			for(int i = 0; i < cantidadDePuntos - 1; i++){
 				gl.glBegin(GL2.GL_POLYGON);
+					no = getNormal(this._puntos.get(i).x, this._puntos.get(i).y, zM,
+							this._puntos.get(i+1).x, this._puntos.get(i+1).y, zM,
+							this._puntos.get(i+1).x, this._puntos.get(i+1).y, z);
+					gl.glNormal3f(no[0], no[1], no[2]);
+					
 					gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, zM);
 					gl.glVertex3f(this._puntos.get(i+1).x, this._puntos.get(i+1).y, zM);
 					gl.glVertex3f(this._puntos.get(i+1).x, this._puntos.get(i+1).y, z);
@@ -76,6 +84,10 @@ public class cilindro {
 			}
 			
 			gl.glBegin(GL2.GL_POLYGON);
+				no = getNormal(this._puntos.get(cantidadDePuntos-1).x, this._puntos.get(cantidadDePuntos-1).y, zM,
+						this._puntos.get(0).x, this._puntos.get(0).y, zM,
+						this._puntos.get(0).x, this._puntos.get(0).y, z);
+				gl.glNormal3f(no[0], no[1], no[2]);
 				gl.glVertex3f(this._puntos.get(cantidadDePuntos-1).x, this._puntos.get(cantidadDePuntos-1).y, zM);
 				gl.glVertex3f(this._puntos.get(0).x, this._puntos.get(0).y, zM);
 				gl.glVertex3f(this._puntos.get(0).x, this._puntos.get(0).y, z);
@@ -115,5 +127,35 @@ public class cilindro {
 	
 	public void hideColors(){
 		this._showColors = false;
+	}
+	
+	private float[] getNormal(float x, float y, float z, float x2, float y2, float z2, float x3, float y3, float z3){
+		float Qx, Qy, Qz, Px, Py, Pz, Nx, Ny, Nz;
+		/* Qx = fVert2[0]-fVert1[0];
+		   Qy = fVert2[1]-fVert1[1];
+		   Qz = fVert2[2]-fVert1[2];
+		   Px = fVert3[0]-fVert1[0];
+		   Py = fVert3[1]-fVert1[1];
+		   Pz = fVert3[2]-fVert1[2];*/
+		Qx = x2 - x;
+		Qy = y2 - y;
+		Qz = z2 - z;
+		
+		Px = x3 - x;
+		Py = y3 - y;
+		Pz = z3 - z;
+		
+		/*
+		   *fNormalX = Py*Qz - Pz*Qy;
+		   *fNormalY = Pz*Qx - Px*Qz;
+		   *fNormalZ = Px*Qy - Py*Qx;*/
+		
+		Nx = Py*Qz - Pz*Qy;
+		Ny = Pz*Qx - Px*Qz;
+		Nz = Px*Qy - Py*Qx;
+		
+		float[] res = {Nx, Ny, Nz};
+		return res;
+		
 	}
 }

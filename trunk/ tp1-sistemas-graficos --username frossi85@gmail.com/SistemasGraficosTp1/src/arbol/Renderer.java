@@ -11,10 +11,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
-import primitivas.cilindro;
-import primitivas.cubo;
-import primitivas.esfera;
-import primitivas.pyramide;
+import primitivas.*;
 
 import actionSquare.*;
 
@@ -170,15 +167,16 @@ float [] positionDataOrig =
     	gl.glPushMatrix();
     	
 	        gl.glPushMatrix();
-	        	gl.glRotatef(20,0f,1f,0f);
-	        	gl.glRotatef(17,-1f,0f,0f);
+	        	//gl.glRotatef(0,0f,1f,0f);
+	        	//gl.glRotatef(17,-1f,0f,0f);
 	        	gl.glScalef(0.5f, 0.5f, 0.5f);
 	        	this.shader.usarPrograma();
 	        	
-	        	cubo cil = new cubo(1,3);
-	        	//gl.glBegin(GL.GL_TRIANGLES);
+	        	//cubo cil = new cubo(1,3);
+	        	//anillo cil = new anillo(1.5f,0.5f, 500, 500);
+	        	//cilindro cil = new cilindro(1,1,100,50);
+	        	esfera cil = new esfera(1, 300, 300);
 	        	cil.dibujar(gl);
-	        	//gl.glEnd();*/
 	        	
 	        	/*pyramide p = new pyramide();
 	        	p.dibujar(gl);*/
