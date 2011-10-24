@@ -174,12 +174,12 @@ float [] positionDataOrig =
 	        	gl.glScalef(0.5f, 0.5f, 0.5f);
 	        	this.shader.usarPrograma();
 	        	
-	        	//cubo cil = new cubo(1,10);
+	        	cubo cil = new cubo(1,3);
 	        	//gl.glBegin(GL.GL_TRIANGLES);
-	        	//cil.dibujar(gl);
+	        	cil.dibujar(gl);
 	        	//gl.glEnd();
 
-	        	glut.glutSolidCube(3);
+	        	//glut.glutSolidCube(3);
 	        	
 	        	//glutSwapBuffers();
 	        gl.glPopMatrix();
