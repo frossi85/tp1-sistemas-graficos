@@ -31,8 +31,13 @@ public class esfera {
 		
 		int i2, j2;
 		float[] no;
+		float texX, texY;
+		float texXPaso = 1 / this._horizontalVertice;
+		float texYPaso = 1 / this._verticalVertice;
+		texX = 0;
 		for(int i = 0; i < this._horizontalVertice; i++){		
 			i2 = (i+1)%this._horizontalVertice;
+			texY = texYPaso;
 			for(int j = 0; j < this._verticalVertice-1; j++){
 				j2 = (j+1)%this._verticalVertice;
 				gl.glBegin(GL2.GL_QUADS);
@@ -47,42 +52,56 @@ public class esfera {
 						this._coords.get(i2).y * this._offset.get(j).x,
 						this._offset.get(j).y);
 				gl.glNormal3f(no[0], no[1], no[2]);
+				gl.glTexCoord2f(texX, texY + texYPaso);
 				gl.glVertex3f(this._coords.get(i).x * this._offset.get(j2).x,
 							this._coords.get(i).y * this._offset.get(j2).x,
 							this._offset.get(j2).y);
+				gl.glTexCoord2f(texX+ texXPaso, texY + texYPaso);
 				gl.glVertex3f(this._coords.get(i2).x * this._offset.get(j2).x,
 							this._coords.get(i2).y * this._offset.get(j2).x,
 							this._offset.get(j2).y);
+				gl.glTexCoord2f(texX + texXPaso, texY);
 				gl.glVertex3f(this._coords.get(i2).x * this._offset.get(j).x,
 							this._coords.get(i2).y * this._offset.get(j).x,
 							this._offset.get(j).y);
+				gl.glTexCoord2f(texX, texY);
 				gl.glVertex3f(this._coords.get(i).x * this._offset.get(j).x,
 							this._coords.get(i).y * this._offset.get(j).x,
 							this._offset.get(j).y);
 				gl.glEnd();	
+				texY += texYPaso;
 			}
+			texX += texXPaso;
 		}
 		
 	
 		gl.glBegin(GL2.GL_TRIANGLES);
 		Point2D.Float minOffset = this._offset.get(this._offset.size()-1);
+		texX = 0;
 		for(int i = 0; i < this._horizontalVertice; i++){
 			i2 = (i+1)% this._horizontalVertice;
 			no = getNormal(0.0f, 0.0f, this._radio,
 					this._coords.get(i2).x*minOffset.x, this._coords.get(i2).y*minOffset.x, -minOffset.y,
 					this._coords.get(i).x*minOffset.x, this._coords.get(i).y*minOffset.x, -minOffset.y);
 			gl.glNormal3f(no[0], no[1], no[2]);
+			gl.glTexCoord2f(texX, 1);
 			gl.glVertex3f(0.0f, 0.0f, this._radio);
+			gl.glTexCoord2f(texX, 1-texYPaso);
 			gl.glVertex3f(this._coords.get(i2).x*minOffset.x, this._coords.get(i2).y*minOffset.x, -minOffset.y);
+			gl.glTexCoord2f(texX + texXPaso, 1-texYPaso);
 			gl.glVertex3f(this._coords.get(i).x*minOffset.x, this._coords.get(i).y*minOffset.x, -minOffset.y);
 			
 			no = getNormal(0.0f, 0.0f, -this._radio,
 					this._coords.get(i2).x*minOffset.x, this._coords.get(i2).y*minOffset.x, minOffset.y,
 					this._coords.get(i).x*minOffset.x, this._coords.get(i).y*minOffset.x, minOffset.y);
 			gl.glNormal3f(no[0], no[1], no[2]);
+			gl.glTexCoord2f(texX, 0);
 			gl.glVertex3f(0.0f, 0.0f, -this._radio);
+			gl.glTexCoord2f(texX, texYPaso);
 			gl.glVertex3f(this._coords.get(i2).x*minOffset.x, this._coords.get(i2).y*minOffset.x, minOffset.y);
+			gl.glTexCoord2f(texX + texXPaso, texYPaso);
 			gl.glVertex3f(this._coords.get(i).x*minOffset.x, this._coords.get(i).y*minOffset.x, minOffset.y);
+			texX += texXPaso;
 		}
 		gl.glEnd();
 	}
