@@ -3,6 +3,7 @@
 attribute float fase;
 attribute float amplitud;
 attribute float longOnda;
+attribute float time;
 
 varying vec3 normal, lightDir, eyeVec;
 
@@ -15,9 +16,9 @@ void main(void)
 {
 	vec4 v2 = vec4(gl_Vertex);
 	
-	v2.z =  gl_Vertex.z + amplitud*sin(longOnda*gl_Vertex.x + fase );
-	v2.x =  gl_Vertex.x + amplitud*sin(longOnda*gl_Vertex.y + fase );
-	v2.y = gl_Vertex.y + amplitud*sin(longOnda*gl_Vertex.z + fase );
+	v2.z =  gl_Vertex.z + amplitud*sin(longOnda*gl_Vertex.x + time*0.01 + fase );
+	v2.x =  gl_Vertex.x + amplitud*sin(longOnda*gl_Vertex.y + time*0.01 +fase );
+	v2.y = gl_Vertex.y + amplitud*sin(longOnda*gl_Vertex.z + time*0.01 + fase );
 	v2.w = 1.0;
 		
 	gl_Position = gl_ModelViewProjectionMatrix * v2;
