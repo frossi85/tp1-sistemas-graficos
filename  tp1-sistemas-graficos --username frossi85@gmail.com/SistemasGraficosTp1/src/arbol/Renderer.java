@@ -175,13 +175,13 @@ float [] positionDataOrig =
 	        	gl.glScalef(0.5f, 0.5f, 0.5f);
 	        	this.shader.usarPrograma();
 	        	
-	        	//cubo cil = new cubo(1,3);
+	        	cubo cil = new cubo(1,3);
 	        	//gl.glBegin(GL.GL_TRIANGLES);
-	        	//cil.dibujar(gl);
+	        	cil.dibujar(gl);
 	        	//gl.glEnd();*/
 	        	
-	        	pyramide p = new pyramide();
-	        	p.dibujar(gl);
+	        	/*pyramide p = new pyramide();
+	        	p.dibujar(gl);*/
 	        
 	        	
 

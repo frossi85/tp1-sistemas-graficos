@@ -35,7 +35,7 @@ public class cubo {
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
-					gl.glBegin(GL2.GL_QUADS);
+					gl.glBegin(GL2.GL_TRIANGLES);
 						if(this._showColors)
 							gl.glColor3fv(this._colors[f],0);
 						else gl.glColor3fv(this._noColor,0);
@@ -43,12 +43,15 @@ public class cubo {
 						jM = (j+paso > this._medioAncho)? this._medioAncho : j+paso;
 						iM = (i+paso > this._medioAncho)? this._medioAncho : i+paso;
 						
-						float[] vert1 = {i,jM,p}, vert2 = {iM,jM,p}, vert3 = {iM,jM,p};
-						setNormal(gl, vert1, vert2, vert3);
+						gl.glNormal3f(0,0,2*p);
+						
 						gl.glVertex3f(i, jM, p);
 						gl.glVertex3f(iM, jM, p);
-						gl.glVertex3f(iM, j, p);
 						gl.glVertex3f(i, j, p);
+						
+						gl.glVertex3f(i, j, p);
+						gl.glVertex3f(iM, jM, p);
+						gl.glVertex3f(iM, j, p);
 					gl.glEnd();
 				}
 			}
@@ -58,7 +61,7 @@ public class cubo {
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
-					gl.glBegin(GL2.GL_QUADS);
+					gl.glBegin(GL2.GL_TRIANGLES);
 						if(this._showColors)
 							gl.glColor3fv(this._colors[f+2],0);
 						else gl.glColor3fv(this._noColor,0);
@@ -66,13 +69,16 @@ public class cubo {
 						jM = (j+paso > this._medioAncho)? this._medioAncho : j+paso;
 						iM = (i+paso > this._medioAncho)? this._medioAncho : i+paso;
 						
-						float[] vert1 = {p,i,jM}, vert2 = {p,iM,jM}, vert3 = {p,iM,j};
-						setNormal(gl, vert1, vert2, vert3);
+						gl.glNormal3f(2*p,0,0);
 						
 						gl.glVertex3f(p, i, jM);
 						gl.glVertex3f(p, iM, jM);
-						gl.glVertex3f(p, iM, j);
 						gl.glVertex3f(p, i, j);
+						
+						gl.glVertex3f(p, i, j);						
+						gl.glVertex3f(p, iM, jM);
+						gl.glVertex3f(p, iM, j);
+						
 					gl.glEnd();
 				}
 			}
@@ -82,21 +88,25 @@ public class cubo {
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;			
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
-					gl.glBegin(GL2.GL_QUADS);
+					gl.glBegin(GL2.GL_TRIANGLES);
 						if(this._showColors)
 							gl.glColor3fv(this._colors[f+4],0);
 						else gl.glColor3fv(this._noColor,0);
 						
 						jM = (j+paso > this._medioAncho)? this._medioAncho : j+paso;
 						iM = (i+paso > this._medioAncho)? this._medioAncho : i+paso;
+					
 						
-						float[] vert1 = {i,p,jM}, vert2 = {iM,p,jM}, vert3 = {iM,p,j};
-						setNormal(gl, vert1, vert2, vert3);
+						gl.glNormal3f(0,2*p,0);
 						
 						gl.glVertex3f(i, p,jM);
 						gl.glVertex3f(iM, p, jM);
-						gl.glVertex3f(iM, p, j);
 						gl.glVertex3f(i, p, j);
+						
+						gl.glVertex3f(i, p, j);
+						gl.glVertex3f(iM, p, jM);
+						gl.glVertex3f(iM, p, j);						
+						
 					gl.glEnd();
 				}
 			}
@@ -110,26 +120,5 @@ public class cubo {
 	public void hideColors(){
 		this._showColors = false;
 	}
-	
-	private void setNormal(GL2 gl, float[] fVert1, float[] fVert2, float[] fVert3){
-		float Qx,Qy,Qz,Px,Py,Pz, Nx, Ny, Nz;
-		Qx = fVert2[0]-fVert1[0];
-		Qy = fVert2[1]-fVert1[1];
-		Qz = fVert2[2]-fVert1[2];
-		Px = fVert3[0]-fVert1[0];
-		Py = fVert3[1]-fVert1[1];
-		Pz = fVert3[2]-fVert1[2];
-		
-		Nx = Py*Qz - Pz*Qy;
-		Ny = Pz*Qx - Px*Qz;
-		Nz = Px*Qy - Py*Qx;
-		
-		//float v = (float) Math.sqrt(Math.pow(Nx,2) + Math.pow(Ny, 2) + Math.pow(Nz,2));
-		//System.out.println(Nx/v + " " + Ny/v + " " + Nz/v);
-		
-		//System.out.println(Nx + " " + Ny + " " + Nz);
-		gl.glNormal3f(-Nx,-Ny,-Nz);		
-	}
-	
 	
 }
