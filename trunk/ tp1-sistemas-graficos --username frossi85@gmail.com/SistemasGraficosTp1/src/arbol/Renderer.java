@@ -14,6 +14,7 @@ import javax.media.opengl.glu.GLU;
 import primitivas.cilindro;
 import primitivas.cubo;
 import primitivas.esfera;
+import primitivas.pyramide;
 
 import actionSquare.*;
 
@@ -174,10 +175,15 @@ float [] positionDataOrig =
 	        	gl.glScalef(0.5f, 0.5f, 0.5f);
 	        	this.shader.usarPrograma();
 	        	
-	        	cubo cil = new cubo(1,3);
+	        	//cubo cil = new cubo(1,3);
 	        	//gl.glBegin(GL.GL_TRIANGLES);
-	        	cil.dibujar(gl);
-	        	//gl.glEnd();
+	        	//cil.dibujar(gl);
+	        	//gl.glEnd();*/
+	        	
+	        	pyramide p = new pyramide();
+	        	p.dibujar(gl);
+	        
+	        	
 
 	        	//glut.glutSolidCube(3);
 	        	
