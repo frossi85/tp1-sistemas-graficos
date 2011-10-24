@@ -8,11 +8,12 @@ public class Esferizacion {
 	private float radio;
 	private float centro[] = new float[3];
 	private float factor;
+	private float factorVariable = 0.0f;
 	
 	private int memRadio = 1;
-	private int memCentro = 3;
-	private int memFactor = 2;
-	
+	private int memCentro = 2;
+	private int memFactor = 3;
+		
 	public static String NOMBRE_FACTOR = "factor";
 	public static String NOMBRE_CENTRO = "centro";
 	public static String NOMBRE_RADIO = "radio";
@@ -57,6 +58,19 @@ public class Esferizacion {
 	
 	public float[] getCentro(){
 		return this.centro;
+	}
+	
+	public void update(){
+		if (factorVariable < factor){
+			factorVariable += 0.001f;
+			System.out.println(factorVariable);
+		}
+		
+		
+	}
+	
+	public float getFactorVariable(){
+		return factorVariable;
 	}
 	
 }
