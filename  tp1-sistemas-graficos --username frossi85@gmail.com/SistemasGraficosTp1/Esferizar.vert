@@ -3,7 +3,7 @@
 //probado con: Esferizacion(2,0.0f,0.0f,0.0f,0.1f);/cubo cub = new cubo(2,3);
 
 attribute float radio;
-attribute float factor;
+uniform float factor;
 attribute vec3 centro;
 
 varying vec3 normal, lightDir, eyeVec;
@@ -72,7 +72,7 @@ float getZ(float radio,float tetha){
 void main(void)
 {
 	vec4 resultado = vec4(gl_Vertex);
-	if(factor == 2.0) gl_Position = gl_Vertex;
+	if(factor == 0.0) gl_Position = gl_Vertex;
 	else{
 	float radioFigura = getRadio(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
 	float tethaFigura = getTetha(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
@@ -107,10 +107,10 @@ void main(void)
 		else 
 			resultado.z = getZ(nuevoRadio,tethaFigura);				
 	}	
-	gl_Position = gl_ModelViewProjectionMatrix * resultado;
+	//gl_Position = gl_ModelViewProjectionMatrix * resultado;
 
 	}
-	
+	gl_Position = gl_ModelViewProjectionMatrix * resultado;
 	//Cosas para el fragment shader
 	normal = gl_NormalMatrix * gl_Normal;
 	
