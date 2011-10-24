@@ -33,6 +33,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -60,14 +61,14 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     //private float light_color[] = {0.5f, 0.3f, 0.7f, 1.0f};
     private float light_color[] = {0.5f, 0.5f, 0.5f, 1.0f};
     
-    private float light_position[] = {10.0f, 10.0f, 8.0f};
-    //private float light_position[] = {-1f,1f,1f,0f};
+    //private float light_position[] = {10.0f, 10.0f, 8.0f};
+    private float light_position[] = {-1f,1f,1f,0f};
     
-	//private float light_ambient[] = {0.05f, 0.05f, 0.05f, 1.0f};
-    private float light_ambient[] = {0.5f, 0.5f, 0.5f, 0.2f};
+	private float light_ambient[] = {0.05f, 0.05f, 0.05f, 1.0f};
+    //private float light_ambient[] = {1f, 1f, 1f, 0.3f};
     
-    //private float light_specular[] = {1f,1f,1f,1.0f};
-	private float light_specular[] = {0.3f,0.3f,0.3f,1.0f};
+    private float light_specular[] = {0f,0f,0f,0f};
+	//private float light_specular[] = {0.3f,0.3f,0.3f,1.0f};
 
     // Variables de control
     private boolean view_grid = true;
@@ -159,127 +160,118 @@ float [] positionDataOrig =
     public void display(GLAutoDrawable gLDrawable) 
     {    
     	final GL2 gl = gLDrawable.getGL().getGL2();  	
-		
-	  	gl.glClear (GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-	  	
-	  	
-	  	///FACUNDO PARA FRAGMENT SHADER///
-	  	gl.glDisable(GL2.GL_LIGHT0);
-	  	gl.glDisable(GL2.GL_LIGHTING);
-	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
-	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
-	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
-		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
-		float color[] = { 6.0f, 0.0f, 0.0f, 0.3f };
-		
-		gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, color,0);
-	  
-	  	gl.glEnable(GL2.GL_LIGHT0);
-	  	gl.glEnable(GL2.GL_LIGHTING);
-	  	///////FIN PARA FRAGMENT SHADER////////////////
-	  	
-	  	
-	  	///////////////////////////////////////////////////
-	  	// Escena 3D
-	  	
-	  	Set3DEnv(gl); //funcion de los profes
-	  	
-	  	gl.glMatrixMode(GL2.GL_MODELVIEW);
-	  	gl.glLoadIdentity(); 	
-	  	gl.glBindVertexArray( vaoHandle.get(0) );	// No se si va
-	   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
-	   				  at[0], at[1], at[2],
-	   				  up[0], up[1], up[2]);
-
-	 	
-	   	gl.glRotatef(rotacionCamara,0f,0f,1f);
-	  	
-	   	if (view_axis)
-	  		 gl.glCallList(DL_AXIS);
-	  	
-	  	if (view_grid)
-	  		 gl.glCallList(DL_GRID);
-	
-	    ///////////////////////////////////////////////////
-	  	//
-	  	// Draw here
-	  	//
-	  	//gl.glColor3f(1, 0, 1);
-	  	
-	  
-	  	gl.glTranslatef(0, 0, 3);
-	  	shader.setColor(gLDrawable, 1, 0, 0);
-	  	
-		//cilindro cil = new cilindro(5,1,4,10);
-	  	esfera cil = new esfera(4,50, 50);
-		//gl.glTranslatef(0, 0, 2);
-		gl.glColor3f(1f,0.2f,0.3f);
-		
-		
-
-	  	gl.glBegin(GL.GL_TRIANGLES);
-	  	//shader.setPosVertex(gLDrawable, 1, 0, 100);
-	  	
-	  	//shader.setPosVertex(gLDrawable, 1, 1, 0);
-	  	//gl.glVertexAttrib1f(locAux, shader.aux);
-	  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
-	  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
-	  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
-	  	cil.dibujar(gl);
-	  	//gl.glVertex3f(0, 1, 1);
-	  	//shader.setPosVertex(gLDrawable, 0, 0, 0);
-	  	//gl.glVertex3f(0, 0, 1);
-	  	//shader.setPosVertex(gLDrawable, 1, 0, 0);
-	  	//gl.glVertex3f(1, 1, 0);
-	  	//gl.glVertex3f(0, 0, 1);
-	  	//gl.glVertex3f(1, 0, 1);
-	  	//gl.glVertex3f(1, 0, 0);
-	  	//shader.setPosVertex(gLDrawable, 1, 0, 1);
-	  /*	gl.glVertex3f(-3,0,3);
-	  	gl.glVertex3f(-2,0,3);
-	  	gl.glVertex3f(-1,0,3);
-	  	gl.glVertex3f(0,0,3);
-	  	gl.glVertex3f(1,0,3);
-	  	gl.glVertex3f(2,0,3);
-	  	gl.glVertex3f(3,0,3);
-	  	
-	  	gl.glVertex3f(3,1,3);
-	  	gl.glVertex3f(3,2,3);
-	  	gl.glVertex3f(3,3,3);
-	  	
-	  	gl.glVertex3f(2,3,3);
-	  	gl.glVertex3f(1,3,3);
-	  	gl.glVertex3f(0,3,3);
-	  	gl.glVertex3f(-1,3,3);
-	  	gl.glVertex3f(-2,3,3);
-	  	gl.glVertex3f(-3,3,3);
-	  	
-	  	gl.glVertex3f(-3,2,3);
-	  	gl.glVertex3f(-3,1,3);
-	  	gl.glVertex3f(-3,0,3);
-	  	
-	  	gl.glVertex3f(-3,0,3);
-	  	gl.glVertex3f(-2,0,3);
-	  	gl.glVertex3f(-1,0,3);
-	  	gl.glVertex3f(0,0,3);
-	  	gl.glVertex3f(1,0,3);
-	  	gl.glVertex3f(2,0,3);
-	  	gl.glVertex3f(3,0,3);*/
-	  	//shader.setPosVertex(gLDrawable, 1, 0, 1);
-	  
-	  	//shader.setPosVertex(gLDrawable, 1, 0, 0);
-	  	
-	   	gl.glEnd();
-	 
-	   	this.shader.usarPrograma();
-	   	
-    	//UPDATE del modelo
-    	this.update();
-	  	
-    	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
-    	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
     	
-	  	//arbol.dibujar(gl);
+    	gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+    	 	
+	   	//gl.glRotatef(rotacionCamara,0f,0f,1f);
+    	
+        //timer010 = 0.09; //for screenshot!
+    	gl.glPushMatrix();
+    	
+	        gl.glPushMatrix();
+	        	gl.glRotatef(20,0f,1f,0f);
+	        	gl.glRotatef(17,-1f,0f,0f);
+	        	gl.glScalef(0.5f, 0.5f, 0.5f);
+	        	this.shader.usarPrograma();
+	        	
+	        	//cubo cil = new cubo(1,10);
+	        	//gl.glBegin(GL.GL_TRIANGLES);
+	        	//cil.dibujar(gl);
+	        	//gl.glEnd();
+
+	        	glut.glutSolidCube(3);
+	        	
+	        	//glutSwapBuffers();
+	        gl.glPopMatrix();
+        gl.glPopMatrix();
+    	
+		
+//	  	gl.glClear (GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+//	  	
+//	  	
+//	  	///FACUNDO PARA FRAGMENT SHADER///
+//	  	gl.glDisable(GL2.GL_LIGHT0);
+//	  	gl.glDisable(GL2.GL_LIGHTING);
+//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
+//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
+//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
+//		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
+//		float color[] = { 0.0f, 1.0f, 0.0f, 1f };
+//		
+//		gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, color,0);
+//    	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
+//    	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
+//
+//	  
+//	  	gl.glEnable(GL2.GL_LIGHT0);
+//	  	gl.glEnable(GL2.GL_LIGHTING);
+//	  	
+//	  	///////FIN PARA FRAGMENT SHADER////////////////
+//	  	
+//	  	
+//	  	///////////////////////////////////////////////////
+//	  	// Escena 3D
+//	  	
+//	  	Set3DEnv(gl); //funcion de los profes
+//	  	
+//	  	gl.glMatrixMode(GL2.GL_MODELVIEW);
+//	  	gl.glLoadIdentity(); 	
+//	  	gl.glBindVertexArray( vaoHandle.get(0) );	// No se si va
+//	   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
+//	   				  at[0], at[1], at[2],
+//	   				  up[0], up[1], up[2]);
+//
+//	 	
+//	   	gl.glRotatef(rotacionCamara,0f,0f,1f);
+//	  	
+//	   	if (view_axis)
+//	  		 gl.glCallList(DL_AXIS);
+//	  	
+//	  	if (view_grid)
+//	  		 gl.glCallList(DL_GRID);
+//	
+////	    ///////////////////////////////////////////////////
+////	  	//
+////	  	// Draw here
+////	  	//
+////	  	//gl.glColor3f(1, 0, 1);
+////	  	
+////	  	gl.glRotatef(-40,1f,1f,0f);
+////	  	
+////	  
+//	  	gl.glTranslatef(0, 0, 3);
+////	  	shader.setColor(gLDrawable, 1, 0, 0);
+////	  	
+////		//cilindro cil = new cilindro(5,1,4,10);
+////	  	//esfera cil = new esfera(4,50, 50);
+////	  	cubo cil = new cubo(3.0f,20);
+////		gl.glColor3f(1f,0.2f,0.3f);
+////		
+////		
+////
+////	  	gl.glBegin(GL.GL_TRIANGLES);
+////
+////	  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
+////	  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
+////	  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
+////	  	cil.dibujar(gl);
+////
+////	   	gl.glEnd();
+//	  	
+//	  	gl.glPushMatrix();
+//	  		gl.glRotatef(90,1f,0f,0f);
+//	  		glut.glutSolidTeapot(4);
+//	  	gl.glPopMatrix();
+//	 
+//	   	this.shader.usarPrograma();
+//	   	
+//    	//UPDATE del modelo
+//    	this.update();
+//    	
+//    	
+//  
+//    	
+//	  	//arbol.dibujar(gl);
 		
 	  	///////////////////////////////////////////////////
 	
@@ -296,9 +288,10 @@ float [] positionDataOrig =
 	  	}
 	  	//
 	  	///////////////////////////////////////////////////
-	  
+    	
+	
 	  	//En ves de glutSwapBuffers();.. va gl.glFlush();
-	  	gl.glFlush();
+	    gl.glFlush();
     }
  
     public void displayChanged(GLAutoDrawable gLDrawable, boolean modeChanged, boolean deviceChanged) 
@@ -315,13 +308,44 @@ float [] positionDataOrig =
 
     	   	
     	GL2 gl = gLDrawable.getGL().getGL2();
-	    
-    	//gl2.glClearColor (0.02f, 0.02f, 0.04f, 0.0f);
-	  	//gl.glShadeModel (GL2.GL_SMOOTH);
-	  	//gl2.glEnable(GL2.GL_DEPTH_TEST);
-	  	this.shader = new ManejoShaders("Ruido.vert","Ruido.frag");
+		
+    	gl.glClearColor(0.5f, 0.5f, 1.0f, 0.0f);
+		gl.glShadeModel(GL2.GL_SMOOTH);
+		gl.glEnable(GL2.GL_DEPTH_TEST);
+		
+		
+		//Agregago
+		int h = 600, w = 600;
+	      if(h == 0) h = 1;
+		   float ratio = 1.0f * (float)w / (float)h;
+
+	      
+		   gl.glMatrixMode(GL2.GL_PROJECTION);
+		   gl.glLoadIdentity();
+		
+		   gl.glViewport(0, 0, w, h);
+
+	      glu.gluPerspective(45,ratio,1,100);
+		   gl.glMatrixMode(GL2.GL_MODELVIEW);
+		   gl.glLoadIdentity();
+		 // gl.glBindVertexArray( vaoHandle.get(0) );	// No se si va
+		   glu.gluLookAt(0.0f,0.0f,4.0f, 
+			          0.0,0.0,-1.0,
+				       0.0f,1.0f,0.0f);
+//		   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
+//		   				  at[0], at[1], at[2],
+//		   				  up[0], up[1], up[2]);
+		   
+		   
+		   
+		//Fin agregado
+		this.shader = new ManejoShaders("Ruido.vert","Ruido.frag");
+    	//this.shader = new ManejoShaders("SinDeformacion.vert","Ruido.frag");
+    	//this.shader = new ManejoShaders("SinDeformacion.vert","PhongShader.frag");
 	  	this.shader.bindBuffer(gLDrawable);
 	  	this.shader.compiladoLinkeado(gLDrawable);
+	  	
+	    //DemoLight(gl);
 	 
 	  	
 	  	DL_AXIS = gl.glGenLists(3);
@@ -329,15 +353,15 @@ float [] positionDataOrig =
 	  	DL_AXIS2D_TOP = DL_AXIS+2;
     	
 	  
-	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
-	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
-	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
-		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
-		float colorBlue[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-		//gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, colorBlue,0);
-	  
-	  	gl.glEnable(GL2.GL_LIGHT0);
-	  	gl.glEnable(GL2.GL_LIGHTING);
+//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
+//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
+//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
+//		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
+//		float colorBlue[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+//		//gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, colorBlue,0);
+//	  
+//	  	gl.glEnable(GL2.GL_LIGHT0);
+//	  	gl.glEnable(GL2.GL_LIGHTING);
 	
 	  	// Generaci�n de las Display Lists
 	  	gl.glNewList(DL_AXIS, GL2.GL_COMPILE);
@@ -350,7 +374,7 @@ float [] positionDataOrig =
 	  	this.DrawAxis2DTopView(gl);
 	  	gl.glEndList();
     
-	  	
+	  	DemoLight(gl);
 	  	actionSquareManager.add(new actionSquare(0.1f, 0.1f, 0.25f, 0.9f){
 	  		public void actuar(){
 	  			System.out.println("izquierda");
@@ -369,6 +393,90 @@ float [] positionDataOrig =
 	  		}
 	  	});
     }
+    
+    public static FloatBuffer makeFloatBuffer(float[] arr) {
+	    ByteBuffer bb = ByteBuffer.allocateDirect(arr.length*4);
+	    bb.order(ByteOrder.nativeOrder());
+	    FloatBuffer fb = bb.asFloatBuffer();
+	    fb.put(arr);
+	    fb.position(0);
+	    return fb;
+    }
+    
+    private void DemoLight(GL2 gl)
+    {
+      gl.glEnable(GL2.GL_LIGHTING);
+      gl.glEnable(GL2.GL_LIGHT0);
+      gl.glEnable(GL2.GL_NORMALIZE);
+      
+      // Light model parameters:
+      // -------------------------------------------
+      
+      float lmKa[] = {0.0f, 0.0f, 0.0f, 0.0f };
+      
+      gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, makeFloatBuffer(lmKa));
+      
+      gl.glLightModelf(GL2.GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
+      gl.glLightModelf(GL2.GL_LIGHT_MODEL_TWO_SIDE, 0.0f);
+      
+      // -------------------------------------------
+      // Spotlight Attenuation
+      
+      float spot_direction[] = {1.0f, -1.0f, -1.0f };
+
+      
+      int spot_exponent = 30;
+      int spot_cutoff = 180;
+      
+      gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPOT_DIRECTION, makeFloatBuffer(spot_direction));
+      gl.glLighti(GL2.GL_LIGHT0, GL2.GL_SPOT_EXPONENT, spot_exponent);
+      gl.glLighti(GL2.GL_LIGHT0, GL2.GL_SPOT_CUTOFF, spot_cutoff);
+     
+      float Kc = 1.0f;
+      float Kl = 0.0f;
+      float Kq = 0.0f;
+      
+      gl.glLightf(GL2.GL_LIGHT0, GL2.GL_CONSTANT_ATTENUATION,Kc);
+      gl.glLightf(GL2.GL_LIGHT0, GL2.GL_LINEAR_ATTENUATION, Kl);
+      gl.glLightf(GL2.GL_LIGHT0, GL2.GL_QUADRATIC_ATTENUATION, Kq);
+      
+      
+      // ------------------------------------------- 
+      // Lighting parameters:
+
+      //float light_pos[] = {0.0f, 5.0f, 5.0f, 1.0f}; //ORIGINAL
+      float light_pos[] = {1.0f, 3.0f, 10.0f, 1.0f};
+      //float light_Ka[]  = {1.0f, 0.5f, 0.5f, 1.0f}; //ORIGINAL
+      float light_Ka[]  = {0.5f, 0.5f, 0.5f, 1.0f}; 
+      //float light_Kd[]  = {1.0f, 0.1f, 0.1f, 1.0f}; //ORIGINAL
+      float light_Kd[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+      float light_Ks[]  = {1.0f, 1.0f, 1.0f, 1.0f}; //Brillante
+      
+      
+      //float light_Ks[]  = {0.0f, 0.0f, 0.0f, 0.0f}; //SemiMate
+
+      gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, makeFloatBuffer(light_pos));
+      gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, makeFloatBuffer(light_Ka));
+      gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, makeFloatBuffer(light_Kd));
+      gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, makeFloatBuffer(light_Ks));
+
+      // -------------------------------------------
+      // Material parameters:
+
+      //float material_Ka[] = {0.0f, 0.9f, 0.7f, 1.0f}; //Color Material del brillante
+      float material_Ka[] = {0.0f, 0.9f, 0.7f, 1.0f};
+      float material_Kd[] = {0.4f, 0.4f, 0.5f, 1.0f};
+      float material_Ks[] = {0.8f, 0.8f, 0.0f, 1.0f};
+      float material_Ke[] = {0.1f, 0.0f, 0.0f, 0.0f};
+      float material_Se = 20.0f;
+
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, makeFloatBuffer(material_Ka));
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, makeFloatBuffer(material_Kd));
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, makeFloatBuffer(material_Ks));
+      gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, makeFloatBuffer(material_Ke));
+      gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material_Se);
+    }
+ 
     
  
     public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) 
