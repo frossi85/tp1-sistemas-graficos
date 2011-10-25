@@ -34,8 +34,8 @@ public class anillo {
 		float x, y, x2, y2;
 		float[] no;
 		float texX, texY;
-		float texXPaso = 1 / this._lateralVertice;
-		float texYPaso = 1 / this._radialVertice;
+		float texXPaso = 1.0f / this._lateralVertice;
+		float texYPaso = 1.0f / this._radialVertice;
 		texX = 0;
 		for(int i = 0; i < this._lateralVertice; i++){
 			x = this._radio*(float)Math.cos(angulo);
