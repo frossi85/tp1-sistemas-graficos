@@ -1,7 +1,7 @@
 varying vec4 diffuse,ambientGlobal, ambient;
 varying vec3 normal,lightDir,halfVector, eyeVec;
 varying float dist;
-
+uniform sampler2D tex;
 
 void main()
 {
