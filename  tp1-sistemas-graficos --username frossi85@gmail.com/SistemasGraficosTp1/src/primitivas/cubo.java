@@ -30,10 +30,14 @@ public class cubo {
 	
 		float p;
 		
-	
+		float texX, texY, texXPaso, texYPaso;
+		texXPaso = 1.0f / this._interVertice;
+		texYPaso = 1.0f / this._interVertice;
 		for(int f = 0; f < 2; f++){
+			texY = 0;
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
+				texX = 0;
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
 					gl.glBegin(GL2.GL_TRIANGLES);
 						if(this._showColors)
@@ -45,22 +49,26 @@ public class cubo {
 						
 						gl.glNormal3f(0,0,2*p);
 						
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(i, jM, p);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(iM, jM, p);
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(j/(this._medioAncho*2))); gl.glVertex3f(i, j, p);
+						gl.glTexCoord2f(texX, texY + texYPaso); gl.glVertex3f(i, jM, p);
+						gl.glTexCoord2f(texX + texXPaso, texY + texYPaso); gl.glVertex3f(iM, jM, p);
+						gl.glTexCoord2f(texX, texY); gl.glVertex3f(i, j, p);
 						
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(j/(this._medioAncho*2))); gl.glVertex3f(i, j, p);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(iM, jM, p);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(iM, j, p);
+						gl.glTexCoord2f(texX, texY); gl.glVertex3f(i, j, p);
+						gl.glTexCoord2f(texX+texXPaso, texY + texYPaso); gl.glVertex3f(iM, jM, p);
+						gl.glTexCoord2f(texX + texXPaso, texY); gl.glVertex3f(iM, j, p);
 						
 					gl.glEnd();
+					texX += texXPaso;
 				}
+				texY += texYPaso;
 			}
 		}
 		
 		for(int f = 0; f < 2; f++){
 			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
+			texY = 0;
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
+				texX = 0;
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
 					gl.glBegin(GL2.GL_TRIANGLES);
 						if(this._showColors)
@@ -72,22 +80,26 @@ public class cubo {
 						
 						gl.glNormal3f(2*p,0,0);
 						
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(p, i, jM);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(p, iM, jM);
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(j/(this._medioAncho*2))); gl.glVertex3f(p, i, j);
+						gl.glTexCoord2f(texY, texX+texXPaso); gl.glVertex3f(p, i, jM);
+						gl.glTexCoord2f(texY + texYPaso, texX+texXPaso); gl.glVertex3f(p, iM, jM);
+						gl.glTexCoord2f(texY, texX); gl.glVertex3f(p, i, j);
 						
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(j/(this._medioAncho*2))); gl.glVertex3f(p, i, j);						
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(p, iM, jM);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(p, iM, j);
+						gl.glTexCoord2f(texY, texX); gl.glVertex3f(p, i, j);						
+						gl.glTexCoord2f(texY+texYPaso, texX+texXPaso); gl.glVertex3f(p, iM, jM);
+						gl.glTexCoord2f(texY+texYPaso, texX); gl.glVertex3f(p, iM, j);
 						
 					gl.glEnd();
+					texX += texXPaso;
 				}
+				texY += texYPaso;
 			}
 		}
 		
 		for(int f = 0; f < 2; f++){
-			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;			
+			p = (f%2 == 0)? -1 * this._medioAncho : this._medioAncho;
+			texY = 0;
 			for(float j = -this._medioAncho; j < this._medioAncho; j+= paso){
+				texX = 0;
 				for(float i = -this._medioAncho; i < this._medioAncho; i+= paso){
 					gl.glBegin(GL2.GL_TRIANGLES);
 						if(this._showColors)
@@ -100,16 +112,18 @@ public class cubo {
 						
 						gl.glNormal3f(0,2*p,0);
 						
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(i, p,jM);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(iM, p, jM);
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(j/(this._medioAncho*2))); gl.glVertex3f(i, p, j);
+						gl.glTexCoord2f(texX, texY+texYPaso); gl.glVertex3f(i, p,jM);
+						gl.glTexCoord2f(texX + texXPaso, texY+texYPaso); gl.glVertex3f(iM, p, jM);
+						gl.glTexCoord2f(texX, texY); gl.glVertex3f(i, p, j);
 						
-						gl.glTexCoord2f(1-(i/(this._medioAncho*2)), 1-(j/(this._medioAncho*2))); gl.glVertex3f(i, p, j);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(jM/(this._medioAncho*2))); gl.glVertex3f(iM, p, jM);
-						gl.glTexCoord2f(1-(iM/(this._medioAncho*2)), 1-(j/(this._medioAncho*2))); gl.glVertex3f(iM, p, j);						
+						gl.glTexCoord2f(texX, texY); gl.glVertex3f(i, p, j);
+						gl.glTexCoord2f(texX + texXPaso, texY+texYPaso); gl.glVertex3f(iM, p, jM);
+						gl.glTexCoord2f(texX + texXPaso, texY); gl.glVertex3f(iM, p, j);						
 						
 					gl.glEnd();
+					texX += texXPaso;
 				}
+				texY += texYPaso;
 			}
 		}
 	}

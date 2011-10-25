@@ -170,8 +170,8 @@ float [] positionDataOrig =
     	gl.glPushMatrix();
     	
 	        gl.glPushMatrix();
-	        	gl.glRotatef(20,0f,1f,0f);
-	        	gl.glRotatef(17,-1f,0f,0f);
+	        	gl.glRotatef(45,0f,1f,0f);
+	        	//gl.glRotatef(17,-1f,0f,0f);
 	        
 	        	//ROTACIONES PARA LA TETERA
 	        	//gl.glRotatef(15,0f,1f,0f);
@@ -181,17 +181,17 @@ float [] positionDataOrig =
 	        	
 	        	//this.shader.usarPrograma();
 	        	
-	        	cubo cil = new cubo(1,3);
+	        	//cubo cil = new cubo(1,100);
 	        	//anillo cil = new anillo(1.5f,0.5f, 500, 500);
-	        	//cilindro cil = new cilindro(1,1,100,50);
+	        	cilindro cil = new cilindro(1,1,100,50);
 	        	//esfera cil = new esfera(1, 300, 300);
-	        	gl.glBegin(GL2.GL_TRIANGLES);
-	        		//cil.dibujar(gl);
-	        	gl.glEnd();
+	        	//gl.glBegin(GL2.GL_TRIANGLES);
+	        	cil.dibujar(gl);
+	        	//gl.glEnd();
 	        	
         
 	        	
-	        	glut.glutSolidTeapot(1.5f);	        	//glut.glutSolidCube(3);
+	        	//glut.glutSolidTeapot(1.5f);	        	//glut.glutSolidCube(3);
 	        	
 	        	//glutSwapBuffers();
 	        gl.glPopMatrix();
