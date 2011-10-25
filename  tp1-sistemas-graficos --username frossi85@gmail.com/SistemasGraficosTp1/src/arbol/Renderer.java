@@ -37,6 +37,7 @@ import java.nio.IntBuffer;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.gl2.GLUT;
+import common.TextureReader;
  
 
 //Implementar el Renderer como Singleton
@@ -95,6 +96,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private IntBuffer vaoHandle = IntBuffer.allocate(1);
    // float positionData[] = 
    	
+    private int texture;
 
 float [] positionDataOrig = 
 {
@@ -161,29 +163,35 @@ float [] positionDataOrig =
     	
     	gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
     	 	
-	   	//gl.glRotatef(rotacionCamara,0f,0f,1f);
+    	 gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
+
     	
         //timer010 = 0.09; //for screenshot!
     	gl.glPushMatrix();
     	
 	        gl.glPushMatrix();
-	        	//gl.glRotatef(0,0f,1f,0f);
-	        	//gl.glRotatef(17,-1f,0f,0f);
+	        	gl.glRotatef(20,0f,1f,0f);
+	        	gl.glRotatef(17,-1f,0f,0f);
+	        
+	        	//ROTACIONES PARA LA TETERA
+	        	//gl.glRotatef(15,0f,1f,0f);
+	    		//gl.glRotatef(12,1f,0f,0f);
 	        	gl.glScalef(0.5f, 0.5f, 0.5f);
-	        	this.shader.usarPrograma();
 	        	
-	        	//cubo cil = new cubo(1,3);
+	        	
+	        	//this.shader.usarPrograma();
+	        	
+	        	cubo cil = new cubo(1,3);
 	        	//anillo cil = new anillo(1.5f,0.5f, 500, 500);
 	        	//cilindro cil = new cilindro(1,1,100,50);
-	        	esfera cil = new esfera(1, 300, 300);
-	        	cil.dibujar(gl);
+	        	//esfera cil = new esfera(1, 300, 300);
+	        	gl.glBegin(GL2.GL_TRIANGLES);
+	        		//cil.dibujar(gl);
+	        	gl.glEnd();
 	        	
-	        	/*pyramide p = new pyramide();
-	        	p.dibujar(gl);*/
-	        
+        
 	        	
-
-	        	//glut.glutSolidCube(3);
+	        	glut.glutSolidTeapot(1.5f);	        	//glut.glutSolidCube(3);
 	        	
 	        	//glutSwapBuffers();
 	        gl.glPopMatrix();
@@ -302,6 +310,24 @@ float [] positionDataOrig =
     {
     	System.out.println("displayChanged called");
     }
+    
+    private void makeRGBTexture(GL gl, GLU glu, TextureReader.Texture img, 
+            int target, boolean mipmapped) {
+        
+        if (mipmapped) {
+            glu.gluBuild2DMipmaps(target, GL.GL_RGB8, img.getWidth(), 
+                    img.getHeight(), GL.GL_RGB, GL.GL_UNSIGNED_BYTE, img.getPixels());
+        } else {
+            gl.glTexImage2D(target, 0, GL.GL_RGB, img.getWidth(), 
+                    img.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE, img.getPixels());
+        }
+    }
+
+    private int genTexture(GL gl) {
+        final int[] tmp = new int[1];
+        gl.glGenTextures(1, tmp, 0);
+        return tmp[0];
+    }
  
     public void init(GLAutoDrawable gLDrawable) 
     {   	
@@ -350,6 +376,21 @@ float [] positionDataOrig =
 	  	this.shader.compiladoLinkeado(gLDrawable);
 	  	
 	    //DemoLight(gl);
+	  	
+	  	///TEXTURA
+	  	gl.glEnable(GL.GL_TEXTURE_2D);
+        texture = genTexture(gl);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
+        TextureReader.Texture texture = null;
+        try {
+            texture = TextureReader.readTexture("ladrillos.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        makeRGBTexture(gl, glu, texture, GL.GL_TEXTURE_2D, false);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 	 
 	  	
 	  	DL_AXIS = gl.glGenLists(3);
@@ -416,7 +457,7 @@ float [] positionDataOrig =
       // Light model parameters:
       // -------------------------------------------
       
-      float lmKa[] = {0.0f, 0.0f, 0.0f, 0.0f };
+      float lmKa[] = {0.1f, 0.1f, 0.1f, 1.0f };
       
       gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, makeFloatBuffer(lmKa));
       
@@ -426,6 +467,7 @@ float [] positionDataOrig =
       // -------------------------------------------
       // Spotlight Attenuation
       
+      //float spot_direction[] = {1.0f, -1.0f, -1.0f }; //ORIGINAL
       float spot_direction[] = {1.0f, -1.0f, -1.0f };
 
       
@@ -449,9 +491,10 @@ float [] positionDataOrig =
       // Lighting parameters:
 
       //float light_pos[] = {0.0f, 5.0f, 5.0f, 1.0f}; //ORIGINAL
-      float light_pos[] = {1.0f, 3.0f, 10.0f, 1.0f};
+      float light_pos[] = {1.0f, 3.0f, 10.0f, 1.0f}; //DIRECTIONAL LITGH O POINT??
       //float light_Ka[]  = {1.0f, 0.5f, 0.5f, 1.0f}; //ORIGINAL
-      float light_Ka[]  = {0.5f, 0.5f, 0.5f, 1.0f}; 
+      //float light_Ka[] = {0.5f, 0.5f, 0.5f, 1.0f}; 
+      float light_Ka[] = {0.0f, 0.0f, 0.0f, 1.0f }; //Del segundo tuto
       //float light_Kd[]  = {1.0f, 0.1f, 0.1f, 1.0f}; //ORIGINAL
       float light_Kd[]  = {1.0f, 1.0f, 1.0f, 1.0f};
       float light_Ks[]  = {1.0f, 1.0f, 1.0f, 1.0f}; //Brillante
@@ -468,17 +511,21 @@ float [] positionDataOrig =
       // Material parameters:
 
       //float material_Ka[] = {0.0f, 0.9f, 0.7f, 1.0f}; //Color Material del brillante
-      float material_Ka[] = {0.0f, 0.9f, 0.7f, 1.0f};
-      float material_Kd[] = {0.4f, 0.4f, 0.5f, 1.0f};
-      float material_Ks[] = {0.8f, 0.8f, 0.0f, 1.0f};
+      float material_Ka[] = {0.3f, 0.3f, 0.3f, 1.0f }; //Del Segundo Tuto
+      //float material_Kd[] = {0.4f, 0.4f, 0.4f, 1.0f};
+      float material_Kd[] = {0.9f, 0.5f, 0.5f, 1.0f }; //del segundo TUTO
+      //float material_Ks[] = {0.8f, 0.8f, 0.8f, 1.0f};
+      float material_Ks[] = {0.6f, 0.6f, 0.6f, 1.0f }; //del segundo tuto
       float material_Ke[] = {0.1f, 0.0f, 0.0f, 0.0f};
-      float material_Se = 20.0f;
+      //float material_Se = 15.0f;
+      float material_Se = 60.0f; //del segundo tuto
 
       gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, makeFloatBuffer(material_Ka));
       gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, makeFloatBuffer(material_Kd));
       gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, makeFloatBuffer(material_Ks));
       gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, makeFloatBuffer(material_Ke));
       gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, material_Se);
+      
     }
  
     
