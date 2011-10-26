@@ -32,8 +32,8 @@ public class esfera {
 		int i2, j2;
 		float[] no;
 		float texX, texY;
-		float texXPaso = 1.0f / this._horizontalVertice;
-		float texYPaso = 1.0f / this._verticalVertice;
+		float texXPaso = 3.0f / this._horizontalVertice;
+		float texYPaso = 3.0f / this._verticalVertice;
 		texX = 0;
 		for(int i = 0; i < this._horizontalVertice; i++){		
 			i2 = (i+1)%this._horizontalVertice;
