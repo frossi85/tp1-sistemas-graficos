@@ -549,35 +549,86 @@ float [] positionDataOrig =
 	}
 	
 	private void drawMenu(GL2 gl, Renderer r){
+		
+		cubo cubo = new cubo(0.25f,1);
+		esfera esfera = new esfera(0.3f,30,30);
+		anillo anillo = new anillo(0.3f,0.1f, 30,30);
+		cilindro cilindro = new cilindro(0.3f, 0.3f, 30,1);
+		
+		
 		gl.glPushMatrix();
-			gl.glTranslatef(-3,0,0);
-			gl.glPushMatrix();
-				gl.glTranslatef(0,1.35f,0.0f);
-				esfera esfera = new esfera(0.3f,30,30);
+			gl.glTranslatef(-3,1.6f,0);
+			
+			gl.glPushMatrix();				
 				esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
 			gl.glPushMatrix();
-				gl.glTranslatef(0,0.5f,0.0f);
-				cubo cubo1 = new cubo(0.25f,1);
-				cubo1.dibujar(gl);
+				gl.glTranslatef(0,-1f,0.0f);				
+				cubo.dibujar(gl);
 			gl.glPopMatrix();
 			
 			gl.glPushMatrix();
-				gl.glTranslatef(0,-0.5f,0.0f);
-				anillo anillo = new anillo(0.3f,0.1f, 30,30);
+				gl.glTranslatef(0,-2f,0.0f);
 				anillo.dibujar(gl);
 			gl.glPopMatrix();
 			
 			gl.glPushMatrix();
-				gl.glTranslatef(0,-1.5f,0.0f);
-				cilindro cilindro = new cilindro(0.3f, 0.3f, 30,1);
+				gl.glTranslatef(0,-3f,0.0f);
 				cilindro.dibujar(gl);
 			gl.glPopMatrix();
 			
 		gl.glPopMatrix();
 		
-		actionSquareManager.add(new actionSquare(0.1f, 0.1f, 0.20f, 0.25f){
+		gl.glPushMatrix();
+			gl.glTranslatef(-1.5f, 1.6f, 0);
+			
+			gl.glPushMatrix();	
+			esfera.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+			gl.glTranslatef(1,0,0);
+			esfera.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+			gl.glTranslatef(2,0,0);
+			esfera.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+			gl.glTranslatef(3,0,0);
+			esfera.dibujar(gl);
+			gl.glPopMatrix();
+		
+		gl.glPopMatrix();
+		
+		gl.glPushMatrix();
+			gl.glTranslatef(3,1.6f,0);
+			
+			gl.glPushMatrix();				
+				cubo.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+				gl.glTranslatef(0,-1f,0.0f);				
+				cubo.dibujar(gl);
+			gl.glPopMatrix();
+		
+			gl.glPushMatrix();
+				gl.glTranslatef(0,-2f,0.0f);
+				cubo.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+				gl.glTranslatef(0,-3f,0.0f);
+				cubo.dibujar(gl);
+			gl.glPopMatrix();
+		
+		gl.glPopMatrix();
+		
+		actionSquareManager.add(new actionSquare(0.09f, 0.1f, 0.20f, 0.25f){
 			private Renderer r;
 			public actionSquare setRenderer(Renderer r){
 				this.r = r;
@@ -588,7 +639,7 @@ float [] positionDataOrig =
 	  		}
 	  	}.setRenderer(r));
   
-	  	actionSquareManager.add(new actionSquare(0.1f, 0.25f, 0.20f, 0.5f){
+	  	actionSquareManager.add(new actionSquare(0.09f, 0.25f, 0.20f, 0.5f){
 	  		private Renderer r;
 			public actionSquare setRenderer(Renderer r){
 				this.r = r;
@@ -599,7 +650,7 @@ float [] positionDataOrig =
 	  		}
 	  	}.setRenderer(r));
 	  	
-	  	actionSquareManager.add(new actionSquare(0.1f, 0.5f, 0.20f, 0.7f){
+	  	actionSquareManager.add(new actionSquare(0.09f, 0.5f, 0.20f, 0.7f){
 	  		private Renderer r;
 			public actionSquare setRenderer(Renderer r){
 				this.r = r;
@@ -610,7 +661,7 @@ float [] positionDataOrig =
 	  		}
 	  	}.setRenderer(r));
 	  	
-	  	actionSquareManager.add(new actionSquare(0.1f, 0.7f, 0.20f ,0.9f){
+	  	actionSquareManager.add(new actionSquare(0.09f, 0.7f, 0.20f ,0.9f){
 	  		private Renderer r;
 			public actionSquare setRenderer(Renderer r){
 				this.r = r;
