@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-public class cilindro {
+public class cilindro implements primitiva{
 	
 	private float _mediaAltura;
 	private float _radio;

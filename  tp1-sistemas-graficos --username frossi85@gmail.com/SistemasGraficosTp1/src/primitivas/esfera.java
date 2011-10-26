@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 
-public class esfera {
+public class esfera implements primitiva{
 
 	private float _radio;
 	private int _horizontalVertice;
