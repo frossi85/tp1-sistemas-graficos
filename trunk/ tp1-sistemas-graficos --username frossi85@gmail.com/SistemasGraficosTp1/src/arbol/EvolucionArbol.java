@@ -30,7 +30,7 @@ public class EvolucionArbol
     	glcanvas.addMouseMotionListener(renderer);
     	glcanvas.addMouseWheelListener(renderer);
     	
-    	glcanvas.setSize( 600, 600 );
+    	glcanvas.setSize( 1000, 600 );
  
         JFrame frame = new JFrame( "TP1 Sistemas Graficos" );
         frame.getContentPane().add( glcanvas);

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-public class anillo {
+public class anillo implements primitiva{
 	private float _radio;
 	private float _miniRadio;
 	private int _lateralVertice;

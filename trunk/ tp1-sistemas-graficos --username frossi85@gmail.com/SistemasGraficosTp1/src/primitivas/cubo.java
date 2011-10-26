@@ -2,7 +2,7 @@ package primitivas;
 
 import javax.media.opengl.GL2;
 
-public class cubo {
+public class cubo implements primitiva{
 
 	private int _interVertice;
 	private float _medioAncho;

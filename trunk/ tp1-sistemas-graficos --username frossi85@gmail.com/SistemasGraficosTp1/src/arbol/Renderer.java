@@ -46,15 +46,15 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private GLU glu = new GLU();
     public static GLUT glut = new GLUT();  
 	private Point2D.Float posicionAnteriorMouse = new Point2D.Float(0,0); 
-	private float rotacionCamara = 0;
+	private float rotacionCamaraX = 0, rotacionCamaraY = 0;
 	
 	private actionSquareManager actionSquareManager = new actionSquareManager();
 	 
 	private ManejoShaders shader;
 	// Variables que controlan la ubicaciï¿½n de la cï¿½mara en la Escena 3D
-    private float eye[] =  {15.0f, 15.0f, 5.0f};
-    private float at[]  = { 0.0f,  0.0f, 0.0f};
-    private float up[]  = { 0.0f,  0.0f, 1.0f};
+    private float eye[] =  {0.0f, 0.0f, 4.0f};
+    private float at[]  = { 0.0f,  0.0f, -1.0f};
+    private float up[]  = { 0.0f,  1.0f, 0.0f};
 
     // Variables asociadas a ï¿½nica fuente de luz de la escena
     //private float light_color[] = {0.5f, 0.3f, 0.7f, 1.0f};
@@ -78,7 +78,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private static int DL_GRID;
     private static int DL_AXIS2D_TOP;
 
-    // Tamaï¿½o de la ventana
+    // Tamaño de la ventana
     private static float window_size[] = new float[2];
     private static float W_WIDTH = window_size[0];
     private static float W_HEIGHT = window_size[1];
@@ -97,6 +97,8 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    // float positionData[] = 
    	
     private int texture;
+    
+    private primitiva primitiva = new esfera(1, 300, 300);
 
 float [] positionDataOrig = 
 {
@@ -168,26 +170,24 @@ float [] positionDataOrig =
     	
         //timer010 = 0.09; //for screenshot!
     	gl.glPushMatrix();
+    	drawMenu(gl, this);
+    	gl.glPopMatrix(); 
+    	gl.glPushMatrix();
     	
 	        gl.glPushMatrix();
-	        	gl.glRotatef(45,0f,1f,0f);
+	        	//gl.glRotatef(45,0f,1f,0f);
 	        	//gl.glRotatef(17,-1f,0f,0f);
 	        
 	        	//ROTACIONES PARA LA TETERA
 	        	//gl.glRotatef(15,0f,1f,0f);
 	    		//gl.glRotatef(12,1f,0f,0f);
-	        	gl.glScalef(0.5f, 0.5f, 0.5f);
+	        	//gl.glScalef(0.5f, 0.5f, 0.5f);
 	        	
 	        	
 	        	//this.shader.usarPrograma();
-	        	
-	        	//cubo cil = new cubo(1,100);
-	        	//anillo cil = new anillo(1.5f,0.5f, 500, 500);
-	        	//cilindro cil = new cilindro(1,1,100,50);
-	        	esfera cil = new esfera(1, 300, 300);
-	        	//gl.glBegin(GL2.GL_TRIANGLES);
-	        	cil.dibujar(gl);
-	        	//gl.glEnd();
+	        	gl.glRotatef(rotacionCamaraX, 0, 1, 0);
+	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
+	        	primitiva.dibujar(gl);
 	        	
         
 	        	
@@ -343,29 +343,8 @@ float [] positionDataOrig =
 		gl.glShadeModel(GL2.GL_SMOOTH);
 		gl.glEnable(GL2.GL_DEPTH_TEST);
 		
-		
-		//Agregago
-		int h = 600, w = 600;
-	      if(h == 0) h = 1;
-		   float ratio = 1.0f * (float)w / (float)h;
-
-	      
-		   gl.glMatrixMode(GL2.GL_PROJECTION);
-		   gl.glLoadIdentity();
-		
-		   gl.glViewport(0, 0, w, h);
-
-	      glu.gluPerspective(45,ratio,1,100);
-		   gl.glMatrixMode(GL2.GL_MODELVIEW);
-		   gl.glLoadIdentity();
-		 // gl.glBindVertexArray( vaoHandle.get(0) );	// No se si va
-		   glu.gluLookAt(0.0f,0.0f,4.0f, 
-			          0.0,0.0,-1.0,
-				       0.0f,1.0f,0.0f);
-//		   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
-//		   				  at[0], at[1], at[2],
-//		   				  up[0], up[1], up[2]);
-		   
+		//setear la camera
+		Set3DEnv(gl);  
 		   
 		   
 		//Fin agregado
@@ -420,23 +399,7 @@ float [] positionDataOrig =
 	  	gl.glEndList();
     
 	  	DemoLight(gl);
-	  	actionSquareManager.add(new actionSquare(0.1f, 0.1f, 0.25f, 0.9f){
-	  		public void actuar(){
-	  			System.out.println("izquierda");
-	  		}
-	  	});
 	  	
-	  	actionSquareManager.add(new actionSquare(0.3f, 0.05f, 0.7f, 0.25f){
-	  		public void actuar(){
-	  			System.out.println("arriba");
-	  		}
-	  	});
-	  	
-	  	actionSquareManager.add(new actionSquare(0.75f, 0.1f, 0.9f, 0.9f){
-	  		public void actuar(){
-	  			System.out.println("derecha");
-	  		}
-	  	});
     }
     
     public static FloatBuffer makeFloatBuffer(float[] arr) {
@@ -536,6 +499,10 @@ float [] positionDataOrig =
  
         W_WIDTH  = (float)width;
     	W_HEIGHT = (float)height;
+    	
+    	GL2 gl = gLDrawable.getGL().getGL2();
+    	//setear la camera
+		Set3DEnv(gl);  
     }
  
 	public void dispose(GLAutoDrawable arg0) 
@@ -543,12 +510,121 @@ float [] positionDataOrig =
 		System.out.println("dispose() called");
 	}
     
-	void Set3DEnv(GL2 gl)
+	private void Set3DEnv(GL2 gl)
 	{		
 	  	gl.glViewport (0, 0, (int) W_WIDTH, (int) W_HEIGHT); 
 	    gl.glMatrixMode (GL2.GL_PROJECTION);
 	    gl.glLoadIdentity ();
 	    glu.gluPerspective(60.0, W_WIDTH/W_HEIGHT, 0.10, 100.0);
+	    
+	    gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		glu.gluLookAt(eye[0], eye[1] , eye[2], 
+				  at[0], at[1], at[2],
+ 				  up[0], up[1], up[2]);
+		   
+		//Agregago
+		//int h = (int)W_HEIGHT, w = (int)W_WIDTH;
+		/*System.out.println(W_HEIGHT + " aaaaa " + W_WIDTH);
+		int h = 600, w = 600;
+	      if(h == 0) h = 1;
+		   float ratio = 1.0f * (float)w / (float)h;*/
+
+	      /*
+		   gl.glMatrixMode(GL2.GL_PROJECTION);
+		   gl.glLoadIdentity();
+		
+		   gl.glViewport(0, 0, w, h);
+
+	      glu.gluPerspective(45,ratio,1,100);*/
+		  /* gl.glMatrixMode(GL2.GL_MODELVIEW);
+		   gl.glLoadIdentity();
+		 // gl.glBindVertexArray( vaoHandle.get(0) );	// No se si va
+		   glu.gluLookAt(0.0f,0.0f,4.0f, 
+			          0.0,0.0,-1.0,
+				       0.0f,1.0f,0.0f);
+//		   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
+//		   				  at[0], at[1], at[2],
+//		   				  up[0], up[1], up[2]);*/
+	}
+	
+	private void drawMenu(GL2 gl, Renderer r){
+		gl.glPushMatrix();
+			gl.glTranslatef(-3,0,0);
+			gl.glPushMatrix();
+				gl.glTranslatef(0,1.35f,0.0f);
+				esfera esfera = new esfera(0.3f,30,30);
+				esfera.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+				gl.glTranslatef(0,0.5f,0.0f);
+				cubo cubo1 = new cubo(0.25f,1);
+				cubo1.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+				gl.glTranslatef(0,-0.5f,0.0f);
+				anillo anillo = new anillo(0.3f,0.1f, 30,30);
+				anillo.dibujar(gl);
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+				gl.glTranslatef(0,-1.5f,0.0f);
+				cilindro cilindro = new cilindro(0.3f, 0.3f, 30,1);
+				cilindro.dibujar(gl);
+			gl.glPopMatrix();
+			
+		gl.glPopMatrix();
+		
+		actionSquareManager.add(new actionSquare(0.1f, 0.1f, 0.20f, 0.25f){
+			private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			r.setPrimitiva( new esfera(1, 200, 200) );
+	  		}
+	  	}.setRenderer(r));
+  
+	  	actionSquareManager.add(new actionSquare(0.1f, 0.25f, 0.20f, 0.5f){
+	  		private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			r.setPrimitiva( new cubo(0.6f,100) );
+	  		}
+	  	}.setRenderer(r));
+	  	
+	  	actionSquareManager.add(new actionSquare(0.1f, 0.5f, 0.20f, 0.7f){
+	  		private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			r.setPrimitiva( new anillo(0.7f,0.3f, 200, 200) );
+	  		}
+	  	}.setRenderer(r));
+	  	
+	  	actionSquareManager.add(new actionSquare(0.1f, 0.7f, 0.20f ,0.9f){
+	  		private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			r.setPrimitiva( new cilindro(0.6f,0.8f,100,50) );
+	  		}
+	  	}.setRenderer(r));
+	
+	}
+	
+	public void setPrimitiva(primitiva p){
+		this.primitiva = p;
 	}
 	  
 	void SetPanelTopEnv(GL2 gl)
@@ -645,7 +721,8 @@ float [] positionDataOrig =
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		rotacionCamara += e.getX() - posicionAnteriorMouse.getX();			
+		rotacionCamaraX += e.getX() - posicionAnteriorMouse.getX();
+		rotacionCamaraY += e.getY() - posicionAnteriorMouse.getY();		
 		posicionAnteriorMouse.setLocation(e.getX(), e.getY());
 	}
 
