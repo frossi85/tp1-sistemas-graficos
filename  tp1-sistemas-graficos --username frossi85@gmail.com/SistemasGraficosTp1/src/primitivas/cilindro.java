@@ -60,7 +60,7 @@ public class cilindro {
 		float zM;
 		float[] no;
 		float texX, texY, texXPaso, texYPaso;
-		texXPaso = 1.0f / this._caras;
+		texXPaso = 3.0f / this._caras;
 		texYPaso = 1.0f / this._anillos;
 		
 		int cantidadDePuntos = this._puntos.size();
