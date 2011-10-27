@@ -78,7 +78,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     private static int DL_GRID;
     private static int DL_AXIS2D_TOP;
 
-    // Tamaño de la ventana
+    // Tamaï¿½o de la ventana
     private static float window_size[] = new float[2];
     private static float W_WIDTH = window_size[0];
     private static float W_HEIGHT = window_size[1];
@@ -98,7 +98,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    	
     private int texture;
     
-    private primitiva primitiva = new esfera(1, 300, 300);
+    private primitiva primitiva = new cubo(0.8f,4);//new cilindro(1f, 0.7f, 10, 5);//new cubo(0.8f,4);//new esfera(1, 300, 300);
 
 float [] positionDataOrig = 
 {
@@ -165,125 +165,43 @@ float [] positionDataOrig =
     	
     	gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
     	 	
-    	 gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
+    	//gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
 
     	
         //timer010 = 0.09; //for screenshot!
     	gl.glPushMatrix();
-    	drawMenu(gl, this);
+    		//drawMenu(gl, this);
     	gl.glPopMatrix(); 
     	gl.glPushMatrix();
     	
-	        gl.glPushMatrix();
-	        	//gl.glRotatef(45,0f,1f,0f);
-	        	//gl.glRotatef(17,-1f,0f,0f);
-	        
-	        	//ROTACIONES PARA LA TETERA
-	        	//gl.glRotatef(15,0f,1f,0f);
-	    		//gl.glRotatef(12,1f,0f,0f);
-	        	//gl.glScalef(0.5f, 0.5f, 0.5f);
+	        gl.glPushMatrix();        	
 	        	
-	        	
-	        	//this.shader.usarPrograma();
 	        	gl.glRotatef(rotacionCamaraX, 0, 1, 0);
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
-	        	primitiva.dibujar(gl);
-	        	
+        	
+	        
+	    		int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRuido().NOMBRE_TIME);
+	    		gl.glUniform1f(location,shader.getRuido().getTime());  
+	    		shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);
+	    		
+	    	  	gl.glBegin(GL.GL_TRIANGLES);
+	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
+	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
+	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
+	    		  	
+	    		  	this.shader.usarPrograma();
+	    		  		primitiva.dibujar(gl);
+	    		  
+	    		  	//this.shader.pararPrograma();	
+	    	   	gl.glEnd();
+	    	   	
+	    	   	
         
-	        	
-	        	//glut.glutSolidTeapot(1.5f);	        	//glut.glutSolidCube(3);
-	        	
-	        	//glutSwapBuffers();
+	        
 	        gl.glPopMatrix();
         gl.glPopMatrix();
     	
-		
-//	  	gl.glClear (GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-//	  	
-//	  	
-//	  	///FACUNDO PARA FRAGMENT SHADER///
-//	  	gl.glDisable(GL2.GL_LIGHT0);
-//	  	gl.glDisable(GL2.GL_LIGHTING);
-//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
-//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
-//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
-//		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
-//		float color[] = { 0.0f, 1.0f, 0.0f, 1f };
-//		
-//		gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, color,0);
-//    	gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
-//    	gl.glEnable(GL2.GL_COLOR_MATERIAL);	
-//
-//	  
-//	  	gl.glEnable(GL2.GL_LIGHT0);
-//	  	gl.glEnable(GL2.GL_LIGHTING);
-//	  	
-//	  	///////FIN PARA FRAGMENT SHADER////////////////
-//	  	
-//	  	
-//	  	///////////////////////////////////////////////////
-//	  	// Escena 3D
-//	  	
-//	  	Set3DEnv(gl); //funcion de los profes
-//	  	
-//	  	gl.glMatrixMode(GL2.GL_MODELVIEW);
-//	  	gl.glLoadIdentity(); 	
-//	  	gl.glBindVertexArray( vaoHandle.get(0) );	// No se si va
-//	   	glu.gluLookAt(eye[0], eye[1] , eye[2], 
-//	   				  at[0], at[1], at[2],
-//	   				  up[0], up[1], up[2]);
-//
-//	 	
-//	   	gl.glRotatef(rotacionCamara,0f,0f,1f);
-//	  	
-//	   	if (view_axis)
-//	  		 gl.glCallList(DL_AXIS);
-//	  	
-//	  	if (view_grid)
-//	  		 gl.glCallList(DL_GRID);
-//	
-////	    ///////////////////////////////////////////////////
-////	  	//
-////	  	// Draw here
-////	  	//
-////	  	//gl.glColor3f(1, 0, 1);
-////	  	
-////	  	gl.glRotatef(-40,1f,1f,0f);
-////	  	
-////	  
-//	  	gl.glTranslatef(0, 0, 3);
-////	  	shader.setColor(gLDrawable, 1, 0, 0);
-////	  	
-////		//cilindro cil = new cilindro(5,1,4,10);
-////	  	//esfera cil = new esfera(4,50, 50);
-////	  	cubo cil = new cubo(3.0f,20);
-////		gl.glColor3f(1f,0.2f,0.3f);
-////		
-////		
-////
-////	  	gl.glBegin(GL.GL_TRIANGLES);
-////
-////	  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
-////	  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
-////	  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
-////	  	cil.dibujar(gl);
-////
-////	   	gl.glEnd();
-//	  	
-//	  	gl.glPushMatrix();
-//	  		gl.glRotatef(90,1f,0f,0f);
-//	  		glut.glutSolidTeapot(4);
-//	  	gl.glPopMatrix();
-//	 
-//	   	this.shader.usarPrograma();
-//	   	
-//    	//UPDATE del modelo
-//    	this.update();
-//    	
-//    	
-//  
-//    	
-//	  	//arbol.dibujar(gl);
+      
 		
 	  	///////////////////////////////////////////////////
 	
@@ -357,19 +275,19 @@ float [] positionDataOrig =
 	    //DemoLight(gl);
 	  	
 	  	///TEXTURA
-	  	gl.glEnable(GL.GL_TEXTURE_2D);
-        texture = genTexture(gl);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-        TextureReader.Texture texture = null;
-        try {
-            texture = TextureReader.readTexture("ladrillos.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        makeRGBTexture(gl, glu, texture, GL.GL_TEXTURE_2D, false);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+//	  	gl.glEnable(GL.GL_TEXTURE_2D);
+//        texture = genTexture(gl);
+//        gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
+//        TextureReader.Texture texture = null;
+//        try {
+//            texture = TextureReader.readTexture("ladrillos.png");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException(e);
+//        }
+//        makeRGBTexture(gl, glu, texture, GL.GL_TEXTURE_2D, false);
+//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 	 
 	  	
 	  	DL_AXIS = gl.glGenLists(3);
