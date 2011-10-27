@@ -5,12 +5,34 @@ attribute float amplitud;
 attribute float longOnda;
 uniform float time;
 
-//varying vec3 normal, lightDir, eyeVec;
-
+varying vec3 normal, lightDir, eyeVec;
 //varying float intensity;
 
-varying vec3 N;
-varying vec3 v;
+vec3 computeNormal( vec3 pos, vec3 tangent, vec3 binormal, float amplitud, float longOnda, float fase, float time )
+{
+	mat3 J;
+	
+	// A matrix is an array of column vectors so J[2] is 
+	// the third column of J.
+	
+	J[0][0] = 1.0 + amplitud * longOnda * cos(longOnda * pos.x + time * 0.01 + fase);
+	J[0][1] = 0.0;
+	J[0][2] = 0.0;
+	
+	J[1][0] = 0.0;
+	J[1][1] = 1.0 + amplitud * longOnda * cos(longOnda * pos.y + time * 0.01 + fase);
+	J[1][2] = 0.0;
+
+	J[2][0] = 0.0;
+	J[2][1] = 0.0;
+	J[2][2] = 1.0 + amplitud * longOnda * cos(longOnda * pos.z + time * 0.01 + fase);
+	
+	vec3 u = J * tangent;
+	vec3 v = J * binormal;
+	
+	vec3 n = cross(v, u);
+	return normalize(n);
+}
 
 void main(void)
 {
@@ -23,20 +45,43 @@ void main(void)
 		
 	gl_Position = gl_ModelViewProjectionMatrix * v2;
 	
-	//////
-	//vec3 ld;
+	// 2 - Compute the displaced normal
+	//
+	
+	// if the engine does not provide the tangent vector you 
+	// can compute it with the following piece of of code:
+	//
+	vec3 tangent; 
+	vec3 binormal; 
+	
+	vec3 c1 = cross(gl_Normal, vec3(0.0, 0.0, 1.0)); 
+	vec3 c2 = cross(gl_Normal, vec3(0.0, 1.0, 0.0)); 
+	
+	if(length(c1)>length(c2))
+	{
+		tangent = c1;	
+	}
+	else
+	{
+		tangent = c2;	
+	}
+	
+	tangent = normalize(tangent);
+	
+	binormal = cross(gl_Normal, tangent); 
+	binormal = normalize(binormal);
+
+	vec3 displacedNormal;
+
+	displacedNormal = gl_Normal;
+	//displacedNormal = computeNormal( v2.xyz, tangent.xyz, binormal, amplitud, longOnda, fase, time);
+   	
+   	normal = normalize(gl_NormalMatrix * displacedNormal);
 		
 	//intensity = dot(lightDir,gl_Normal);
-	
-	//v = vec3(gl_ModelViewMatrix * gl_Vertex);       
-   	//N = normalize(gl_NormalMatrix * gl_Normal);
-		
-		
-	//Cosas para el fragment shader
-	//normal = gl_NormalMatrix * gl_Normal;
 
-	//vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
+	vec3 vVertex = vec3(gl_ModelViewMatrix * v2);
 
-	//lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
-	//eyeVec = -vVertex;
+	lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
+	eyeVec = -vVertex;
 } 
