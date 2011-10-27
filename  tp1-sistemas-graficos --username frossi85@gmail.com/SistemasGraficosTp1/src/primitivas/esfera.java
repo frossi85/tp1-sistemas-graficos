@@ -38,7 +38,7 @@ public class esfera implements primitiva{
 		for(int i = 0; i < this._horizontalVertice; i++){		
 			i2 = (i+1)%this._horizontalVertice;
 			texY = texYPaso;
-			for(int j = 0; j < this._verticalVertice-1; j++){
+			for(int j = 1; j < this._verticalVertice; j++){
 				j2 = (j+1)%this._verticalVertice;
 				gl.glBegin(GL2.GL_QUADS);
 				no = getNormal(
@@ -77,6 +77,8 @@ public class esfera implements primitiva{
 	
 		gl.glBegin(GL2.GL_TRIANGLES);
 		Point2D.Float minOffset = this._offset.get(this._offset.size()-1);
+		Point2D.Float maxOffset = this._offset.get(1);
+		
 		texX = 0;
 		for(int i = 0; i < this._horizontalVertice; i++){
 			i2 = (i+1)% this._horizontalVertice;
@@ -90,17 +92,21 @@ public class esfera implements primitiva{
 			gl.glVertex3f(this._coords.get(i2).x*minOffset.x, this._coords.get(i2).y*minOffset.x, -minOffset.y);
 			gl.glTexCoord2f(texX + texXPaso, 1-texYPaso);
 			gl.glVertex3f(this._coords.get(i).x*minOffset.x, this._coords.get(i).y*minOffset.x, -minOffset.y);
-			
+		}
+		texX = 0;
+		for(int i = 0; i < this._horizontalVertice; i++){
+			i2 = (i+1)% this._horizontalVertice;	
 			no = getNormal(0.0f, 0.0f, -this._radio,
-					this._coords.get(i2).x*minOffset.x, this._coords.get(i2).y*minOffset.x, minOffset.y,
-					this._coords.get(i).x*minOffset.x, this._coords.get(i).y*minOffset.x, minOffset.y);
+					this._coords.get(i).x*maxOffset.x, this._coords.get(i).y*maxOffset.x, -maxOffset.y,
+					this._coords.get(i2).x*maxOffset.x, this._coords.get(i2).y*maxOffset.x, -maxOffset.y
+					);
 			gl.glNormal3f(no[0], no[1], no[2]);
 			gl.glTexCoord2f(texX, 0);
 			gl.glVertex3f(0.0f, 0.0f, -this._radio);
 			gl.glTexCoord2f(texX, texYPaso);
-			gl.glVertex3f(this._coords.get(i2).x*minOffset.x, this._coords.get(i2).y*minOffset.x, minOffset.y);
-			gl.glTexCoord2f(texX + texXPaso, texYPaso);
-			gl.glVertex3f(this._coords.get(i).x*minOffset.x, this._coords.get(i).y*minOffset.x, minOffset.y);
+			gl.glVertex3f(this._coords.get(i2).x*maxOffset.x, this._coords.get(i2).y*maxOffset.x, -maxOffset.y);			
+			gl.glTexCoord2f(texX + texXPaso, texYPaso);			
+			gl.glVertex3f(this._coords.get(i).x*maxOffset.x, this._coords.get(i).y*maxOffset.x, -maxOffset.y);
 			texX += texXPaso;
 		}
 		gl.glEnd();
@@ -112,6 +118,7 @@ public class esfera implements primitiva{
 		double pasoAngular = Math.PI/this._verticalVertice;
 		
 		for(int i = 0; i < this._verticalVertice; i++){
+			//angulo = (angulo > Math.PI)? 0.0f : angulo;
 			Point2D.Float p = new Point2D.Float((float)Math.sin(angulo),this._radio*(float)Math.cos(angulo));
 			res.add(p);
 			angulo += pasoAngular;

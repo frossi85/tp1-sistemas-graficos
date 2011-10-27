@@ -36,25 +36,33 @@ public class cilindro implements primitiva{
 	}
 	
 	public void dibujar(GL2 gl){
-		gl.glPushMatrix();
-			if(this._showColors)
-				gl.glColor3fv(this._colors[0],0);
-			else gl.glColor3fv(this._noColor,0);
-			
-			gl.glTranslatef(0.0f, 0.0f,this._mediaAltura);
-			gl.glNormal3f(0.0f,0.0f,1);
-			this.dibujarCirculo(gl);
-		gl.glPopMatrix();
 		
-		gl.glPushMatrix();		
-			if(this._showColors)
-				gl.glColor3fv(this._colors[1],0);
-			else gl.glColor3fv(this._noColor,0);
-			
-			gl.glTranslatef(0.0f, 0.0f,-this._mediaAltura);	
+		if(this._showColors)
+			gl.glColor3fv(this._colors[0],0);
+		else gl.glColor3fv(this._noColor,0);
+		
+		gl.glBegin(GL2.GL_TRIANGLE_FAN);
+			gl.glNormal3f(0.0f,0.0f,1);
+			gl.glTexCoord2f(0.5f, 0.5f); gl.glVertex3f(0.0f, 0.0f, this._mediaAltura);
+			for(Point2D.Float p : this._puntos){
+				gl.glTexCoord2f(p.x/this._radio, p.y/this._radio); gl.glVertex3f(p.x, p.y, this._mediaAltura);
+			}
+			gl.glTexCoord2f(this._puntos.get(0).x/this._radio, this._puntos.get(0).y/this._radio); gl.glVertex3f(this._puntos.get(0).x, this._puntos.get(0).y, this._mediaAltura);
+		gl.glEnd();
+		
+		if(this._showColors)
+			gl.glColor3fv(this._colors[1],0);
+		else gl.glColor3fv(this._noColor,0);
+		
+		gl.glBegin(GL2.GL_TRIANGLE_FAN);
 			gl.glNormal3f(0.0f,0.0f,-1);
-			this.dibujarCirculo(gl);
-		gl.glPopMatrix();
+			gl.glTexCoord2f(0.5f, 0.5f); gl.glVertex3f(0.0f, 0.0f, -this._mediaAltura);
+			for(Point2D.Float p : this._puntos){
+				gl.glTexCoord2f(p.x/this._radio, p.y/this._radio); gl.glVertex3f(p.x, p.y, -this._mediaAltura);
+			}
+			gl.glTexCoord2f(this._puntos.get(0).x/this._radio, this._puntos.get(0).y/this._radio); gl.glVertex3f(this._puntos.get(0).x, this._puntos.get(0).y, -this._mediaAltura);
+		gl.glEnd();
+		
 		
 		float alturaAnillo = this._mediaAltura * 2 / this._anillos;
 		float zM;
