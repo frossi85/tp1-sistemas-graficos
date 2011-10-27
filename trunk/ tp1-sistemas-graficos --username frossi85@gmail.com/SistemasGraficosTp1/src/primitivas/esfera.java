@@ -40,7 +40,7 @@ public class esfera implements primitiva{
 			texY = texYPaso;
 			for(int j = 1; j < this._verticalVertice; j++){
 				j2 = (j+1)%this._verticalVertice;
-				gl.glBegin(GL2.GL_QUADS);
+				gl.glBegin(GL2.GL_TRIANGLES);
 				no = getNormal(
 						this._coords.get(i2).x * this._offset.get(j2).x,
 						this._coords.get(i2).y * this._offset.get(j2).x,
@@ -60,14 +60,24 @@ public class esfera implements primitiva{
 				gl.glVertex3f(this._coords.get(i2).x * this._offset.get(j2).x,
 							this._coords.get(i2).y * this._offset.get(j2).x,
 							this._offset.get(j2).y);
-				gl.glTexCoord2f(texX + texXPaso, texY);
-				gl.glVertex3f(this._coords.get(i2).x * this._offset.get(j).x,
-							this._coords.get(i2).y * this._offset.get(j).x,
-							this._offset.get(j).y);
 				gl.glTexCoord2f(texX, texY);
 				gl.glVertex3f(this._coords.get(i).x * this._offset.get(j).x,
 							this._coords.get(i).y * this._offset.get(j).x,
 							this._offset.get(j).y);
+				
+				gl.glTexCoord2f(texX, texY);
+				gl.glVertex3f(this._coords.get(i).x * this._offset.get(j).x,
+							this._coords.get(i).y * this._offset.get(j).x,
+							this._offset.get(j).y);
+				gl.glTexCoord2f(texX+ texXPaso, texY + texYPaso);
+				gl.glVertex3f(this._coords.get(i2).x * this._offset.get(j2).x,
+							this._coords.get(i2).y * this._offset.get(j2).x,
+							this._offset.get(j2).y);
+				gl.glTexCoord2f(texX + texXPaso, texY);
+				gl.glVertex3f(this._coords.get(i2).x * this._offset.get(j).x,
+							this._coords.get(i2).y * this._offset.get(j).x,
+							this._offset.get(j).y);
+				
 				gl.glEnd();	
 				texY += texYPaso;
 			}

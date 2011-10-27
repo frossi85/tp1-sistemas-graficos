@@ -44,7 +44,7 @@ public class anillo implements primitiva{
 			y2 = this._radio*(float)Math.sin(angulo+pasoAngular);
 			texY = 0;
 			for(int j = 0; j < cantidadDeOffset; j++){
-				gl.glBegin(GL2.GL_POLYGON);
+				gl.glBegin(GL2.GL_TRIANGLES);
 				
 				no = getNormal(
 						x + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo),
@@ -67,14 +67,24 @@ public class anillo implements primitiva{
 				gl.glVertex3f(x2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo+pasoAngular),
 							y2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.sin(angulo+pasoAngular),
 							offset.get((j+1)%cantidadDeOffset).y);
-				gl.glTexCoord2f(texX + texXPaso, texY);
-				gl.glVertex3f(x2 + offset.get(j).x * (float)Math.cos(angulo+pasoAngular),
-							y2 + offset.get(j).x * (float)Math.sin(angulo+pasoAngular),
-							offset.get(j).y);
+				gl.glTexCoord2f(texX + texXPaso, texY);				
 				gl.glTexCoord2f(texX, texY);
 				gl.glVertex3f(x + offset.get(j).x * (float)Math.cos(angulo),
 							y + offset.get(j).x * (float)Math.sin(angulo),
 							offset.get(j).y);
+				
+				gl.glTexCoord2f(texX, texY);
+				gl.glVertex3f(x + offset.get(j).x * (float)Math.cos(angulo),
+							y + offset.get(j).x * (float)Math.sin(angulo),
+							offset.get(j).y);
+				gl.glTexCoord2f(texX + texXPaso, texY + texYPaso);
+				gl.glVertex3f(x2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.cos(angulo+pasoAngular),
+							y2 + offset.get((j+1)%cantidadDeOffset).x * (float)Math.sin(angulo+pasoAngular),
+							offset.get((j+1)%cantidadDeOffset).y);
+				gl.glVertex3f(x2 + offset.get(j).x * (float)Math.cos(angulo+pasoAngular),
+							y2 + offset.get(j).x * (float)Math.sin(angulo+pasoAngular),
+							offset.get(j).y);
+				
 				gl.glEnd();	
 				texY += texYPaso;
 			}
