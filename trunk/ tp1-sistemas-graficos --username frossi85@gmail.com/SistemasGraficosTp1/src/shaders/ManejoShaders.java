@@ -76,7 +76,7 @@ int colorBufferHandle;
 public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.archivoVertex = archivoVertex;
 	this.archivoFragment = archivoFragment;
-	this.ruido = new Ruido(1f,0.25f,0.001f);
+	this.ruido = new Ruido(1f,0.5f,0.00001f);//new Ruido(1f,0.25f,0.001f);
 	this.esferizacion = new Esferizacion(2,0.0f,0.0f,0.0f,0.1f);
 	this.retorcer = new Retorcer(PI/2f);
 	
