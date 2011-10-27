@@ -36,31 +36,39 @@ public class cilindro implements primitiva{
 	}
 	
 	public void dibujar(GL2 gl){
-		
-		if(this._showColors)
-			gl.glColor3fv(this._colors[0],0);
-		else gl.glColor3fv(this._noColor,0);
-		
-		gl.glBegin(GL2.GL_TRIANGLE_FAN);
-			gl.glNormal3f(0.0f,0.0f,1);
-			gl.glTexCoord2f(0.5f, 0.5f); gl.glVertex3f(0.0f, 0.0f, this._mediaAltura);
-			for(Point2D.Float p : this._puntos){
-				gl.glTexCoord2f(p.x/this._radio, p.y/this._radio); gl.glVertex3f(p.x, p.y, this._mediaAltura);
+		int cantidadDePuntos = this._puntos.size();
+		int i2;
+		gl.glBegin(GL2.GL_TRIANGLES);
+			
+			
+			for(int i = 0; i < cantidadDePuntos; i++){
+				i2 = (i+1)%cantidadDePuntos;
+				
+				if(this._showColors)
+					gl.glColor3fv(this._colors[0],0);
+				else gl.glColor3fv(this._noColor,0);
+				
+				gl.glNormal3f(0.0f,0.0f,1);
+				gl.glTexCoord2f(0.5f, 0.5f); 
+				gl.glVertex3f(0.0f, 0.0f, this._mediaAltura);
+				gl.glTexCoord2f(this._puntos.get(i2).x/this._radio, this._puntos.get(i2).y/this._radio); 
+				gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, this._mediaAltura);
+				gl.glTexCoord2f(this._puntos.get(i).x/this._radio, this._puntos.get(i).y/this._radio); 
+				gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, this._mediaAltura);
+				
+				
+				if(this._showColors)
+					gl.glColor3fv(this._colors[1],0);
+				else gl.glColor3fv(this._noColor,0);
+				
+				gl.glNormal3f(0.0f,0.0f,-1);
+				gl.glTexCoord2f(0.5f, 0.5f); 
+				gl.glVertex3f(0.0f, 0.0f, -this._mediaAltura);
+				gl.glTexCoord2f(this._puntos.get(i2).x/this._radio, this._puntos.get(i2).y/this._radio); 
+				gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, -this._mediaAltura);
+				gl.glTexCoord2f(this._puntos.get(i).x/this._radio, this._puntos.get(i).y/this._radio); 
+				gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, -this._mediaAltura);
 			}
-			gl.glTexCoord2f(this._puntos.get(0).x/this._radio, this._puntos.get(0).y/this._radio); gl.glVertex3f(this._puntos.get(0).x, this._puntos.get(0).y, this._mediaAltura);
-		gl.glEnd();
-		
-		if(this._showColors)
-			gl.glColor3fv(this._colors[1],0);
-		else gl.glColor3fv(this._noColor,0);
-		
-		gl.glBegin(GL2.GL_TRIANGLE_FAN);
-			gl.glNormal3f(0.0f,0.0f,-1);
-			gl.glTexCoord2f(0.5f, 0.5f); gl.glVertex3f(0.0f, 0.0f, -this._mediaAltura);
-			for(Point2D.Float p : this._puntos){
-				gl.glTexCoord2f(p.x/this._radio, p.y/this._radio); gl.glVertex3f(p.x, p.y, -this._mediaAltura);
-			}
-			gl.glTexCoord2f(this._puntos.get(0).x/this._radio, this._puntos.get(0).y/this._radio); gl.glVertex3f(this._puntos.get(0).x, this._puntos.get(0).y, -this._mediaAltura);
 		gl.glEnd();
 		
 		
@@ -71,12 +79,12 @@ public class cilindro implements primitiva{
 		texXPaso = 3.0f / this._caras;
 		texYPaso = 1.0f / this._anillos;
 		
-		int cantidadDePuntos = this._puntos.size();
+		
 		
 		if(this._showColors)
 			gl.glColor3fv(this._colors[2],0);
 		else gl.glColor3fv(this._noColor,0);
-		int i2;
+		
 		
 		texY = 0;
 		for(float z = -this._mediaAltura; z < this._mediaAltura; z += alturaAnillo){
@@ -84,7 +92,7 @@ public class cilindro implements primitiva{
 			texX = 0;			
 			for(int i = 0; i < cantidadDePuntos; i++){
 				i2 = (i+1)%cantidadDePuntos;
-				gl.glBegin(GL2.GL_POLYGON);
+				gl.glBegin(GL2.GL_TRIANGLES);
 					no = getNormal(this._puntos.get(i).x, this._puntos.get(i).y, zM,
 							this._puntos.get(i2).x, this._puntos.get(i2).y, zM,
 							this._puntos.get(i2).x, this._puntos.get(i2).y, z);
@@ -92,8 +100,12 @@ public class cilindro implements primitiva{
 					
 					gl.glTexCoord2f(texX, texY+texYPaso); gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, zM);
 					gl.glTexCoord2f(texX+texXPaso, texY+texYPaso); gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, zM);
-					gl.glTexCoord2f(texX+texXPaso, texY); gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, z);
 					gl.glTexCoord2f(texX, texY); gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, z);
+					
+					gl.glTexCoord2f(texX, texY); gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, z);
+					gl.glTexCoord2f(texX+texXPaso, texY+texYPaso); gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, zM);
+					gl.glTexCoord2f(texX+texXPaso, texY); gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, z);
+					
 	
 				gl.glEnd();
 				texX += texXPaso;
