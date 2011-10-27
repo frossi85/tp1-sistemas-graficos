@@ -3,11 +3,11 @@
 attribute float fase;
 attribute float amplitud;
 attribute float longOnda;
-attribute float time;
+uniform float time;
 
-varying vec3 normal, lightDir, eyeVec;
+//varying vec3 normal, lightDir, eyeVec;
 
-varying float intensity;
+//varying float intensity;
 
 varying vec3 N;
 varying vec3 v;
@@ -24,19 +24,19 @@ void main(void)
 	gl_Position = gl_ModelViewProjectionMatrix * v2;
 	
 	//////
-	vec3 ld;
+	//vec3 ld;
 		
-	intensity = dot(lightDir,gl_Normal);
+	//intensity = dot(lightDir,gl_Normal);
 	
-	v = vec3(gl_ModelViewMatrix * gl_Vertex);       
-   	N = normalize(gl_NormalMatrix * gl_Normal);
+	//v = vec3(gl_ModelViewMatrix * gl_Vertex);       
+   	//N = normalize(gl_NormalMatrix * gl_Normal);
 		
 		
 	//Cosas para el fragment shader
-	normal = gl_NormalMatrix * gl_Normal;
+	//normal = gl_NormalMatrix * gl_Normal;
 
-	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
+	//vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
 
-	lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
-	eyeVec = -vVertex;
+	//lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
+	//eyeVec = -vVertex;
 } 
