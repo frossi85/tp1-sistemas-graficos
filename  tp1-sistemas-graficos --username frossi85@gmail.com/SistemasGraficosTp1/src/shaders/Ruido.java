@@ -9,9 +9,9 @@ public class Ruido extends Transformaciones {
 	private float amplitud;
 	private float longOnda;
 	private int memFase = 1;
-	private int memAmplitud = 3;
-	private int memLongOnda = 4;
-	private int memTime = 5;
+	private int memAmplitud = 2;
+	private int memLongOnda = 3;
+	private int memTime = 4;
 	private float time;
 	public static String NOMBRE_FASE = "fase";
 	public static String NOMBRE_AMPLITUD = "amplitud";
