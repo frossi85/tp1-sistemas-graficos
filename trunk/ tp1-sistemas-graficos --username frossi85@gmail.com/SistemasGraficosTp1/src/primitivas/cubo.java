@@ -57,13 +57,15 @@ public class cubo implements primitiva{
 						gl.glTexCoord2f(texX+texXPaso, texY + texYPaso); gl.glVertex3f(iM, jM, p);
 						gl.glTexCoord2f(texX + texXPaso, texY); gl.glVertex3f(iM, j, p);
 						
-						gl.glVertex3f(i, jM, p);
+						/*
+						 * //no cambia nada
+						 * gl.glVertex3f(i, jM, p);
 						gl.glVertex3f(iM, jM, p);
 						gl.glVertex3f(i, j, p);
 						
 						gl.glVertex3f(i, j, p);
 						gl.glVertex3f(iM, jM, p);
-						gl.glVertex3f(iM, j, p);
+						gl.glVertex3f(iM, j, p);*/
 						
 					gl.glEnd();
 					texX += texXPaso;
@@ -96,13 +98,15 @@ public class cubo implements primitiva{
 						gl.glTexCoord2f(texY+texYPaso, texX+texXPaso); gl.glVertex3f(p, iM, jM);
 						gl.glTexCoord2f(texY+texYPaso, texX); gl.glVertex3f(p, iM, j);
 						
-						gl.glVertex3f(p, i, jM);
+						/*
+						 * //no cambia nada
+						 * gl.glVertex3f(p, i, jM);
 						gl.glVertex3f(p, iM, jM);
 						gl.glVertex3f(p, i, j);
 						
 						gl.glVertex3f(p, i, j);						
 						gl.glVertex3f(p, iM, jM);
-						gl.glVertex3f(p, iM, j);
+						gl.glVertex3f(p, iM, j);*/
 						
 					gl.glEnd();
 					texX += texXPaso;
@@ -136,13 +140,15 @@ public class cubo implements primitiva{
 						gl.glTexCoord2f(texX + texXPaso, texY+texYPaso); gl.glVertex3f(iM, p, jM);
 						gl.glTexCoord2f(texX + texXPaso, texY); gl.glVertex3f(iM, p, j);		
 						
-						gl.glVertex3f(i, p,jM);
+						/*
+						 * //no cambia nada
+						 * gl.glVertex3f(i, p,jM);
 						gl.glVertex3f(iM, p, jM);
 						gl.glVertex3f(i, p, j);
 						
 						gl.glVertex3f(i, p, j);
 						gl.glVertex3f(iM, p, jM);
-						gl.glVertex3f(iM, p, j);	
+						gl.glVertex3f(iM, p, j);	*/
 						
 					gl.glEnd();
 					texX += texXPaso;

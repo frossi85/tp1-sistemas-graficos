@@ -184,7 +184,7 @@ float [] positionDataOrig =
 	    		gl.glUniform1f(location,shader.getRuido().getTime());  
 	    		shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);
 	    		
-	    	  	gl.glBegin(GL.GL_TRIANGLES);
+	    	  	gl.glBegin(GL.GL_TRIANGLES); //no cambia nada
 	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
 	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
 	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
@@ -193,7 +193,7 @@ float [] positionDataOrig =
 	    		  		primitiva.dibujar(gl);
 	    		  
 	    		  	//this.shader.pararPrograma();	
-	    	   	gl.glEnd();
+	    	   	gl.glEnd(); //no cambia nada
 	    	   	
 	    	   	
         
@@ -546,6 +546,7 @@ float [] positionDataOrig =
 		
 		gl.glPopMatrix();
 		
+		//izquierda
 		actionSquareManager.add(new actionSquare(0.09f, 0.1f, 0.20f, 0.25f){
 			private Renderer r;
 			public actionSquare setRenderer(Renderer r){
@@ -587,6 +588,52 @@ float [] positionDataOrig =
 			}
 	  		public void actuar(){
 	  			r.setPrimitiva( new cilindro(0.6f,0.8f,100,50) );
+	  		}
+	  	}.setRenderer(r));
+	  	
+	  	
+	  	//derecha
+	  	actionSquareManager.add(new actionSquare(0.8f, 0.1f, 0.94f, 0.25f){
+			private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			System.out.println("d1");
+	  		}
+	  	}.setRenderer(r));
+  
+	  	actionSquareManager.add(new actionSquare(0.8f, 0.25f, 0.94f, 0.5f){
+	  		private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			System.out.println("d2");
+	  		}
+	  	}.setRenderer(r));
+	  	
+	  	actionSquareManager.add(new actionSquare(0.8f, 0.5f, 0.94f, 0.7f){
+	  		private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			System.out.println("d3");
+	  		}
+	  	}.setRenderer(r));
+	  	
+	  	actionSquareManager.add(new actionSquare(0.8f, 0.7f, 0.94f ,0.9f){
+	  		private Renderer r;
+			public actionSquare setRenderer(Renderer r){
+				this.r = r;
+				return this;
+			}
+	  		public void actuar(){
+	  			System.out.println("d4");
 	  		}
 	  	}.setRenderer(r));
 	
