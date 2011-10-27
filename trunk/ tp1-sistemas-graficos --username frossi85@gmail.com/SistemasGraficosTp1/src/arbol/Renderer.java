@@ -98,7 +98,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    	
     private int texture;
     
-    private primitiva primitiva = new cubo(0.8f,4);//new cilindro(1f, 0.7f, 10, 5);//new cubo(0.8f,4);//new esfera(1, 300, 300);
+    private primitiva primitiva = new cubo(0.8f,4);//new cilindro(1f, 0.7f, 200, 50);//new anillo(1.0f, 0.5f, 30, 30);//new cilindro(1f, 0.7f, 10, 5);//new cubo(0.8f,4);//new esfera(1, 300, 300);
 
 float [] positionDataOrig = 
 {
