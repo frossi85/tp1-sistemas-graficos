@@ -9,17 +9,21 @@ public class Ruido extends Transformaciones {
 	private float amplitud;
 	private float longOnda;
 	private int memFase = 1;
-	private int memAmplitud = 2;
-	private int memLongOnda = 3;
+	private int memAmplitud = 3;
+	private int memLongOnda = 4;
+	private int memTime = 5;
+	private float time;
 	public static String NOMBRE_FASE = "fase";
 	public static String NOMBRE_AMPLITUD = "amplitud";
 	public static String NOMBRE_LONGONDA = "longOnda";
+	public static String NOMBRE_TIME = "time";
 	
 public Ruido(float fase,float amplitud,float longOnda){
 		
 		this.amplitud = amplitud;
 		this.longOnda = longOnda;
 		this.fase = fase;
+		this.time = 1f;
 }
 
 public int getMemAmplitud(){
@@ -52,7 +56,19 @@ public void bind(GLAutoDrawable gLDrawable,int shaderprogram){
 	 	gl_shader.glBindAttribLocation(shaderprogram,this.memFase,NOMBRE_FASE);
 	 	gl_shader.glBindAttribLocation(shaderprogram,this.memAmplitud,NOMBRE_AMPLITUD);
 	 	gl_shader.glBindAttribLocation(shaderprogram,this.memLongOnda,NOMBRE_LONGONDA);
-	   
+	 		   
+}
+
+public void setTime(float time){
+	this.time = time;
+}
+
+public int getMemTime(){
+	return this.memTime;
+}
+
+public float getTime(){
+	return this.time;
 }
 
 }
