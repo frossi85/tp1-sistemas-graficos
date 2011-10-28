@@ -6,14 +6,18 @@ import javax.media.opengl.GLAutoDrawable;
 public class Retorcer {
 	
 	private float angulo;
+	private float altura;
 	private float time;
 	public static String NOMBRE_ANGULO = "angulo";
+	public static String NOMBRE_ALTURA = "altura";
 	public static String NOMBRE_TIME = "time";
-	private int memAngulo;
+	private int memAngulo=1;
+	private int memAltura=2;
 	
-public Retorcer(float angulo){
+public Retorcer(float angulo,float altura){
 		this.angulo = angulo;
 		this.time = 0.0f;
+		this.altura = altura;
 	}
 
 public void bind(GLAutoDrawable gLDrawable,int shaderprogram){
@@ -24,6 +28,11 @@ public void bind(GLAutoDrawable gLDrawable,int shaderprogram){
 public float getAngulo(){
 	return this.angulo;
 }
+
+public float getAltura(){
+	return this.altura;
+}
+
 
 public float getTime(){
 	return this.time;
@@ -36,6 +45,11 @@ public void setTime(float time){
 
 public int getMemAngulo(){
 	return this.memAngulo;
+}
+
+
+public int getMemAltura(){
+	return this.memAltura;
 }
 
 }
