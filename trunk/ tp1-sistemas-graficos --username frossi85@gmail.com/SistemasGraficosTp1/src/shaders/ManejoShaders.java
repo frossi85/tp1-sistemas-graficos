@@ -81,8 +81,8 @@ public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.ruido = new Ruido(1f,0.25f,0.001f);
 	this.esferizacion = new Esferizacion(1,0.0f,0.0f,0.0f,0.9f);
 	this.retorcer = new Retorcer(PI/2f);
-	this.doblar = new Doblar(PI/2f);
-
+	this.doblar = new Doblar(PI/2,10f,4.0f,4f);
+	
 }
 
 public int getProgramHandler(){
@@ -353,5 +353,9 @@ public Retorcer getRetorcer(){
 public Doblar getDoblar(){
 	return this.doblar;
 }
+
+public static void main(String[] args) {
+
+	}
 
 }
