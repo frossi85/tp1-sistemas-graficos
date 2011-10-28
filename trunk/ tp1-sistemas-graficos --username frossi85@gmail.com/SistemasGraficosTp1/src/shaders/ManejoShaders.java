@@ -48,6 +48,7 @@ private int programHandler;
 private Ruido ruido;
 private Esferizacion esferizacion;
 private Retorcer retorcer;
+private Doblar doblar;
 
 private static int POSITION_BUFFER_SIZE = 9;
 private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
@@ -80,6 +81,7 @@ public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.ruido = new Ruido(1f,0.25f,0.001f);
 	this.esferizacion = new Esferizacion(1,0.0f,0.0f,0.0f,0.9f);
 	this.retorcer = new Retorcer(PI/2f);
+	this.doblar = new Doblar(PI/2f);
 
 }
 
@@ -346,6 +348,10 @@ public Esferizacion getEsferizacion(){
 
 public Retorcer getRetorcer(){
 	return this.retorcer;
+}
+
+public Doblar getDoblar(){
+	return this.doblar;
 }
 
 }
