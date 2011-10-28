@@ -98,7 +98,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    	
     private int texture;
     
-    private primitiva primitiva =  new cubo(1f,100);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
+    private primitiva primitiva =  new cubo(1f,80);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
 
 float [] positionDataOrig = 
 {
@@ -181,18 +181,42 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
         	
 	        	this.shader.usarPrograma();
+	        	//retorcer
 	        	int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRetorcer().NOMBRE_TIME);
 	    		gl.glUniform1f(location,shader.getRetorcer().getTime());  
-	    		shader.getRetorcer().setTime(shader.getRetorcer().getTime() + 1.0f);
+	    		shader.getRetorcer().setTime(shader.getRetorcer().getTime() + 1f);
 	        	
-
+	    		/*
+				ruido:
+				int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRuido().NOMBRE_TIME);
+				gl.glUniform1f(location,shader.getRuido().getTime());  
+				shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);
+	    		*/
+	    		
+	    		/*esferizacion: 
+	    		 int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getEsferizacion().NOMBRE_FACTOR);
+				gl.glUniform1f(location,shader.getEsferizacion().getFactorVariable());  
+				float centro[] = shader.getEsferizacion().getCentro();
+	    		 */
 	    		
 	    	  	gl.glBegin(GL.GL_TRIANGLES); //no cambia nada
+	    	  	//retorcer
 	    	  	gl.glVertexAttrib1f(shader.getRetorcer().getMemAngulo(),shader.getRetorcer().getAngulo() );
-	    		
+	    	  	gl.glVertexAttrib1f(shader.getRetorcer().getMemAltura(),shader.getRetorcer().getAltura() );
+	    	  		
+	    	  	/*	ruido con animacion:
+	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
+	  				gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
+	  				gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
 
-	    		  	
-	    		  	
+	    		  */
+	    	  	/*esferizacion
+	    	  	gl.glVertexAttrib1f(shader.getEsferizacion().getMemRadio(),shader.getEsferizacion().getRadio() );
+	    	  	gl.glVertexAttrib1f(shader.getEsferizacion().getMemFactor(),shader.getEsferizacion().getFactor() );
+	    	  	gl.glVertexAttrib3f(shader.getEsferizacion().getMemRadio(),centro[0],centro[1],centro[2] );
+	    		 */
+	    		  		//glut.glutSolidCube(3);
+	    		  		
 	    		  		primitiva.dibujar(gl);
 	    		  
 	    		  	//this.shader.pararPrograma();	
