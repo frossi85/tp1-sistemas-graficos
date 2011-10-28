@@ -1,6 +1,7 @@
 package shaders;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -47,6 +48,7 @@ private int programHandler;
 private Ruido ruido;
 private Esferizacion esferizacion;
 private Retorcer retorcer;
+private Doblar doblar;
 
 private static int POSITION_BUFFER_SIZE = 9;
 private FloatBuffer positionData = FloatBuffer.allocate (POSITION_BUFFER_SIZE);
@@ -76,9 +78,11 @@ int colorBufferHandle;
 public  ManejoShaders(String archivoVertex, String archivoFragment){
 	this.archivoVertex = archivoVertex;
 	this.archivoFragment = archivoFragment;
-	this.ruido = new Ruido(1f,0.5f,0.00001f);//new Ruido(1f,0.25f,0.001f);
-	this.esferizacion = new Esferizacion(2,0.0f,0.0f,0.0f,0.9f);
+	this.ruido = new Ruido(1f,0.25f,0.001f);
+	this.esferizacion = new Esferizacion(1,0.0f,0.0f,0.0f,0.9f);
 	this.retorcer = new Retorcer(PI/2f);
+	this.doblar = new Doblar(PI/2,10f,4.0f,4f);
+	
 }
 
 public int getProgramHandler(){
@@ -232,7 +236,7 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
     //BIND DE ATRIBUTOS
     //gl_shader.glBindAttribLocation(shaderprogram,1,NOMBRE_GLVERTEX);
     //gl_shader.glBindAttribLocation(shaderprogram,2,NOMBRE_COLOR);
-    this.esferizacion.bind(gLDrawable,shaderprogram);
+    this.ruido.bind(gLDrawable,shaderprogram);
     gl_shader.glLinkProgram(shaderprogram);
     IntBuffer intBuffer = IntBuffer.allocate(1);
 	gl_shader.glGetProgramiv(shaderprogram, GL2.GL_LINK_STATUS, intBuffer);
@@ -269,7 +273,7 @@ public void compiladoLinkeado(GLAutoDrawable gLDrawable){
 
 public void usarPrograma()
 {
-	 gl_shader.glUseProgram(this.programHandler); 
+	 gl_shader.glUseProgram(this.programHandler);  
 }
 
 public void setModelViewMatrix(GLAutoDrawable gLDrawable, float arreglo[]){
@@ -346,6 +350,12 @@ public Retorcer getRetorcer(){
 	return this.retorcer;
 }
 
+public Doblar getDoblar(){
+	return this.doblar;
+}
 
+public static void main(String[] args) {
+
+	}
 
 }
