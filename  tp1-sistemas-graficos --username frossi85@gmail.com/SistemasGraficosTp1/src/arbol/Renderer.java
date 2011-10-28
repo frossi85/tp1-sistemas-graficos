@@ -98,7 +98,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    	
     private int texture;
     
-    private primitiva primitiva = new cubo(1,10);//new esfera(1, 50, 50);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
+    private primitiva primitiva =  new cubo(1f,100);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
 
 float [] positionDataOrig = 
 {
@@ -170,8 +170,8 @@ float [] positionDataOrig =
     	
         //timer010 = 0.09; //for screenshot!
     	gl.glPushMatrix();
-    		//gl.glUseProgram(0);
-    		//drawMenu(gl, this);
+    		gl.glUseProgram(0);
+    		drawMenu(gl, this);
     	gl.glPopMatrix(); 
     	gl.glPushMatrix();
     	
@@ -181,27 +181,22 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
         	
 	        	this.shader.usarPrograma();
-	        	/*
-	    		int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRuido().NOMBRE_TIME);
-	    		gl.glUniform1f(location,shader.getRuido().getTime());  
-	    		shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);*/
-	        	int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRetorcer().NOMBRE_ANGULO);
-	    		gl.glUniform1f(location,shader.getRetorcer().getAngulo());
+	        	int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRetorcer().NOMBRE_TIME);
+	    		gl.glUniform1f(location,shader.getRetorcer().getTime());  
+	    		shader.getRetorcer().setTime(shader.getRetorcer().getTime() + 1.0f);
+	        	
+
 	    		
-	    	  	//gl.glBegin(GL.GL_TRIANGLES); //no cambia nada
-	    	  	/*
-	    	  	 * 
-	    	  	 * /!\ NO SIRVE ACA
-	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
-	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
-	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
-	    		  	*/
+	    	  	gl.glBegin(GL.GL_TRIANGLES); //no cambia nada
+	    	  	gl.glVertexAttrib1f(shader.getRetorcer().getMemAngulo(),shader.getRetorcer().getAngulo() );
+	    		
+
 	    		  	
 	    		  	
 	    		  		primitiva.dibujar(gl);
 	    		  
 	    		  	//this.shader.pararPrograma();	
-	    	   //	gl.glEnd(); //no cambia nada
+	    	   	gl.glEnd(); //no cambia nada
 	    	   	
 	    	   	
         
@@ -274,7 +269,6 @@ float [] positionDataOrig =
 		   
 		   
 		//Fin agregado
-		//this.shader = new ManejoShaders("Ruido.vert","Ruido.frag");
 		this.shader = new ManejoShaders("Retorcer.vert","Ruido.frag");
     	//this.shader = new ManejoShaders("SinDeformacion.vert","Ruido.frag");
     	//this.shader = new ManejoShaders("SinDeformacion.vert","PhongShader.frag");
