@@ -98,7 +98,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    	
     private int texture;
     
-    private primitiva primitiva = new esfera(1, 300, 300);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
+    private primitiva primitiva = new esfera(1, 50, 50);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
 
 float [] positionDataOrig = 
 {
@@ -170,7 +170,8 @@ float [] positionDataOrig =
     	
         //timer010 = 0.09; //for screenshot!
     	gl.glPushMatrix();
-    		//drawMenu(gl, this);
+    		gl.glUseProgram(0);
+    		drawMenu(gl, this);
     	gl.glPopMatrix(); 
     	gl.glPushMatrix();
     	
@@ -179,7 +180,7 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraX, 0, 1, 0);
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
         	
-	        
+	        	this.shader.usarPrograma();
 	    		int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRuido().NOMBRE_TIME);
 	    		gl.glUniform1f(location,shader.getRuido().getTime());  
 	    		shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);
@@ -189,7 +190,7 @@ float [] positionDataOrig =
 	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
 	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
 	    		  	
-	    		  	this.shader.usarPrograma();
+	    		  	
 	    		  		primitiva.dibujar(gl);
 	    		  
 	    		  	//this.shader.pararPrograma();	
@@ -554,7 +555,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new esfera(1, 200, 200) );
+	  			r.setPrimitiva( new esfera(1, 50, 50) );
 	  		}
 	  	}.setRenderer(r));
   
@@ -565,7 +566,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new cubo(0.6f,100) );
+	  			r.setPrimitiva( new cubo(0.6f,10) );
 	  		}
 	  	}.setRenderer(r));
 	  	
@@ -576,7 +577,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new anillo(0.7f,0.3f, 200, 200) );
+	  			r.setPrimitiva( new anillo(0.7f,0.3f, 50, 30) );
 	  		}
 	  	}.setRenderer(r));
 	  	
@@ -587,7 +588,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new cilindro(0.6f,0.8f,100,50) );
+	  			r.setPrimitiva( new cilindro(0.6f,0.8f,50,10) );
 	  		}
 	  	}.setRenderer(r));
 	  	
