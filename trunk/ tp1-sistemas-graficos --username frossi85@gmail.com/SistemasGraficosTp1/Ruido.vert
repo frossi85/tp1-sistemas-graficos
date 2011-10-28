@@ -36,6 +36,7 @@ vec3 computeNormal( vec3 pos, vec3 tangent, vec3 binormal, float amplitud, float
 
 void main(void)
 {
+	gl_TexCoord[0] = gl_MultiTexCoord0;
 	vec4 v2 = vec4(gl_Vertex);
 	v2.z =  gl_Vertex.z + amplitud*sin(longOnda*gl_Vertex.x + time*0.01 + fase );
 	v2.x =  gl_Vertex.x + amplitud*sin(longOnda*gl_Vertex.y + time*0.01 +fase );
