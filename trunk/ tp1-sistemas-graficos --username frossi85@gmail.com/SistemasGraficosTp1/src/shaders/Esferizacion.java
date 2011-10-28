@@ -63,9 +63,10 @@ public class Esferizacion {
 	public void update(){
 		if (factorVariable < factor){
 			factorVariable += 0.001f;
-			System.out.println(factorVariable);
+			
 		}
-		
+		else
+			factorVariable = 0.0f;	
 		
 	}
 	
