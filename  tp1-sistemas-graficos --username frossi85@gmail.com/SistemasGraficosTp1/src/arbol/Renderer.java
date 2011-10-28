@@ -98,7 +98,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    	
     private int texture;
     
-    private primitiva primitiva = new esfera(1, 50, 50);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
+    private primitiva primitiva =  new cubo(1f,5);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
 
 float [] positionDataOrig = 
 {
@@ -181,14 +181,17 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
         	
 	        	this.shader.usarPrograma();
-	    		int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRuido().NOMBRE_TIME);
-	    		gl.glUniform1f(location,shader.getRuido().getTime());  
-	    		shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);
+	        	shader.getEsferizacion().update();	
+	        	 int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getEsferizacion().NOMBRE_FACTOR);
+	    		gl.glUniform1f(location,shader.getEsferizacion().getFactorVariable());  
+	    		float centro[] = shader.getEsferizacion().getCentro();
+
 	    		
 	    	  	gl.glBegin(GL.GL_TRIANGLES); //no cambia nada
-	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
-	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
-	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
+	    	  	gl.glVertexAttrib1f(shader.getEsferizacion().getMemRadio(),shader.getEsferizacion().getRadio() );
+	    		gl.glVertexAttrib1f(shader.getEsferizacion().getMemFactor(),shader.getEsferizacion().getFactor() );
+	    		gl.glVertexAttrib3f(shader.getEsferizacion().getMemCentro(),centro[0],centro[1],centro[2] );	
+
 	    		  	
 	    		  	
 	    		  		primitiva.dibujar(gl);
@@ -267,7 +270,7 @@ float [] positionDataOrig =
 		   
 		   
 		//Fin agregado
-		this.shader = new ManejoShaders("Ruido.vert","Ruido.frag");
+		this.shader = new ManejoShaders("Esferizar.vert","Esferizar.frag");
     	//this.shader = new ManejoShaders("SinDeformacion.vert","Ruido.frag");
     	//this.shader = new ManejoShaders("SinDeformacion.vert","PhongShader.frag");
 	  	this.shader.bindBuffer(gLDrawable);
