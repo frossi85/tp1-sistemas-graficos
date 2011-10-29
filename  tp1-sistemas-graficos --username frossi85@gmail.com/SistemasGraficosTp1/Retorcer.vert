@@ -2,6 +2,7 @@
 #define PI    3.14159265
 
 attribute float angulo;
+attribute float altura;
 uniform float time;
 
 varying vec3 normal, lightDir, eyeVec;
@@ -71,13 +72,15 @@ void main(void)
 	*/
 
 
-	/*
-	float angle_deg = angulo*sin(time);
-	float angle_rad = angle_deg * PI / 180.0;
-	*/
-        float ang = (gl_Vertex.z*0.5 + gl_Vertex.y)/gl_Vertex.z;
+	
+	float angle_deg = 20.0*angulo*sin(time);
+	float angle_rad = angle_deg *  3.14159 / 180.0;
+	
+        float ang = (altura*0.5 + gl_Vertex.y)/altura*gl_Vertex.z*angle_rad;
 	vec4 pos = vec4(gl_Vertex);
-	float t  = ang;
+	float t;
+	t = ang;
+	
 	
 	float st = sin(t);
 	float ct = cos(t);
