@@ -17,11 +17,11 @@ float getRadio(float x, float y, float z){
 
 
 
-float getRadioFinal(float radioFigura, float radioEsfera,float tiempo,float factor){
+float getRadioFinal(float radioFigura, float radioEsfera,float fact){
 	float difRadio = radioEsfera-radioFigura;
-	difRadio = difRadio*factor;
+	difRadio = difRadio*fact;
 	difRadio = difRadio + radioFigura;
-	return(difRadio*tiempo);
+	return(difRadio);
 
 }
 
@@ -36,7 +36,7 @@ void main(void)
 	resultado.y = resultado.y/radioActual;
 	resultado.z = resultado.z/radioActual;
 	
-	float radioFinal = getRadioFinal(radioActual,radio,1.0,1.0);
+	float radioFinal = getRadioFinal(radioActual,radio,factor);
 	
 	
 	resultado.x = resultado.x*(radioActual+(radioFinal-radioActual)*time);
