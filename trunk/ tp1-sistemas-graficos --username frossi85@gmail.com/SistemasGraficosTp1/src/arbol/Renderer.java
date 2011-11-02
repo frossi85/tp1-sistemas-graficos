@@ -15,7 +15,7 @@ import primitivas.*;
 
 import actionSquare.*;
 
-import shaders.ManejoShaders;
+import shaders.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -51,7 +51,8 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
 	private actionSquareManager actionSquareManager = new actionSquareManager();
 	 
 	private ManejoShaders shader;
-	private ManejoShaders sinTexturaShader = new ManejoShaders("SinDeformacion.vert","SinTextura.frag");
+	//private ManejoShaders sinTexturaShader = new ManejoShaders("SinDeformacion.vert","SinTextura.frag");
+	
 	// Variables que controlan la ubicaci�n de la c�mara en la Escena 3D
     private float eye[] =  {0.0f, 0.0f, 4.0f};
     private float at[]  = { 0.0f,  0.0f, -1.0f};
@@ -101,6 +102,15 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     
     private primitiva primitiva =  new cubo(1f,10);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
 
+    //SHADERS
+    
+    int RUIDO_VERT = ManejoShaders2.addVertexShader( new RuidoVert(1f,0.25f,0.001f));
+    int ESFERIZAR_VERT = ManejoShaders2.addVertexShader(new EsferizacionVert(1,0.0f,0.0f,0.0f,0.9f));
+    
+    int RUIDO_FRAG = ManejoShaders2.addFragmentShader(new RuidoFrag());
+    int TEXTURA_FRAG = ManejoShaders2.addFragmentShader(new TexturaFrag());
+    int LUCES_FRAG = ManejoShaders2.addFragmentShader(new LucesFrag());
+    
 float [] positionDataOrig = 
 {
     -0.8f, -0.8f, 0.0f,
@@ -162,7 +172,8 @@ float [] positionDataOrig =
     
     public void display(GLAutoDrawable gLDrawable) 
     {    
-    	final GL2 gl = gLDrawable.getGL().getGL2();  	
+    	final GL2 gl = gLDrawable.getGL().getGL2();
+    	ManejoShaders2 mS = new ManejoShaders2(gLDrawable);
     	
     	gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
     	 	
@@ -171,11 +182,10 @@ float [] positionDataOrig =
     	
         //timer010 = 0.09; //for screenshot!
     	gl.glPushMatrix();
-	    	this.sinTexturaShader.bindBuffer(gLDrawable);
-		  	this.sinTexturaShader.compiladoLinkeado(gLDrawable);
-    		//gl.glUseProgram(0);
-    		this.sinTexturaShader.usarPrograma();
-    		drawMenu(gl, this);
+	    	/*mS.usarPrograma(RUIDO_VERT, TEXTURA_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+    		drawMenu(gl, this);*/
     	gl.glPopMatrix(); 
     	gl.glPushMatrix();
     	
@@ -183,18 +193,21 @@ float [] positionDataOrig =
 	        	
 	        	gl.glRotatef(rotacionCamaraX, 0, 1, 0);
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
+	        	
+	        	mS.usarPrograma(RUIDO_VERT, TEXTURA_FRAG);
         	
-	        	this.shader.usarPrograma();
+	        	//this.shader.usarPrograma();
 	        	//retorcer
 	        	/*int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRetorcer().NOMBRE_TIME);
 	    		gl.glUniform1f(location,shader.getRetorcer().getTime());  
 	    		shader.getRetorcer().setTime(shader.getRetorcer().getTime() + 1f);
 	        	*/
 	    		
-				
+	        	mS.displayUniform();
+				/*
 				int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRuido().NOMBRE_TIME);
 				gl.glUniform1f(location,shader.getRuido().getTime());  
-				shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);
+				shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);*/
 	    	
 	    		
 	    		/*esferizacion: 
@@ -209,9 +222,11 @@ float [] positionDataOrig =
 	    	  	//gl.glVertexAttrib1f(shader.getRetorcer().getMemAltura(),shader.getRetorcer().getAltura() );
 	    	  		
 	    	  	//	ruido con animacion:
-	    		  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
+	    		/*  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
 	  				gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
-	  				gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );
+	  				gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );*/
+	        	
+	        	mS.displayVertexAttrib();
 
 	    		 
 	    	  	/*esferizacion
@@ -297,11 +312,11 @@ float [] positionDataOrig =
 		   
 		   
 		//Fin agregado
-		this.shader = new ManejoShaders("Ruido.vert","Textura.frag");
+		//this.shader = new ManejoShaders("Ruido.vert","Textura.frag");
     	//this.shader = new ManejoShaders("SinDeformacion.vert","Ruido.frag");
     	//this.shader = new ManejoShaders("SinDeformacion.vert","PhongShader.frag");
-	  	this.shader.bindBuffer(gLDrawable);
-	  	this.shader.compiladoLinkeado(gLDrawable);
+	  //	this.shader.bindBuffer(gLDrawable);
+	  //	this.shader.compiladoLinkeado(gLDrawable);
 	  	
 	    //DemoLight(gl);
 	  	
