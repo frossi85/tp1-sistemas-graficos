@@ -1,29 +1,94 @@
 #version 110
 #define PI    3.14159265
 
-uniform float angulo;
-float distancia;
+attribute float angulo;
+attribute float distancia;
+attribute float alturaMax;
+attribute float diametro;
 
-varying vec3 normal, lightDir, eyeVec;
+
+
+float getRadio(float x, float y,float z){
+	return(sqrt(pow(x,2.0)  + pow(y,2.0) + pow(z,2.0)));
+}
+
+float getTetha(float x, float y){
+	if((x > 0.0) && (y >= 0.0))
+		return (atan(y,x));
+		
+	else if((x > 0.0) && (y < 0.0))
+		return(atan(y,x) + 2.0*PI);
+		
+
+	else if(x < 0.0)
+		return(atan(y,x) + PI);
+		
+	else if((x == 0.0) && (y > 0.0))
+		return(PI/2.0);
+	else if((x == 0.0) && (y < 0.0))
+		return (3.0*PI/2.0);
+	
+}
+
+float getX(float radio, float tetha){
+	return(radio*cos(tetha));
+}
+
+float getY(float radio, float tetha){
+	return(radio*sin(tetha));
+}
+
+float getAngulo(float z,float anguloMax,float alturaFigura){
+	return(z*anguloMax/alturaFigura);
+}
 
 void main(void)
 {
-	distancia = 1.0;
-	vec4 v2 = vec4(gl_Vertex);
-	
-	v2.z = (distancia - gl_Vertex.x) * sin(PI/3.0);
-	v2.x = (distancia - gl_Vertex.x) * cos(PI/3.0);
-	v2.y = gl_Vertex.y;
-	v2.w = 1.0;
-	
+	vec4 resultado = vec4(gl_Vertex);
+	/*
+	vec4 original = vec4(gl_Vertex);
+	float radioOrig = getRadio(distancia-original.x,original.y,original.z);
+	float radioInterno = distancia - diametro/2.0;
+	float radioExterno = distancia + diametro/2.0;
 		
-	gl_Position = gl_ModelViewProjectionMatrix * v2;
+
+	resultado = vec4(distancia-gl_Vertex.x,gl_Vertex.y,gl_Vertex.z-0.0,1.0);
+	float radioActual = getRadio(resultado.x,resultado.y,resultado.z);
+	resultado.x = resultado.x/radioActual;
+	resultado.y = resultado.y/radioActual;
+	resultado.z = resultado.z/radioActual;
+
+	if((radioOrig  >= radioInterno) && (radioOrig < radioExterno)){
+		resultado.x = resultado.x*(radioInterno+gl_Vertex.x);
+		resultado.y = resultado.y*(radioInterno+gl_Vertex.x);
+		resultado.z = resultado.z*(radioInterno+gl_Vertex.x);
 	
-	//Cosas para el fragment shader
-	normal = gl_NormalMatrix * gl_Normal;
+	}
+	else if (radioOrig >= radioExterno){
+		resultado.x = resultado.x*(radioExterno+gl_Vertex.x);
+		resultado.y = resultado.y*(radioInterno+gl_Vertex.x);
+		resultado.z = resultado.z*(radioInterno+gl_Vertex.x);
 
-	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
-
-	lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
-	eyeVec = -vVertex;	
- }
+	}
+	else{
+		resultado.x = 0.0;
+		resultado.y = 0.0;
+		resultado.z = 0.0;
+	}
+	resultado.x = resultado.x+distancia;
+	resultado.y = resultado.y+0.0;
+	resultado.z = resultado.z+0.0;
+	resultado.w = 1.0;
+	*/
+	
+	float ang = getAngulo(gl_Vertex.z,angulo,alturaMax);
+	resultado.x = getX(distancia-gl_Vertex.x,ang);
+	resultado.z = getY(distancia-gl_Vertex.x,ang);
+	
+	
+	
+	
+	gl_Position = gl_ModelViewProjectionMatrix * resultado;
+	
+	
+} 
