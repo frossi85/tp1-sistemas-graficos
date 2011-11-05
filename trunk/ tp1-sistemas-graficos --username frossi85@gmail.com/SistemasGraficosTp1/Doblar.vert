@@ -45,6 +45,9 @@ float getAngulo(float z,float anguloMax,float alturaFigura){
 void main(void)
 {
 	vec4 resultado = vec4(gl_Vertex);
+	float ang = getAngulo(gl_Vertex.z,angulo,alturaMax);
+	resultado.x = distancia - getX(distancia,ang);
+	resultado.z = getY(distancia,ang);
 	/*
 	vec4 original = vec4(gl_Vertex);
 	float radioOrig = getRadio(distancia-original.x,original.y,original.z);
@@ -81,9 +84,7 @@ void main(void)
 	resultado.w = 1.0;
 	*/
 	
-	float ang = getAngulo(gl_Vertex.z,angulo,alturaMax);
-	resultado.x = getX(distancia-gl_Vertex.x,ang);
-	resultado.z = getY(distancia-gl_Vertex.x,ang);
+
 	
 	
 	
