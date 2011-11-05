@@ -100,16 +100,18 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    	
     private int texture;
     
-    private primitiva primitiva =  new cubo(1f,10);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
+    private primitiva primitiva =  new cubo(0.5f,10);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
 
     //SHADERS
     
     int RUIDO_VERT = ManejoShaders2.addVertexShader( new RuidoVert(1f,0.25f,0.001f));
     int ESFERIZAR_VERT = ManejoShaders2.addVertexShader(new EsferizacionVert(1,0.0f,0.0f,0.0f,0.9f));
-    
+    int DOBLAR_VERT = ManejoShaders2.addVertexShader(new DoblarVert((float)Math.PI/2, 3f));
+   
     int RUIDO_FRAG = ManejoShaders2.addFragmentShader(new RuidoFrag());
     int TEXTURA_FRAG = ManejoShaders2.addFragmentShader(new TexturaFrag());
     int LUCES_FRAG = ManejoShaders2.addFragmentShader(new LucesFrag());
+    
     
 float [] positionDataOrig = 
 {
@@ -194,7 +196,7 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraX, 0, 1, 0);
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
 	        	
-	        	mS.usarPrograma(RUIDO_VERT, TEXTURA_FRAG);
+	        	mS.usarPrograma(DOBLAR_VERT, RUIDO_FRAG);
         	
 	        	//this.shader.usarPrograma();
 	        	//retorcer
