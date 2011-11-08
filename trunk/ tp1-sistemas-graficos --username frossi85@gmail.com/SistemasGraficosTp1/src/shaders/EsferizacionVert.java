@@ -14,6 +14,7 @@ public class EsferizacionVert extends VertexShader{
 	private int memRadio = 1;
 	private int memCentro = 3;
 	private int memFactor = 2;
+	private int memTime;
 		
 	public static String NOMBRE_FACTOR = "factor";
 	public static String NOMBRE_CENTRO = "centro";
@@ -51,6 +52,21 @@ public class EsferizacionVert extends VertexShader{
 		return this.memRadio;
 	}
 	
+	public void setMemCentro(int mem){
+		this.memCentro = mem;
+	}
+	
+	public void setMemRadio(int mem){
+		this.memRadio = mem;
+	}
+	
+	public void setMemFactor(int mem){
+		this.memFactor = mem;
+	}
+	
+	public void setMemTime(int mem){
+		this.memTime = mem;
+	}
 	public float getRadio(){
 		return this.radio;
 	}
@@ -74,7 +90,11 @@ public class EsferizacionVert extends VertexShader{
 		return this.time;
 				
 	}
-
+	
+	public int getMemTime(){
+		return this.memTime;
+	}
+	
 	public void setTime(float time){
 		this.time = time;
 	}
@@ -96,7 +116,16 @@ public class EsferizacionVert extends VertexShader{
 	public void displayUniform() {
 		int location = gl.glGetUniformLocation(this.pgmHandler,NOMBRE_FACTOR);
 		gl.glUniform1f(location,getFactorVariable());  
-		float centro[] = getCentro();	
+		float centro[] = getCentro();
+		setMemTime(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_TIME));
+		update();
+		gl.glUniform1f(getMemTime(),getTime());  
+		setMemFactor(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_FACTOR));
+		gl.glUniform1f(getMemFactor(),getFactor()); 
+		setMemRadio(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_RADIO));
+		gl.glUniform1f(getMemRadio(),getRadio()); 
+		setMemCentro(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_CENTRO));
+		gl.glUniform3f(getMemCentro(),centro[0],centro[1],centro[2]); 
 	}
 
 	@Override
