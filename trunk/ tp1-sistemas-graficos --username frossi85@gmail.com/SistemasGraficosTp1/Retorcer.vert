@@ -1,8 +1,8 @@
 #version 110
 #define PI    3.14159265
 
-attribute float angulo;
-attribute float altura;
+uniform float angulo;
+uniform float altura;
 uniform float time;
 
 varying vec3 normal, lightDir, eyeVec;

@@ -2,9 +2,9 @@
 #define PI    3.14159265
 //probado con: Esferizacion(2,0.0f,0.0f,0.0f,0.1f);/cubo cub = new cubo(2,3);
 
-attribute float radio;
-attribute float factor;
-attribute vec3 centro;
+uniform float radio;
+uniform float factor;
+uniform vec3 centro;
 uniform float time;
 
 varying vec3 normal, lightDir, eyeVec;
