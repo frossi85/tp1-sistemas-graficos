@@ -11,8 +11,9 @@ public class Retorcer {
 	public static String NOMBRE_ANGULO = "angulo";
 	public static String NOMBRE_ALTURA = "altura";
 	public static String NOMBRE_TIME = "time";
-	private int memAngulo=1;
-	private int memAltura=2;
+	private int memAngulo;
+	private int memAltura;
+	private int memTime;
 	
 public Retorcer(float angulo,float altura){
 		this.angulo = angulo;
@@ -34,9 +35,25 @@ public float getAltura(){
 }
 
 
+public void setMemAltura(int mem){
+	this.memAltura = mem;
+}
+
+public void setMemAngulo(int mem){
+	this.memAngulo = mem;
+}
+
 public float getTime(){
 	return this.time;
 			
+}
+
+public int getMemTime(){
+	return this.memTime;
+}
+
+public void setMemTime(int mem){
+	this.memTime = mem;
 }
 
 public void setTime(float time){
@@ -52,4 +69,10 @@ public int getMemAltura(){
 	return this.memAltura;
 }
 
+public void update(){
+	time += 0.05f;
+		
+	
+	
+}
 }

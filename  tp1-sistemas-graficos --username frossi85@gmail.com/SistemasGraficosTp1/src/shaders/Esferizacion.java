@@ -11,10 +11,11 @@ public class Esferizacion {
 	private float factorVariable = 0.0f;
 	private float time = 0.0f;
 	
-	private int memRadio = 1;
-	private int memCentro = 3;
-	private int memFactor = 2;
-		
+	private int memRadio;
+	private int memCentro;
+	private int memFactor;
+	private int memTime;
+	
 	public static String NOMBRE_FACTOR = "factor";
 	public static String NOMBRE_CENTRO = "centro";
 	public static String NOMBRE_RADIO = "radio";
@@ -51,6 +52,21 @@ public class Esferizacion {
 		return this.memRadio;
 	}
 	
+	public void setMemCentro(int mem){
+		this.memCentro = mem;
+	}
+	
+	public void setMemRadio(int mem){
+		this.memRadio = mem;
+	}
+	
+	public void setMemFactor(int mem){
+		this.memFactor = mem;
+	}
+	
+	public void setMemTime(int mem){
+		this.memTime = mem;
+	}
 	public float getRadio(){
 		return this.radio;
 	}
@@ -74,7 +90,11 @@ public class Esferizacion {
 		return this.time;
 				
 	}
-
+	
+	public int getMemTime(){
+		return this.memTime;
+	}
+	
 	public void setTime(float time){
 		this.time = time;
 	}
