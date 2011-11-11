@@ -1,10 +1,14 @@
 package common;
 
 import com.jogamp.common.nio.Buffers;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 import javax.imageio.ImageIO;
+import javax.media.opengl.GLException;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -17,6 +21,20 @@ public class TextureReader {
     public static Texture readTexture(String filename) throws IOException {
         return readTexture(filename, false);
     }
+    
+    public static com.jogamp.opengl.util.texture.Texture loadImageAsTexture(String inFileName) {
+        com.jogamp.opengl.util.texture.Texture tTexture = null;
+		try {
+			tTexture = TextureIO.newTexture(new BufferedInputStream((new Object()).getClass().getResourceAsStream(inFileName)),true,null);
+		} catch (GLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return tTexture;
+    }
 
     public static Texture readTexture(String filename, boolean storeAlphaChannel) throws IOException {
         BufferedImage bufferedImage;
@@ -25,6 +43,7 @@ public class TextureReader {
         } else {
             bufferedImage = readImage(filename);
         }
+               
         return readPixels(bufferedImage, storeAlphaChannel);
     }
 
@@ -43,7 +62,7 @@ public class TextureReader {
         }
 
         int bytesPerPixel = storeAlphaChannel ? 4 : 3;
-        ByteBuffer unpackedPixels = Buffers.newDirectByteBuffer(packedPixels.length * bytesPerPixel);
+        ByteBuffer unpackedPixels = Buffers.newDirectByteBuffer(4*packedPixels.length * bytesPerPixel);
 
         for (int row = img.getHeight() - 1; row >= 0; row--) {
             for (int col = 0; col < img.getWidth(); col++) {
@@ -56,8 +75,11 @@ public class TextureReader {
                 }
             }
         }
-
+        
+        
         unpackedPixels.flip();
+        
+        unpackedPixels.rewind();
 
 
         return new Texture(unpackedPixels, img.getWidth(), img.getHeight());
