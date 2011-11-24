@@ -108,9 +108,16 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     int ESFERIZAR_VERT = ManejoShaders2.addVertexShader(new EsferizacionVert(1,0.0f,0.0f,0.0f,0.5f));
     int DOBLAR_VERT = ManejoShaders2.addVertexShader(new DoblarVert((float)Math.PI/2,2.0f,1f,1f));
    
+    int SIN_DEFORMACION_VERT = ManejoShaders2.addVertexShader(new SinDeformacionVert());
+    
     int RUIDO_FRAG = ManejoShaders2.addFragmentShader(new RuidoFrag());
     int TEXTURA_FRAG = ManejoShaders2.addFragmentShader(new TexturaFrag());
     int LUCES_FRAG = ManejoShaders2.addFragmentShader(new LucesFrag());
+    
+    int GENERIC_FRAG;
+    FragmentGeneral fragment;
+    
+    ManejoShaders2 mS;
     
     
 float [] positionDataOrig = 
@@ -175,7 +182,11 @@ float [] positionDataOrig =
     public void display(GLAutoDrawable gLDrawable) 
     {    
     	final GL2 gl = gLDrawable.getGL().getGL2();
-    	ManejoShaders2 mS = new ManejoShaders2(gLDrawable);
+    	//ManejoShaders2 mS = new ManejoShaders2(gLDrawable);
+    	
+    	
+		//fragment = new FragmentGeneral(gl, glu, mS);
+		//GENERIC_FRAG = ManejoShaders2.addFragmentShader(fragment);
     	
     	gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
     	 	
@@ -196,7 +207,16 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraX, 0, 1, 0);
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
 	        	
-	        	mS.usarPrograma(DOBLAR_VERT, RUIDO_FRAG);
+	        	//mS.usarPrograma(DOBLAR_VERT, RUIDO_FRAG);
+	        	mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+	        	
+	        	//////////////////////////////////////////////////////////////////
+	        	// 		Ejemplo de uso de la clase para manejo de fragment shader
+	        	//////////////////////////////////////////////////////////////////
+	        	//fragment.setEfectoSemiMate();
+	        	//fragment.setEfectoBrillante();
+	        	//fragment.setEfectoTextura2D();
+	        	fragment.setEfectoReflejarEntorno();
         	
 	        	//this.shader.usarPrograma();
 	        	//retorcer
@@ -311,6 +331,13 @@ float [] positionDataOrig =
 		
 		//setear la camera
 		Set3DEnv(gl);  
+		
+		
+		mS = new ManejoShaders2(gLDrawable);
+    	
+    	
+		fragment = new FragmentGeneral(gl, glu, mS);
+		GENERIC_FRAG = ManejoShaders2.addFragmentShader(fragment);
 		   
 		   
 		//Fin agregado
@@ -324,21 +351,21 @@ float [] positionDataOrig =
 	  	
 	  	///TEXTURA
 
-	  	gl.glEnable(GL.GL_TEXTURE_2D);
-        texture = genTexture(gl);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-        TextureReader.Texture texture = null;
-        try {
-            texture = TextureReader.readTexture("ladrillos.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-			throw new RuntimeException(e);
-        }
-        
-        makeRGBTexture(gl, glu, texture, GL.GL_TEXTURE_2D, false);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-	 
+//	  	gl.glEnable(GL.GL_TEXTURE_2D);
+//        texture = genTexture(gl);
+//        gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
+//        TextureReader.Texture texture = null;
+//        try {
+//            texture = TextureReader.readTexture("ladrillos.png");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//			throw new RuntimeException(e);
+//        }
+//        
+//        makeRGBTexture(gl, glu, texture, GL.GL_TEXTURE_2D, false);
+//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+//	 
 	  	
 	  	DL_AXIS = gl.glGenLists(3);
 	  	DL_GRID = DL_AXIS+1;

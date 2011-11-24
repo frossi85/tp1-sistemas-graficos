@@ -371,4 +371,8 @@ public class ManejoShaders2 {
 		gl.glVertexAttrib4f(this.memoriaGlVertex, x,y,z,1);
 	}
 
+	public int getProgramHandler(){
+		return this.programHandler;		
+	}
+
 }
