@@ -40,19 +40,19 @@ void main(void)
 	
 	
 	
-	float radioActual = getRadio(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z);
-	resultado.x = resultado.x/radioActual;
+	float radioActual = getRadio(gl_Vertex.x,gl_Vertex.y,gl_Vertex.z); //dado las coordenadas cartesianas, calculo el radio
+	resultado.x = resultado.x/radioActual; //normalizo
 	resultado.y = resultado.y/radioActual;
 	resultado.z = resultado.z/radioActual;
 	
-	float radioFinal = getRadioFinal(radioActual,radio,factor);
+	float radioFinal = getRadioFinal(radioActual,radio,factor); 
 	
 	
-	resultado.x = resultado.x*(radioActual+(radioFinal-radioActual)*time);
+	resultado.x = resultado.x*(radioActual+(radioFinal-radioActual)*time); 
 	resultado.y =resultado.y*(radioActual+(radioFinal-radioActual)*time);
 	resultado.z = resultado.z*(radioActual+(radioFinal-radioActual)*time);
 	
-	gl_Position = gl_ModelViewProjectionMatrix * resultado;
+	gl_Position = gl_ModelViewProjectionMatrix * resultado; //la normal tendria la misma direccion que resultado.
 
 	
 	//Entonces es brillante o semimate por lo q el calculo para ambas es el mismo
