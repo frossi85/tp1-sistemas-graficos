@@ -11,12 +11,30 @@ import common.TextureReader;
 public class FragmentGeneral extends FragmentShader {
 	private String fileName = "fragmentGenerico.frag";
 	private GL2 gl;
-	private ManejoShaders shader;
+	//private ManejoShaders shader;
+	private ManejoShaders2 shader;
 	private GLU glu;
 	int texturaLadrillo;
 	TexturaCubeMap texturaCubica;
 	
-	public FragmentGeneral(GL2 gl, GLU glu, ManejoShaders shader)
+//	public FragmentGeneral(GL2 gl, GLU glu, ManejoShaders shader)
+//	{
+//		this.gl = gl;
+//		this.shader = shader;
+//		this.glu = glu;
+//		
+//		//Inicializacion de cube map
+//	  	texturaCubica = new TexturaCubeMap(gl, glu, 512);
+//	  	
+//	  	texturaCubica.cargarXPositivo("posx.jpeg");
+//	  	texturaCubica.cargarYPositivo("posy.jpeg");
+//	  	texturaCubica.cargarZPositivo("posz.jpeg");
+//	  	texturaCubica.cargarXNegativo("negx.jpeg");
+//	  	texturaCubica.cargarYNegativo("negy.jpeg");
+//	  	texturaCubica.cargarZNegativo("negz.jpeg");
+//	}
+	
+	public FragmentGeneral(GL2 gl, GLU glu, ManejoShaders2 shader)
 	{
 		this.gl = gl;
 		this.shader = shader;
