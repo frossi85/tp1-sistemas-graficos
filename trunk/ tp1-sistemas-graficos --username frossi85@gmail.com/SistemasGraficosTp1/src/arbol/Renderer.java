@@ -118,6 +118,10 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     int GENERIC_FRAG;
     FragmentGeneral fragment;
     
+    
+    int currentFrag;
+    int currentVert;
+    
     ManejoShaders2 mS;
     
     
@@ -196,10 +200,7 @@ float [] positionDataOrig =
     	
         //timer010 = 0.09; //for screenshot!
     	gl.glPushMatrix();
-	    	/*mS.usarPrograma(RUIDO_VERT, TEXTURA_FRAG);
-	    	mS.displayUniform();
-	    	mS.displayVertexAttrib();
-    		drawMenu(gl, this);*/
+    		drawMenu(gl, this);
     	gl.glPopMatrix(); 
     	gl.glPushMatrix();
     	
@@ -209,11 +210,11 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
 	        	
 	        	//mS.usarPrograma(DOBLAR_VERT, RUIDO_FRAG);
-	        	//mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+	        	mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	        	//mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
 	        	//mS.usarPrograma(DOBLAR_VERT, GENERIC_FRAG);
 	        	//mS.usarPrograma(ESFERIZAR_VERT, GENERIC_FRAG);
-	        	mS.usarPrograma(RETORCER_VERT, GENERIC_FRAG);
+	        	//mS.usarPrograma(RETORCER_VERT, GENERIC_FRAG);
 	        	
 	        	//////////////////////////////////////////////////////////////////
 	        	// 		Ejemplo de uso de la clase para manejo de fragment shader
@@ -555,7 +556,9 @@ float [] positionDataOrig =
 		anillo anillo = new anillo(0.3f,0.1f, 30,30);
 		cilindro cilindro = new cilindro(0.3f, 0.3f, 30,1);
 		
-		
+		mS.usarPrograma(SIN_DEFORMACION_VERT, TEXTURA_FRAG);
+    	mS.displayUniform();
+    	mS.displayVertexAttrib();
 		gl.glPushMatrix();
 			gl.glTranslatef(-3,1.6f,0);
 			
@@ -583,43 +586,76 @@ float [] positionDataOrig =
 		gl.glPushMatrix();
 			gl.glTranslatef(-1.5f, 1.6f, 0);
 			
+			mS.usarPrograma(SIN_DEFORMACION_VERT, RUIDO_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+			
 			gl.glPushMatrix();	
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
+			mS.usarPrograma(SIN_DEFORMACION_VERT, LUCES_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+	    	
 			gl.glPushMatrix();
 			gl.glTranslatef(1,0,0);
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
+			mS.usarPrograma(SIN_DEFORMACION_VERT, TEXTURA_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+	    	
 			gl.glPushMatrix();
 			gl.glTranslatef(2,0,0);
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
+			mS.usarPrograma(SIN_DEFORMACION_VERT, TEXTURA_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+	    	
 			gl.glPushMatrix();
 			gl.glTranslatef(3,0,0);
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 		
 		gl.glPopMatrix();
-		
+	
+			    
 		gl.glPushMatrix();
 			gl.glTranslatef(3,1.6f,0);
+			
+			mS.usarPrograma(RETORCER_VERT, GENERIC_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
 			
 			gl.glPushMatrix();				
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 			
+			mS.usarPrograma(DOBLAR_VERT, GENERIC_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+			
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-1f,0.0f);				
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
+			
+			/*mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();*/
 		
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-2f,0.0f);
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
+			
+			mS.usarPrograma(ESFERIZAR_VERT, GENERIC_FRAG);
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
 			
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-3f,0.0f);
