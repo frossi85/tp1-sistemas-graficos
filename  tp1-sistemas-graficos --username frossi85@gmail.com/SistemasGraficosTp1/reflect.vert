@@ -2,7 +2,7 @@ varying vec3 vTexCoord;
 
 void main(void)
 {
-/*
+
     // Normal in Eye Space
     vec3 vEyeNormal = gl_NormalMatrix * gl_Normal;
     // Vertex position in Eye Space
@@ -13,10 +13,10 @@ void main(void)
     vCoords = gl_ModelViewMatrixInverse * vCoords;
     vTexCoord.xyz = normalize(vCoords.xyz);
     // Don't forget to transform the geometry!
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;*/
+    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
     
     
-	// Compute the reflected direction in world coords.
+/*	// Compute the reflected direction in world coords.
 	vec3 worldPos = vec3( gl_ModelViewMatrix * gl_Vertex );
 	vec3 worldNorm = vec3(gl_ModelViewMatrix * vec4(gl_Normal, 0.0));
 	vec3 WorldCameraPosition = vec3(0.0, 0.0, -1.0);
@@ -26,5 +26,5 @@ void main(void)
 
 	vTexCoord = reflect(-worldView, worldNorm );
 
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;*/
 }
