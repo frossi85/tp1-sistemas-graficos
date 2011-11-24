@@ -21,10 +21,10 @@ void main(void)
 {
 	//gl_TexCoord[0] = gl_MultiTexCoord0;
 	vec4 v2 = vec4(gl_Vertex);
-	v2.z =  gl_Vertex.z + amplitud*sin(longOnda*gl_Vertex.x + time*0.01 + fase );
-	v2.x =  gl_Vertex.x + amplitud*sin(longOnda*gl_Vertex.y + time*0.01 +fase );
-	v2.y = gl_Vertex.y + amplitud*sin(longOnda*gl_Vertex.z + time*0.01 + fase );
-	v2.w = 1.0;
+	v2.z =  gl_Vertex.z + amplitud*sin(longOnda*gl_Vertex.x + time*0.01 + fase );//hay que calcular
+	v2.x =  gl_Vertex.x + amplitud*sin(longOnda*gl_Vertex.y + time*0.01 +fase );// las 3
+	v2.y = gl_Vertex.y + amplitud*sin(longOnda*gl_Vertex.z + time*0.01 + fase );//derivadas
+	v2.w = 1.0; // luego buscar el vector ortogonal que sera la normal.
 		
 	gl_Position = gl_ModelViewProjectionMatrix * v2;
 	
