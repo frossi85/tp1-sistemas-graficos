@@ -107,6 +107,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
     int RUIDO_VERT = ManejoShaders2.addVertexShader( new RuidoVert(1f,0.25f,0.001f));
     int ESFERIZAR_VERT = ManejoShaders2.addVertexShader(new EsferizacionVert(1,0.0f,0.0f,0.0f,0.5f));
     int DOBLAR_VERT = ManejoShaders2.addVertexShader(new DoblarVert((float)Math.PI/2,2.0f,1f,1f));
+    int RETORCER_VERT = ManejoShaders2.addVertexShader(new RetorcerVert((float)Math.PI,2f));
    
     int SIN_DEFORMACION_VERT = ManejoShaders2.addVertexShader(new SinDeformacionVert());
     
@@ -208,7 +209,11 @@ float [] positionDataOrig =
 	        	gl.glRotatef(rotacionCamaraY, -1, 0, 0);
 	        	
 	        	//mS.usarPrograma(DOBLAR_VERT, RUIDO_FRAG);
-	        	mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+	        	//mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+	        	//mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
+	        	//mS.usarPrograma(DOBLAR_VERT, GENERIC_FRAG);
+	        	//mS.usarPrograma(ESFERIZAR_VERT, GENERIC_FRAG);
+	        	mS.usarPrograma(RETORCER_VERT, GENERIC_FRAG);
 	        	
 	        	//////////////////////////////////////////////////////////////////
 	        	// 		Ejemplo de uso de la clase para manejo de fragment shader
