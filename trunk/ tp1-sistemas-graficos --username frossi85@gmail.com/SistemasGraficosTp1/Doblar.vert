@@ -42,9 +42,9 @@ void main(void)
 	
 	float ang = gl_Vertex.z*(angulo*time)/alturaMax;
 	
-	float radio = distancia - gl_Vertex.x;
+	float radio = distancia - gl_Vertex.x;//forma la normal con 2 puntos: uno es resultado 
 	
-	resultado.x = distancia - radio*cos(ang);
+	resultado.x = distancia - radio*cos(ang);// y el otro es: (distancia,gl_Vertex.y,0.0)
 	
 	
 	resultado.z = radio*sin(ang);	
