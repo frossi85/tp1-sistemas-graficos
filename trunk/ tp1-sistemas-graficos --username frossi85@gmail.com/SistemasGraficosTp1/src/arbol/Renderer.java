@@ -556,7 +556,7 @@ float [] positionDataOrig =
 		anillo anillo = new anillo(0.3f,0.1f, 30,30);
 		cilindro cilindro = new cilindro(0.3f, 0.3f, 30,1);
 		
-		mS.usarPrograma(SIN_DEFORMACION_VERT, TEXTURA_FRAG);
+		mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
     	mS.displayUniform();
     	mS.displayVertexAttrib();
 		gl.glPushMatrix();
@@ -586,7 +586,7 @@ float [] positionDataOrig =
 		gl.glPushMatrix();
 			gl.glTranslatef(-1.5f, 1.6f, 0);
 			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, RUIDO_FRAG);
+			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
 			
@@ -594,7 +594,7 @@ float [] positionDataOrig =
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, LUCES_FRAG);
+			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
 	    	
@@ -603,7 +603,7 @@ float [] positionDataOrig =
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, TEXTURA_FRAG);
+			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
 	    	
@@ -612,7 +612,7 @@ float [] positionDataOrig =
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, TEXTURA_FRAG);
+			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
 	    	
@@ -644,9 +644,9 @@ float [] positionDataOrig =
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 			
-			/*mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
+			mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
-	    	mS.displayVertexAttrib();*/
+	    	mS.displayVertexAttrib();
 		
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-2f,0.0f);

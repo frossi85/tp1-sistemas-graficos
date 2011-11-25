@@ -79,7 +79,7 @@ public class FragmentGeneral extends FragmentShader {
 	    
 	    uniloc = gl.glGetUniformLocation(shader.getProgramHandler(), "esTextura2D");
 	    if( uniloc >= 0 )
-	    	gl.glUniform1i(uniloc, 0); //0=false, 1=true
+	    	gl.glUniform1i(uniloc, 0); //0=false, 1=truei
 	    
 	    uniloc = gl.glGetUniformLocation(shader.getProgramHandler(), "esCubeMap");
 	    if( uniloc >= 0 )
