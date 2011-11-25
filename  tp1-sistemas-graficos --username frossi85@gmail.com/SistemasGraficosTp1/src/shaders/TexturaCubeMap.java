@@ -184,19 +184,12 @@ public class TexturaCubeMap {
 	
 	public void habilitar2()
 	{
-		
-		//gl.glActiveTexture(GL2.GL_TEXTURE0);
 	    gl.glEnable(GL2.GL_TEXTURE_CUBE_MAP);
-		//gl.glEnable(GL2.GL_TEXTURE_2D);
-		cubemap = genTexture(gl);
-		//gl.glBindTexture(GL.GL_TEXTURE_CUBE_MAP, cubemap);
-        //gl.glBindTexture(GL.GL_TEXTURE_2D, cubemap);
 
-        
-//        makeRGBTexture(gl, glu, xNegativo, GL.GL_TEXTURE_2D, false);
-//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-              
+		cubemap = genTexture(gl);
+		
+		//gl.glBindTexture(GL.GL_TEXTURE_CUBE_MAP, cubemap);
+                    
         makeRGBTexture(gl, glu, xPositivo, GL2.GL_TEXTURE_CUBE_MAP_POSITIVE_X, false);
         makeRGBTexture(gl, glu, xNegativo, GL2.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, false);
         makeRGBTexture(gl, glu, yPositivo, GL2.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, false);
@@ -226,7 +219,6 @@ public class TexturaCubeMap {
 	    gl.glEnable(GL2.GL_LIGHT0);
 	    gl.glEnable(GL2.GL_AUTO_NORMAL);
 	    gl.glEnable(GL2.GL_NORMALIZE);
-	    gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_DIFFUSE, diffuse, 0);
 	}
 	
 	public void habilitar() {
