@@ -72,14 +72,6 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
 	//private float light_specular[] = {0.3f,0.3f,0.3f,1.0f};
 
     // Variables de control
-    private boolean view_grid = true;
-    private boolean view_axis = true;
-    private boolean edit_panel = false;
-   
-	private static int DL_AXIS;
-    private static int DL_GRID;
-    private static int DL_AXIS2D_TOP;
-
     // Tama�o de la ventana
     private static float window_size[] = new float[2];
     private static float W_WIDTH = window_size[0];
@@ -158,40 +150,25 @@ float [] positionDataOrig =
     public Renderer(GLCanvas glCanvas)
     {
     	this.canvas = glCanvas;
-    	animator = new FPSAnimator(canvas, 60);
+    	//animator = new FPSAnimator(canvas, 60);
+    	animator = new FPSAnimator(canvas, 50);
     	animator.add(canvas);
     	animator.start();
     }
   
-    private void update()
+    private void update(GL2 gl)
     {
-//    	if(cantReinicioLoop > 100)
-//    	{
-//    		cantReinicioLoop = 0;
-//    		if(!pause)
-//    		{
-//    			if(edadActual<edadMaxima)
-//    			{
-//    				edadActual += velocidadCrecimiento;
-//    				arbol.crecer(velocidadCrecimiento);
-//    			}
-//    			else {
-//    				arbol.verHojas();
-//    			}
-//    		}
-//    	}
-//    	else
-//    		cantReinicioLoop++;
+    	if(cantReinicioLoop > 1)
+    	{
+
+    	}
+    	else
+    		cantReinicioLoop++;
     }
     
     public void display(GLAutoDrawable gLDrawable) 
     {    
     	final GL2 gl = gLDrawable.getGL().getGL2();
-    	//ManejoShaders2 mS = new ManejoShaders2(gLDrawable);
-    	
-    	
-		//fragment = new FragmentGeneral(gl, glu, mS);
-		//GENERIC_FRAG = ManejoShaders2.addFragmentShader(fragment);
     	
     	gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
     	 	
@@ -199,6 +176,7 @@ float [] positionDataOrig =
 
     	
         //timer010 = 0.09; //for screenshot!
+  		update(gl);
     	gl.glPushMatrix();
     		drawMenu(gl, this);
     	gl.glPopMatrix(); 
@@ -219,10 +197,10 @@ float [] positionDataOrig =
 	        	//////////////////////////////////////////////////////////////////
 	        	// 		Ejemplo de uso de la clase para manejo de fragment shader
 	        	//////////////////////////////////////////////////////////////////
-	        	//fragment.setEfectoSemiMate();
+	        	fragment.setEfectoSemiMate();
 	        	//fragment.setEfectoBrillante();
 	        	//fragment.setEfectoTextura2D();
-	        	fragment.setEfectoReflejarEntorno();
+	        	//fragment.setEfectoReflejarEntorno();
         	
 	        	//this.shader.usarPrograma();
 	        	//retorcer
@@ -232,67 +210,25 @@ float [] positionDataOrig =
 	        	*/
 	    		
 	        	mS.displayUniform();
-				/*
-				int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getRuido().NOMBRE_TIME);
-				gl.glUniform1f(location,shader.getRuido().getTime());  
-				shader.getRuido().setTime(shader.getRuido().getTime() + 1.0f);*/
-	    	
-	    		
-	    		/*esferizacion: 
-	    		 int location = gl.glGetUniformLocation(shader.getProgramHandler(),shader.getEsferizacion().NOMBRE_FACTOR);
-				gl.glUniform1f(location,shader.getEsferizacion().getFactorVariable());  
-				float centro[] = shader.getEsferizacion().getCentro();
-	    		 */
-	    		
-	    	  	//gl.glBegin(GL.GL_TRIANGLES); //no cambia nada
+			
 	    	  	//retorcer
 	    	  	//gl.glVertexAttrib1f(shader.getRetorcer().getMemAngulo(),shader.getRetorcer().getAngulo() );
 	    	  	//gl.glVertexAttrib1f(shader.getRetorcer().getMemAltura(),shader.getRetorcer().getAltura() );
 	    	  		
-	    	  	//	ruido con animacion:
-	    		/*  	gl.glVertexAttrib1f(shader.getRuido().getMemAmplitud(),shader.getRuido().getAmplitud() );
-	  				gl.glVertexAttrib1f(shader.getRuido().getMemFase(),shader.getRuido().getFase() );
-	  				gl.glVertexAttrib1f(shader.getRuido().getMemLongOnda(),shader.getRuido().getLongOnda() );*/
-	        	
+	    	  
 	        	mS.displayVertexAttrib();
 
 	    		 
-	    	  	/*esferizacion
-	    	  	gl.glVertexAttrib1f(shader.getEsferizacion().getMemRadio(),shader.getEsferizacion().getRadio() );
-	    	  	gl.glVertexAttrib1f(shader.getEsferizacion().getMemFactor(),shader.getEsferizacion().getFactor() );
-	    	  	gl.glVertexAttrib3f(shader.getEsferizacion().getMemRadio(),centro[0],centro[1],centro[2] );
-	    		 */
-	    		  	//	glut.glutSolidCube(3);
-	    		  		
+	    	   		
 	    		  		primitiva.dibujar(gl);
 	    		  
 	    		  	//this.shader.pararPrograma();	
 	    	  // 	gl.glEnd(); //no cambia nada
-	    	   	
-	    	   	
+	    	   
         
 	        
 	        gl.glPopMatrix();
         gl.glPopMatrix();
-    	
-      
-		
-	  	///////////////////////////////////////////////////
-	
-	  	///////////////////////////////////////////////////
-	  	// Panel 2D para la vista superior
-	  	if (edit_panel)
-	  	{
-	  		SetPanelTopEnv(gl);
-	  		
-	  		gl.glMatrixMode(GL2.GL_MODELVIEW);
-	  		gl.glLoadIdentity();
-	  		glu.gluLookAt (0, 0, 0.5, 0, 0, 0, 0, 1, 0);
-	  		gl.glCallList(DL_AXIS2D_TOP);
-	  	}
-	  	//
-	  	///////////////////////////////////////////////////
-    	
 	
 	  	//En ves de glutSwapBuffers();.. va gl.glFlush();
 	    gl.glFlush();
@@ -338,68 +274,12 @@ float [] positionDataOrig =
 		//setear la camera
 		Set3DEnv(gl);  
 		
-		
 		mS = new ManejoShaders2(gLDrawable);
-    	
     	
 		fragment = new FragmentGeneral(gl, glu, mS);
 		GENERIC_FRAG = ManejoShaders2.addFragmentShader(fragment);
 		   
-		   
-		//Fin agregado
-		//this.shader = new ManejoShaders("Ruido.vert","Textura.frag");
-    	//this.shader = new ManejoShaders("SinDeformacion.vert","Ruido.frag");
-    	//this.shader = new ManejoShaders("SinDeformacion.vert","PhongShader.frag");
-	  //	this.shader.bindBuffer(gLDrawable);
-	  //	this.shader.compiladoLinkeado(gLDrawable);
-	  	
-	    //DemoLight(gl);
-	  	
-	  	///TEXTURA
-
-//	  	gl.glEnable(GL.GL_TEXTURE_2D);
-//        texture = genTexture(gl);
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-//        TextureReader.Texture texture = null;
-//        try {
-//            texture = TextureReader.readTexture("ladrillos.png");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//			throw new RuntimeException(e);
-//        }
-//        
-//        makeRGBTexture(gl, glu, texture, GL.GL_TEXTURE_2D, false);
-//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-//	 
-	  	
-	  	DL_AXIS = gl.glGenLists(3);
-	  	DL_GRID = DL_AXIS+1;
-	  	DL_AXIS2D_TOP = DL_AXIS+2;
-    	
-	  
-//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, light_color , 0);
-//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, light_ambient, 0);
-//	  	gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, light_position, 0);
-//		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, light_specular, 0);
-//		float colorBlue[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-//		//gl.glMaterialfv(GL.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE, colorBlue,0);
-//	  
-//	  	gl.glEnable(GL2.GL_LIGHT0);
-//	  	gl.glEnable(GL2.GL_LIGHTING);
-	
-	  	// Generaci�n de las Display Lists
-	  	gl.glNewList(DL_AXIS, GL2.GL_COMPILE);
-	  	this.DrawAxis(gl);
-	  	gl.glEndList();
-	  	gl.glNewList(DL_GRID, GL2.GL_COMPILE);
-	  	this.DrawXYGrid(gl);
-	  	gl.glEndList();
-	  	gl.glNewList(DL_AXIS2D_TOP, GL2.GL_COMPILE);
-	  	this.DrawAxis2DTopView(gl);
-	  	gl.glEndList();
-    
-	  	DemoLight(gl);
+		DemoLight(gl);
 	  	
     }
     
@@ -557,6 +437,7 @@ float [] positionDataOrig =
 		cilindro cilindro = new cilindro(0.3f, 0.3f, 30,1);
 		
 		mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+		
     	mS.displayUniform();
     	mS.displayVertexAttrib();
 		gl.glPushMatrix();
@@ -584,48 +465,47 @@ float [] positionDataOrig =
 		gl.glPopMatrix();
 		
 		gl.glPushMatrix();
+		
 			gl.glTranslatef(-1.5f, 1.6f, 0);
 			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
-			fragment.setEfectoBrillante();
+			//mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
 			
-	    	
 			gl.glPushMatrix();	
+			fragment.setEfectoSemiMate();
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
-			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
-			fragment.setEfectoReflejarEntorno();
+
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-			
+	    	
 			gl.glPushMatrix();
+			fragment.setEfectoBrillante();
 			gl.glTranslatef(1,0,0);
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
-			fragment.setEfectoSemiMate();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-			
 	    	
 			gl.glPushMatrix();
 			gl.glTranslatef(2,0,0);
+			fragment.setEfectoTextura2D();
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
-			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
-			fragment.setEfectoTextura2D();
+			//mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-			
 	    	
 			gl.glPushMatrix();
+			fragment.setEfectoReflejarEntorno();
 			gl.glTranslatef(3,0,0);
+			gl.glPushMatrix();
+			gl.glRotatef(45f, 1f, 0.8f, 0.15f);
 			esfera.dibujar(gl);
+			gl.glPopMatrix();
 			gl.glPopMatrix();
 		
 		gl.glPopMatrix();
@@ -651,9 +531,9 @@ float [] positionDataOrig =
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 			
-			/*mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
+			mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
-	    	mS.displayVertexAttrib();*/
+	    	mS.displayVertexAttrib();
 		
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-2f,0.0f);
