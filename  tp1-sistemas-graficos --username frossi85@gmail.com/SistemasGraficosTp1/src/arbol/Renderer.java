@@ -587,25 +587,30 @@ float [] positionDataOrig =
 			gl.glTranslatef(-1.5f, 1.6f, 0);
 			
 			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+			fragment.setEfectoBrillante();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
 			
+	    	
 			gl.glPushMatrix();	
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
 			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+			fragment.setEfectoReflejarEntorno();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-	    	
+			
 			gl.glPushMatrix();
 			gl.glTranslatef(1,0,0);
 			esfera.dibujar(gl);
 			gl.glPopMatrix();
 			
 			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+			fragment.setEfectoSemiMate();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
+			
 	    	
 			gl.glPushMatrix();
 			gl.glTranslatef(2,0,0);
@@ -613,8 +618,10 @@ float [] positionDataOrig =
 			gl.glPopMatrix();
 			
 			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+			fragment.setEfectoTextura2D();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
+			
 	    	
 			gl.glPushMatrix();
 			gl.glTranslatef(3,0,0);
@@ -644,9 +651,9 @@ float [] positionDataOrig =
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 			
-			mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
+			/*mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
-	    	mS.displayVertexAttrib();
+	    	mS.displayVertexAttrib();*/
 		
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-2f,0.0f);
