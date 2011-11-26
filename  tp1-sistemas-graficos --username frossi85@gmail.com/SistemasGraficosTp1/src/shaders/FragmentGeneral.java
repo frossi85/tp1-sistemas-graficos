@@ -131,7 +131,7 @@ public class FragmentGeneral extends FragmentShader {
 	
 	public void setEfectoReflejarEntorno()
 	{	  	
-	  	texturaCubica.habilitar2();
+	  	texturaCubica.habilitar();
 		
 		int uniloc = -1;
     

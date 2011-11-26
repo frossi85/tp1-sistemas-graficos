@@ -33,22 +33,6 @@ public class TexturaCubeMap {
 	TextureReader.Texture zNegativo;
 	public int cubemap;
 	
-    private static int imageSize = 4;
-    private static ByteBuffer imageBuf1 //
-    = Buffers.newDirectByteBuffer(imageSize * imageSize * 4);
-    private static ByteBuffer imageBuf2 //
-    = Buffers.newDirectByteBuffer(imageSize * imageSize * 4);
-    private static ByteBuffer imageBuf3 //
-    = Buffers.newDirectByteBuffer(imageSize * imageSize * 4);
-    private static ByteBuffer imageBuf4 //
-    = Buffers.newDirectByteBuffer(imageSize * imageSize * 4);
-    private static ByteBuffer imageBuf5 //
-    = Buffers.newDirectByteBuffer(imageSize * imageSize * 4);
-    private static ByteBuffer imageBuf6 //
-    = Buffers.newDirectByteBuffer(imageSize * imageSize * 4);
-    float diffuse[] =
-    { 1.0f, 1.0f, 1.0f, 1.0f };
-	
 //	TextureData xPositivo;
 //	TextureData yPositivo;
 //	TextureData zPositivo;
@@ -106,69 +90,20 @@ public class TexturaCubeMap {
         }
 
 		
-		File file =  new File(url);
-	  		
-		TextureData data = null;
-		try {
-			data = TextureIO.newTextureData(gl.getGLProfile(), file, false, TextureIO.JPG);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		File file =  new File(url);
+//	  		
+//		TextureData data = null;
+//		try {
+//			data = TextureIO.newTextureData(gl.getGLProfile(), file, false, TextureIO.JPG);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 			
 	    //return data;
 	    
 	    return texture;
 	}
-	
-	private void makeImages()
-    {
-      int c = 0;
-      for (int i = 0; i < imageSize; i++)
-      {
-        for (int j = 0; j < imageSize; j++)
-        {
-          // c = ((((i&0x1)==0)^((j&0x1))==0))*255;
-          c = (byte) ((((byte) ((i & 0x1) == 0 ? 0x00 : 0xff)//
-          ^ (byte) ((j & 0x1) == 0 ? 0x00 : 0xff))));
-          imageBuf1.put((byte) c);
-          imageBuf1.put((byte) c);
-          imageBuf1.put((byte) c);
-          imageBuf1.put((byte) 255);
-
-          imageBuf2.put((byte) c);
-          imageBuf2.put((byte) c);
-          imageBuf2.put((byte) 0);
-          imageBuf2.put((byte) 255);
-
-          imageBuf3.put((byte) c);
-          imageBuf3.put((byte) 0);
-          imageBuf3.put((byte) c);
-          imageBuf3.put((byte) 255);
-
-          imageBuf4.put((byte) 0);
-          imageBuf4.put((byte) c);
-          imageBuf4.put((byte) c);
-          imageBuf4.put((byte) 255);
-
-          imageBuf5.put((byte) 255);
-          imageBuf5.put((byte) c);
-          imageBuf5.put((byte) c);
-          imageBuf5.put((byte) 255);
-
-          imageBuf6.put((byte) c);
-          imageBuf6.put((byte) c);
-          imageBuf6.put((byte) 255);
-          imageBuf6.put((byte) 255);
-        }
-      }
-      imageBuf1.rewind();
-      imageBuf2.rewind();
-      imageBuf3.rewind();
-      imageBuf4.rewind();
-      imageBuf5.rewind();
-      imageBuf6.rewind();
-    }
 	
     private void makeRGBTexture(GL gl, GLU glu, TextureReader.Texture img, 
             int target, boolean mipmapped) {
@@ -182,7 +117,7 @@ public class TexturaCubeMap {
         }
     }
 	
-	public void habilitar2()
+	public void habilitar()
 	{
 	    gl.glEnable(GL2.GL_TEXTURE_CUBE_MAP);
 
@@ -215,58 +150,6 @@ public class TexturaCubeMap {
 
 	    gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
 
-	    gl.glEnable(GL2.GL_LIGHTING);
-	    gl.glEnable(GL2.GL_LIGHT0);
-	    gl.glEnable(GL2.GL_AUTO_NORMAL);
-	    gl.glEnable(GL2.GL_NORMALIZE);
-	}
-	
-	public void habilitar() {
-		
-		gl.glActiveTexture(GL2.GL_TEXTURE0);
-		int texID = genTexture(gl);
-		gl.glBindTexture(GL.GL_TEXTURE_CUBE_MAP, texID);
-
-  		
-//	    gl.glPixelStorei(GL2.GL_UNPACK_ALIGNMENT, 1);
-//	    
-//	    gl.glTexParameteri(GL2.GL_TEXTURE_CUBE_MAP, GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
-//	    gl.glTexParameteri(GL2.GL_TEXTURE_CUBE_MAP, GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT);
-//	    gl.glTexParameteri(GL2.GL_TEXTURE_CUBE_MAP, GL2.GL_TEXTURE_WRAP_R, GL2.GL_REPEAT);
-//	    gl.glTexParameteri(GL2.GL_TEXTURE_CUBE_MAP, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
-//	    gl.glTexParameteri(GL2.GL_TEXTURE_CUBE_MAP, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
-
-//
-//	    gl.glTexImage2D(GL2.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL2.GL_RGBA,
-//    		tamanioLadoCubo, tamanioLadoCubo, 0, GL.GL_RGBA, GL2.GL_UNSIGNED_BYTE, xPositivo.getPixels());
-//	    gl.glTexImage2D(GL2.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL2.GL_RGBA,
-//    		tamanioLadoCubo, tamanioLadoCubo, 0, GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, xNegativo.getPixels());
-//	    gl.glTexImage2D(GL2.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL2.GL_RGBA,
-//    		tamanioLadoCubo, tamanioLadoCubo, 0, GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, yPositivo.getPixels());
-//	    gl.glTexImage2D(GL2.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL2.GL_RGBA,
-//    		tamanioLadoCubo, tamanioLadoCubo, 0, GL.GL_RGBA, GL2.GL_UNSIGNED_BYTE, yNegativo.getPixels());
-//	    gl.glTexImage2D(GL2.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL2.GL_RGBA,
-//    		tamanioLadoCubo, tamanioLadoCubo, 0, GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, zPositivo.getPixels());
-//	    gl.glTexImage2D(GL2.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL2.GL_RGBA,
-//    		tamanioLadoCubo, tamanioLadoCubo, 0, GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, zNegativo.getPixels());
-//    
-	      
-	    
-//	    gl.glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_NORMAL_MAP);
-//	    gl.glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_NORMAL_MAP);
-//	    gl.glTexGeni(GL2.GL_R, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_NORMAL_MAP);
-//	    gl.glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_REFLECTION_MAP);
-//	    gl.glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_REFLECTION_MAP);
-//	    gl.glTexGeni(GL2.GL_R, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_REFLECTION_MAP);
-	    gl.glEnable(GL2.GL_TEXTURE_GEN_S);
-	    gl.glEnable(GL2.GL_TEXTURE_GEN_T);
-	    gl.glEnable(GL2.GL_TEXTURE_GEN_R);
-
-	    gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
-
-	    gl.glEnable(GL.GL_TEXTURE_CUBE_MAP);
-	    
-	  
 	    gl.glEnable(GL2.GL_LIGHTING);
 	    gl.glEnable(GL2.GL_LIGHT0);
 	    gl.glEnable(GL2.GL_AUTO_NORMAL);
