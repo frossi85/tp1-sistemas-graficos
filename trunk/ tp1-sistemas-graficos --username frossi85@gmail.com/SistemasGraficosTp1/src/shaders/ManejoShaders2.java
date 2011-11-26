@@ -266,7 +266,10 @@ public class ManejoShaders2 {
 	    //ATTACHEO OBJETOS A PROGRAMA
 	    gl_shader.glAttachShader(shaderprogram, creador);
 	    int codError = gl_shader.glGetError();
-	    if( GL.GL_NO_ERROR != codError )System.out.println("Error al crear programa objeto 1");
+	    
+	    
+	    //if( GL.GL_NO_ERROR != codError )System.out.println("Error al crear programa objeto 1");
+	    
 	    gl_shader.glAttachShader(shaderprogram, f);
 	    codError = gl_shader.glGetError();
 	    if( GL.GL_NO_ERROR != codError )System.out.println("Error al crear programa objeto 2");
