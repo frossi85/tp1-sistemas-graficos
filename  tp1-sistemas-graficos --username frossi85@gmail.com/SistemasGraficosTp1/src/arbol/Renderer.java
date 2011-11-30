@@ -96,7 +96,7 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
 
     //SHADERS
 
-    int RUIDO_VERT = ManejoShaders2.addVertexShader( new RuidoVert(3f,0.25f,1f);
+    int RUIDO_VERT = ManejoShaders2.addVertexShader( new RuidoVert(3f,0.25f,1f));
     int ESFERIZAR_VERT = ManejoShaders2.addVertexShader(new EsferizacionVert(1,0.0f,0.0f,0.0f,0.5f));
     int DOBLAR_VERT = ManejoShaders2.addVertexShader(new DoblarVert((float)Math.PI/2,2.0f,1f,1f));
     int RETORCER_VERT = ManejoShaders2.addVertexShader(new RetorcerVert((float)Math.PI,2f));
