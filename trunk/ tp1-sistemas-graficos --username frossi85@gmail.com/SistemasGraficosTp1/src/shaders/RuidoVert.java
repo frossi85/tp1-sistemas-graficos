@@ -9,10 +9,10 @@ public class RuidoVert extends VertexShader{
 	private float fase;
 	private float amplitud;
 	private float longOnda;
-	private int memFase = 1;
-	private int memAmplitud = 2;
-	private int memLongOnda = 3;
-	private int memTime = 4;
+	private int memFase;
+	private int memAmplitud;
+	private int memLongOnda;
+	private int memTime;
 	private float time;
 	public static String NOMBRE_FASE = "fase";
 	public static String NOMBRE_AMPLITUD = "amplitud";
@@ -72,12 +72,23 @@ public class RuidoVert extends VertexShader{
 		return this.time;
 	}
 	
+	public void setMemAmplitud(int memAmplitud){
+		this.memAmplitud = memAmplitud;
+	}
+
+	public void setMemLongOnda(int memLongOnda){
+		this.memLongOnda = memLongOnda;
+	}
+
+	public void setMemFase(int memFase){
+		this.memFase = memFase;
+	}
 	@Override
 	public void displayVertexAttrib() {
-		gl.glVertexAttrib1f(getMemAmplitud(),getAmplitud() );
+		/*gl.glVertexAttrib1f(getMemAmplitud(),getAmplitud() );
 		gl.glVertexAttrib1f(getMemFase(),getFase() );
 		gl.glVertexAttrib1f(getMemLongOnda(),getLongOnda() );
-		
+		*/
 	}
 	
 	@Override
@@ -85,6 +96,16 @@ public class RuidoVert extends VertexShader{
 		int location = gl.glGetUniformLocation(this.pgmHandler, NOMBRE_TIME);
 		gl.glUniform1f(location,getTime());  
 		setTime(getTime() + 1.0f);
+		
+		setMemAmplitud(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_AMPLITUD));
+		gl.glUniform1f(getMemAmplitud(),getAmplitud());
+		
+		setMemLongOnda(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_LONGONDA));
+		gl.glUniform1f(getMemLongOnda(),getLongOnda());
+    	
+		setMemFase(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_FASE));
+		gl.glUniform1f(getMemFase(),getFase());
+		
 		
 	}
 	
