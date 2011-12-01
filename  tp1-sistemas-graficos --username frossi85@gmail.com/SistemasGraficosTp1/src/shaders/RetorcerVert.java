@@ -14,6 +14,7 @@ public class RetorcerVert extends VertexShader{
 	private int memAngulo;
 	private int memAltura;
 	private int memTime;
+	private boolean parado = false;
 	
 public RetorcerVert(float angulo,float altura){
 		this.angulo = angulo;
@@ -70,7 +71,7 @@ public int getMemAltura(){
 }
 
 public void update(){
-	time += 0.05f;
+	time += 0.3f;
 		
 }
 
@@ -83,8 +84,13 @@ public void displayVertexAttrib() {
 @Override
 public void displayUniform() {
 	setMemTime(gl.glGetUniformLocation(this.pgmHandler ,NOMBRE_TIME));
-	update();
-	gl.glUniform1f(getMemTime(),getTime());  
+	if(!parado){
+		update();
+		gl.glUniform1f(getMemTime(),getTime()); 
+	}
+	else {
+		gl.glUniform1f(getMemTime(),5.0f);
+	}
 	setMemAltura(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_ALTURA));
 	gl.glUniform1f(getMemAltura(),getAltura());
 	setMemAngulo(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_ANGULO));
@@ -95,6 +101,14 @@ public void displayUniform() {
 @Override
 public String getFileName() {
 	return this.fileName;
+}
+
+public void pararanimacion() {
+	parado = true;		
+}
+
+public void reiniciaranimacion(){
+	parado = false;
 }
 	
 }

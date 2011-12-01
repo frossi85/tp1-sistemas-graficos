@@ -93,6 +93,13 @@ public class ManejoShaders2 {
 		return fragmentShadersList.size() -1;
 	}
 	
+	public void pararAnimacion(){
+		vertexShadersList.get(this.currentVertexShader).pararanimacion();
+	}
+	
+	public void reiniciarAnimacion(){
+		vertexShadersList.get(this.currentVertexShader).reiniciaranimacion();
+	}
 	
 	public void usarPrograma(int vS, int fS){
 		this.currentFragmentShader = fS;
