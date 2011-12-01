@@ -6,16 +6,6 @@ uniform float altura;
 uniform float time;
 
 varying vec3 normal, lightDir, eyeVec;
-//varying float intensity;
-
-
-uniform bool esTextura2D;
-
-//Variables para cube Map
-varying vec3 vTexCoord;
-uniform bool esCubeMap;
-
-uniform bool esMaterialBrillante;
 
 /*
 float getRadio(float x, float y){
@@ -58,6 +48,9 @@ vec4 DoTwist( vec4 pos, float t )
 	return new_pos ;
 }
 
+float getAng(float alt,float posY,float ang){
+		return (2.0*ang*posY/alt - ang);
+	}
 
 void main(void)
 {
@@ -71,12 +64,17 @@ void main(void)
 		tetha = tetha - 2.0*PI;
 	
 	v.z =  gl_Vertex.z;
-	
+	/*
 	v.x =  gl_Vertex.x*cos(angulo) - gl_Vertex.y*sin(angulo);
 	v.y =  gl_Vertex.x*sin(angulo) + gl_Vertex.y*cos(angulo);
-	
 	v.x =  getX(tetha, radio);
 	v.y =  getY(tetha,radio);
+	
+	v.x =  gl_Vertex.z*sin(angulo) + gl_Vertex.y*cos(angulo);
+	v.z =  gl_Vertex.z*cos(angulo) - gl_Vertex.x*sin(angulo);
+	
+	v.x =  getX(tetha, radio);
+	v.z =  getY(tetha,radio);
 	
 	v.w = 1.0;
 	*/
@@ -89,18 +87,31 @@ void main(void)
         float ang = (altura*0.5 + gl_Vertex.y)/altura*gl_Vertex.z*angle_rad;
 	vec4 pos = vec4(gl_Vertex);
 	float t;
-	t = ang;
-	
+	//t = ang;
+	t = getAng(altura,gl_Vertex.y,angulo)*sin(time*0.5);
 	
 	float st = sin(t);
 	float ct = cos(t);
+	
+	float stn = sin(-t);
+	float ctn = cos(-t);
+	
 	vec4 new_pos;
 	
-	new_pos.x = pos.x*ct - pos.z*st;
-	new_pos.z = pos.x*st + pos.z*ct;
+		new_pos.x = pos.x*ct - pos.z*st;
+		new_pos.z = pos.x*st + pos.z*ct;
+	
+		new_pos.y = pos.y;
+		new_pos.w = pos.w;
+	
+	/*
+	
+	new_pos.x = pos.z*st + pos.x*ct;
+	new_pos.z = pos.z*ct - pos.x*st;
 	
 	new_pos.y = pos.y;
 	new_pos.w = pos.w;
+	*/
 	vec4 twistedPosition = vec4(new_pos);
 
 
@@ -113,31 +124,11 @@ void main(void)
 	//vec4 twistedPosition = gl_Vertex;
 	gl_Position = gl_ModelViewProjectionMatrix * twistedPosition;
 	
-	//Entonces es brillante o semimate por lo q el calculo para ambas es el mismo
-	normal = normalize(gl_NormalMatrix * gl_Normal);
+	//Cosas para el fragment shader
+	normal = gl_NormalMatrix * gl_Normal;
+
 	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
-	lightDir = normalize(vec3(gl_LightSource[0].position) - vVertex);
-	eyeVec = -vVertex;
-	
-	if(esCubeMap)
-	{		
-		//CALCULOS PARA EL CUBE MAP
-		// Normal in Eye Space
-	    vec3 vEyeNormal = gl_NormalMatrix * gl_Normal;
-	    // Vertex position in Eye Space
-	    vec4 vVert4 = gl_ModelViewMatrix * gl_Vertex;
-	    vec3 vEyeVertex = normalize(vVert4.xyz / vVert4.w);
-	    vec4 vCoords = vec4(reflect(vEyeVertex, vEyeNormal), 0.0);
-	    // Rotate by flipped camera
-	    vCoords = gl_ModelViewMatrixInverse * vCoords;
-	    vTexCoord.xyz = normalize(vCoords.xyz);
-	    // Don't forget to transform the geometry!  
-	}
-	else
-	{
-		if(esTextura2D)
-		{
-			gl_TexCoord[0] = gl_MultiTexCoord0;
-		}
-	}
+
+	lightDir = vec3(gl_LightSource[0].position.xyz - vVertex);
+	eyeVec = -vVertex;	
 } 
