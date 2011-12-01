@@ -19,6 +19,8 @@ public class RuidoVert extends VertexShader{
 	public static String NOMBRE_LONGONDA = "longOnda";
 	public static String NOMBRE_TIME = "time";
 	
+	private boolean parado = false;
+	
 	public RuidoVert(float fase,float amplitud,float longOnda){
 			
 			this.amplitud = amplitud;
@@ -95,7 +97,10 @@ public class RuidoVert extends VertexShader{
 	public void displayUniform() {
 		int location = gl.glGetUniformLocation(this.pgmHandler, NOMBRE_TIME);
 		gl.glUniform1f(location,getTime());  
-		setTime(getTime() + 1.0f);
+		if(!parado){
+			setTime(getTime() + 1.0f);
+		}
+		else setTime(5.0f);
 		
 		setMemAmplitud(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_AMPLITUD));
 		gl.glUniform1f(getMemAmplitud(),getAmplitud());
@@ -112,5 +117,14 @@ public class RuidoVert extends VertexShader{
 	@Override
 	public String getFileName() {
 		return this.fileName;
+	}
+
+	public void pararanimacion() {
+		parado = true;		
+	}
+	
+	public void reiniciaranimacion(){
+		parado = false;
+		time = 0;
 	}
 }

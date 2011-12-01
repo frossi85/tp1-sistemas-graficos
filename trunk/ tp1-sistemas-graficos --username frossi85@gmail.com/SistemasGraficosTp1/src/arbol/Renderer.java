@@ -91,8 +91,14 @@ class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMoti
    // float positionData[] =
 
     private int texture;
+    //primitivas
+    
+	esfera esfera = new esfera(1, 50, 50);
+	cubo cubo = new cubo(0.6f,10);
+	anillo anillo = new anillo(0.7f,0.3f, 50, 30);
+	cilindro cilindro = new cilindro(0.6f,0.8f,50,10);
 
-    private primitiva primitiva =  new cubo(0.5f,10);//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
+    private primitiva primitiva =  cubo;//new cilindro(0.6f,0.8f,100,50);//new esfera(1, 300, 300); //new anillo(1, 0.5f, 200, 200);// new cilindro(0.6f,0.8f,100,50);//////new cubo(0.8f,4);//
 
     //SHADERS
 
@@ -440,7 +446,7 @@ float [] positionDataOrig =
 
 	private void drawMenu(GL2 gl, Renderer r){
 
-		cubo cubo = new cubo(0.25f,1);
+		cubo cubo = new cubo(0.25f,10);
 		esfera esfera = new esfera(0.3f,30,30);
 		anillo anillo = new anillo(0.3f,0.1f, 30,30);
 		cilindro cilindro = new cilindro(0.3f, 0.3f, 30,1);
@@ -527,7 +533,7 @@ float [] positionDataOrig =
 			mS.pararAnimacion();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-	    	setEfectoLuz(currentFrag);
+	    	setEfectoLuz(efectoFragment.BRILLANTE);
 
 			gl.glPushMatrix();
 				gl.glRotatef(90, 1, 0, 0);
@@ -538,7 +544,7 @@ float [] positionDataOrig =
 			mS.pararAnimacion();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-	    	setEfectoLuz(currentFrag);
+	    	setEfectoLuz(efectoFragment.BRILLANTE);
 
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-1f,0.0f);
@@ -550,7 +556,7 @@ float [] positionDataOrig =
 			mS.pararAnimacion();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-	    	setEfectoLuz(currentFrag);
+	    	setEfectoLuz(efectoFragment.BRILLANTE);
 
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-2f,0.0f);
@@ -562,7 +568,7 @@ float [] positionDataOrig =
 			mS.pararAnimacion();
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
-	    	setEfectoLuz(currentFrag);
+	    	setEfectoLuz(efectoFragment.BRILLANTE);
 
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-3f,0.0f);
@@ -627,7 +633,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new esfera(1, 50, 50) );
+	  			r.setPrimitiva( r.esfera );
 	  		}
 	  	}.setRenderer(r));
 
@@ -638,7 +644,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new cubo(0.6f,10) );
+	  			r.setPrimitiva( r.cubo );
 	  		}
 	  	}.setRenderer(r));
 
@@ -649,7 +655,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new anillo(0.7f,0.3f, 50, 30) );
+	  			r.setPrimitiva( r.anillo );
 	  		}
 	  	}.setRenderer(r));
 
@@ -660,7 +666,7 @@ float [] positionDataOrig =
 				return this;
 			}
 	  		public void actuar(){
-	  			r.setPrimitiva( new cilindro(0.6f,0.8f,50,10) );
+	  			r.setPrimitiva( r.cilindro );
 	  		}
 	  	}.setRenderer(r));
 
