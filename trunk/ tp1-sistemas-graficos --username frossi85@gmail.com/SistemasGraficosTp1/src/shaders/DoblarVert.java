@@ -10,6 +10,7 @@ public class DoblarVert extends VertexShader{
 	private float alturaMax;
 	private float diametro;
 	private float time = 0.0f;
+	private boolean parado = false;
 	
 	public static String NOMBRE_ANGULO = "angulo";
 	public static String NOMBRE_DISTANCIA = "distancia";
@@ -22,6 +23,8 @@ public class DoblarVert extends VertexShader{
 	private int memAlturaMax;
 	private int memDiametro;
 	private int memTime;
+	
+	private int lado = 1;
 	
 	public DoblarVert(float angulo, float distancia,float diametro,float alturaMax){
 			this.angulo = angulo;
@@ -86,10 +89,12 @@ public class DoblarVert extends VertexShader{
 	}
 	
 	public void update(){
-		if (time < 1.0){
-			time += 0.005f;
-			
+		if (time == 0.3){
+			lado = -1;
 		}
+		else if (time == 0) lado = 1;
+			
+			time += lado*0.01f;
 	}
 	
 	public float getTime(){
@@ -124,7 +129,12 @@ public class DoblarVert extends VertexShader{
 	}
 	public void displayUniform(){
 		setMemTime(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_TIME));
-		update();
+		if(!parado){
+			update();
+			gl.glUniform1f(getMemTime(),getTime());
+		} else {
+			gl.glUniform1f(getMemTime(),1.0f);
+		}
 		gl.glUniform1f(getMemTime(),getTime());
 		setMemAngulo(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_ANGULO));
 		gl.glUniform1f(getMemAngulo(),getAngulo());
@@ -136,6 +146,15 @@ public class DoblarVert extends VertexShader{
 	}	
 	public String getFileName(){
 		return this.fileName;
+	}
+
+
+	public void pararanimacion() {
+		parado = true;		
+	}
+	
+	public void reiniciaranimacion(){
+		parado = false;
 	}
 
 }

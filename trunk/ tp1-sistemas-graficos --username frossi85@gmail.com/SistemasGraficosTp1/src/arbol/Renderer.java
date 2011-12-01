@@ -215,6 +215,7 @@ float [] positionDataOrig =
 	        	//mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	        	//mS.usarPrograma(ESFERIZAR_VERT, GENERIC_FRAG);
 	        	mS.usarPrograma(currentVert, GENERIC_FRAG);
+	        	mS.reiniciarAnimacion();
 
 
 	        	setEfectoLuz(currentFrag);
@@ -476,7 +477,7 @@ float [] positionDataOrig =
 
 			gl.glTranslatef(-1.5f, 1.6f, 0);
 
-			//mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
+			mS.usarPrograma(SIN_DEFORMACION_VERT, GENERIC_FRAG);
 	    	mS.displayUniform();
 	    	mS.displayVertexAttrib();
 
@@ -522,38 +523,50 @@ float [] positionDataOrig =
 		gl.glPushMatrix();
 			gl.glTranslatef(3,1.6f,0);
 
-//			mS.usarPrograma(RETORCER_VERT, GENERIC_FRAG);
-//	    	mS.displayUniform();
-//	    	mS.displayVertexAttrib();
+			mS.usarPrograma(RETORCER_VERT, GENERIC_FRAG);
+			mS.pararAnimacion();
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+	    	setEfectoLuz(currentFrag);
 
 			gl.glPushMatrix();
+				gl.glRotatef(90, 1, 0, 0);
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 
-//			mS.usarPrograma(DOBLAR_VERT, GENERIC_FRAG);
-//	    	mS.displayUniform();
-//	    	mS.displayVertexAttrib();
+			mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
+			mS.pararAnimacion();
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+	    	setEfectoLuz(currentFrag);
 
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-1f,0.0f);
+				gl.glRotatef(90, 1, 0, 0);
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 
-//			mS.usarPrograma(RUIDO_VERT, GENERIC_FRAG);
-//	    	mS.displayUniform();
-//	    	mS.displayVertexAttrib();
+			mS.usarPrograma(DOBLAR_VERT, GENERIC_FRAG);
+			mS.pararAnimacion();
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+	    	setEfectoLuz(currentFrag);
 
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-2f,0.0f);
+				gl.glRotatef(90, 1, 0, 0);
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 
-//			mS.usarPrograma(ESFERIZAR_VERT, GENERIC_FRAG);
-//	    	mS.displayUniform();
-//	    	mS.displayVertexAttrib();
+			mS.usarPrograma(ESFERIZAR_VERT, GENERIC_FRAG);
+			mS.pararAnimacion();
+	    	mS.displayUniform();
+	    	mS.displayVertexAttrib();
+	    	setEfectoLuz(currentFrag);
 
 			gl.glPushMatrix();
 				gl.glTranslatef(0,-3f,0.0f);
+				gl.glRotatef(90, 1, 0, 0);
 				cubo.dibujar(gl);
 			gl.glPopMatrix();
 

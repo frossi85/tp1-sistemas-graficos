@@ -11,6 +11,8 @@ public abstract class VertexShader {
 	abstract public void displayVertexAttrib();
 	abstract public void displayUniform();	
 	abstract public String getFileName();
+	abstract public void pararanimacion();
+	abstract public void reiniciaranimacion();
 
 	public void setInfos(int pgmHandler, GL2 gl){
 		this.pgmHandler = pgmHandler;

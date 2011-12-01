@@ -10,6 +10,7 @@ public class EsferizacionVert extends VertexShader{
 	private float factor;
 	private float factorVariable = 0.0f;
 	private float time = 0.0f;
+	private boolean parado = false;
 	
 	private int memRadio = 1;
 	private int memCentro = 3;
@@ -81,7 +82,7 @@ public class EsferizacionVert extends VertexShader{
 	
 	public void update(){
 		if (time < 1.0){
-			time += 0.005f;
+			time += 0.05f;
 			
 		}
 	}
@@ -118,8 +119,14 @@ public class EsferizacionVert extends VertexShader{
 		gl.glUniform1f(location,getFactorVariable());  
 		float centro[] = getCentro();
 		setMemTime(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_TIME));
-		update();
-		gl.glUniform1f(getMemTime(),getTime());  
+		if(!parado){	
+			update();
+			gl.glUniform1f(getMemTime(),getTime()); 
+		}
+		else {
+			gl.glUniform1f(getMemTime(),1.0f); 
+		}
+		 
 		setMemFactor(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_FACTOR));
 		gl.glUniform1f(getMemFactor(),getFactor()); 
 		setMemRadio(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_RADIO));
@@ -133,6 +140,14 @@ public class EsferizacionVert extends VertexShader{
 		return this.filename;
 	}
 	
+	
+	public void pararanimacion() {
+		parado = true;		
+	}
+	
+	public void reiniciaranimacion(){
+		parado = false;
+	}
 	
 	
 	
