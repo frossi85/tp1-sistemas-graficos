@@ -89,10 +89,10 @@ public class DoblarVert extends VertexShader{
 	}
 	
 	public void update(){
-		if (time == 0.3){
+		if (time > 0.5){
 			lado = -1;
 		}
-		else if (time == 0) lado = 1;
+		else if (time < 0) lado = 1;
 			
 			time += lado*0.01f;
 	}
@@ -133,9 +133,8 @@ public class DoblarVert extends VertexShader{
 			update();
 			gl.glUniform1f(getMemTime(),getTime());
 		} else {
-			gl.glUniform1f(getMemTime(),1.0f);
+			gl.glUniform1f(getMemTime(),0.3f);
 		}
-		gl.glUniform1f(getMemTime(),getTime());
 		setMemAngulo(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_ANGULO));
 		gl.glUniform1f(getMemAngulo(),getAngulo());
 		setMemDistancia(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_DISTANCIA));

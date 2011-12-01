@@ -15,6 +15,7 @@ public class RetorcerVert extends VertexShader{
 	private int memAltura;
 	private int memTime;
 	private boolean parado = false;
+	int t = 1;
 	
 public RetorcerVert(float angulo,float altura){
 		this.angulo = angulo;
@@ -71,7 +72,9 @@ public int getMemAltura(){
 }
 
 public void update(){
-	time += 0.3f;
+	if(time > 2.0) t = -1;
+	if(time < 0.0) t = 1;
+	time += t* 0.3f;
 		
 }
 
