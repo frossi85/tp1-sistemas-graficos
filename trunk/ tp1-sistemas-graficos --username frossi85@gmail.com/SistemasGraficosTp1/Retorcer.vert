@@ -136,6 +136,15 @@ void main(void)
 	
 	//Entonces es brillante o semimate por lo q el calculo para ambas es el mismo
 	normal = normalize(gl_NormalMatrix * gl_Normal);
+	float posnx = normal.x;
+	float posnz = normal.z;
+	normal.x = posnx*ct - posnz*st;
+	normal.z = posnx*st + posnz*ct;
+	
+
+
+
+
 	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
 	lightDir = normalize(vec3(gl_LightSource[0].position) - vVertex);
 	eyeVec = -vVertex;
