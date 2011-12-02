@@ -47,11 +47,13 @@ void main(void)
 	
 	float radioFinal = getRadioFinal(radioActual,radio,factor); 
 	
-	vec4 normaux = resultado;
+	
 
 	resultado.x = resultado.x*(radioActual+(radioFinal-radioActual)*time); 
 	resultado.y =resultado.y*(radioActual+(radioFinal-radioActual)*time);
 	resultado.z = resultado.z*(radioActual+(radioFinal-radioActual)*time);
+
+	vec4 normaux = resultado;
 	
 	gl_Position = gl_ModelViewProjectionMatrix * resultado; //la normal tendria la misma direccion que resultado.
 
@@ -61,6 +63,7 @@ void main(void)
 	normal.x = normaux.x;
 	normal.y = normaux.y;
 	normal.z = normaux.z;
+	normal = normalize(normal);
 	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
 	lightDir = normalize(vec3(gl_LightSource[0].position) - vVertex);
 	eyeVec = -vVertex;
