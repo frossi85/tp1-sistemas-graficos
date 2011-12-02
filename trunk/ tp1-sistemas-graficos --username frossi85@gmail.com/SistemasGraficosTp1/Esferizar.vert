@@ -47,7 +47,8 @@ void main(void)
 	
 	float radioFinal = getRadioFinal(radioActual,radio,factor); 
 	
-	
+	vec4 normaux = resultado;
+
 	resultado.x = resultado.x*(radioActual+(radioFinal-radioActual)*time); 
 	resultado.y =resultado.y*(radioActual+(radioFinal-radioActual)*time);
 	resultado.z = resultado.z*(radioActual+(radioFinal-radioActual)*time);
@@ -57,6 +58,9 @@ void main(void)
 	
 	//Entonces es brillante o semimate por lo q el calculo para ambas es el mismo
 	normal = normalize(gl_NormalMatrix * gl_Normal);
+	normal.x = normaux.x;
+	normal.y = normaux.y;
+	normal.z = normaux.z;
 	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
 	lightDir = normalize(vec3(gl_LightSource[0].position) - vVertex);
 	eyeVec = -vVertex;
