@@ -96,11 +96,11 @@ public class RuidoVert extends VertexShader{
 	@Override
 	public void displayUniform() {
 		int location = gl.glGetUniformLocation(this.pgmHandler, NOMBRE_TIME);
-		gl.glUniform1f(location,getTime());  
 		if(!parado){
-			setTime(getTime() + 1.0f);
+			setTime(getTime() + 0.2f);
+			gl.glUniform1f(location,getTime()); 
 		}
-		else setTime(5.0f);
+		else gl.glUniform1f(location,1.4f); 
 		
 		setMemAmplitud(gl.glGetUniformLocation(this.pgmHandler,NOMBRE_AMPLITUD));
 		gl.glUniform1f(getMemAmplitud(),getAmplitud());
@@ -125,6 +125,5 @@ public class RuidoVert extends VertexShader{
 	
 	public void reiniciaranimacion(){
 		parado = false;
-		time = 0;
 	}
 }
