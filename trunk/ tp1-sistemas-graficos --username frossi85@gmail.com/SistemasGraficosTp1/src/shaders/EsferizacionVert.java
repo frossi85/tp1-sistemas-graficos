@@ -82,7 +82,7 @@ public class EsferizacionVert extends VertexShader{
 	}
 	
 	public void update(){
-		if (time > 1.4){
+		if (time > 2){
 			t = -1;
 		}
 		if(time < 0.0) {
