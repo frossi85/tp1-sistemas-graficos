@@ -51,9 +51,36 @@ void main(void)
 
 		
 	gl_Position = gl_ModelViewProjectionMatrix * resultado;
+
+	vec3 aux = vec3(distancia,gl_Vertex.y,0.0);
 	
+	vec3 frontal;
+	frontal.x = resultado.x-aux.x;
+	frontal.y = resultado.y-aux.y;
+	frontal.z = resultado.z-aux.z;
+	
+	vec3 trasero;
+	trasero.x = aux.x-resultado.x;
+	trasero.y = aux.x-resultado.y;
+	trasero.z = aux.x-resultado.z;
+
+		
 	//Entonces es brillante o semimate por lo q el calculo para ambas es el mismo
 	normal = normalize(gl_NormalMatrix * gl_Normal);
+	if(gl_Vertex.x > 0.0)
+		normal = trasero;
+	else
+		normal = frontal;
+	normal = normalize(normal);
+	/*
+	alternativa
+	
+	if(gl_Vertex.x > 0.0)
+		normal = frontal;
+	else
+		normal = trasero;
+	normal = normalize(normal);
+	*/
 	vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
 	lightDir = normalize(vec3(gl_LightSource[0].position) - vVertex);
 	eyeVec = -vVertex;
