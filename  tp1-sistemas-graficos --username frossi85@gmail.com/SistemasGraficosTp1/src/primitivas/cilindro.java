@@ -93,17 +93,26 @@ public class cilindro implements primitiva{
 			for(int i = 0; i < cantidadDePuntos; i++){
 				i2 = (i+1)%cantidadDePuntos;
 				gl.glBegin(GL2.GL_TRIANGLES);
-					no = getNormal(this._puntos.get(i).x, this._puntos.get(i).y, zM,
+					/*no = getNormal(this._puntos.get(i).x, this._puntos.get(i).y, zM,
 							this._puntos.get(i2).x, this._puntos.get(i2).y, zM,
-							this._puntos.get(i2).x, this._puntos.get(i2).y, z);
-					gl.glNormal3f(no[0], no[1], no[2]);
-					
+							this._puntos.get(i2).x, this._puntos.get(i2).y, z);*/
+					//gl.glNormal3f(no[0], no[1], no[2]);
+					gl.glNormal3f(this._puntos.get(i).x, this._puntos.get(i).y, 0);
 					gl.glTexCoord2f(texX, texY+texYPaso); gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, zM);
+					
+					gl.glNormal3f(this._puntos.get(i2).x, this._puntos.get(i2).y, 0);
 					gl.glTexCoord2f(texX+texXPaso, texY+texYPaso); gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, zM);
+					
+					gl.glNormal3f(this._puntos.get(i).x, this._puntos.get(i).y, 0);
 					gl.glTexCoord2f(texX, texY); gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, z);
 					
+					gl.glNormal3f(this._puntos.get(i).x, this._puntos.get(i).y, 0);
 					gl.glTexCoord2f(texX, texY); gl.glVertex3f(this._puntos.get(i).x, this._puntos.get(i).y, z);
+					
+					gl.glNormal3f(this._puntos.get(i2).x, this._puntos.get(i2).y, 0);
 					gl.glTexCoord2f(texX+texXPaso, texY+texYPaso); gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, zM);
+					
+					gl.glNormal3f(this._puntos.get(i2).x, this._puntos.get(i2).y, 0);
 					gl.glTexCoord2f(texX+texXPaso, texY); gl.glVertex3f(this._puntos.get(i2).x, this._puntos.get(i2).y, z);
 					
 	
